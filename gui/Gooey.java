@@ -22,7 +22,7 @@ public class Gooey extends JFrame {
 	 *	Test GUI constructor
 	 */
 	public Gooey() {
-       	setTitle("Simple example");
+       	setTitle("GUI Test");
        	setSize(640, 640);
        	setLocationRelativeTo(null);
        	setDefaultCloseOperation(EXIT_ON_CLOSE);    
@@ -57,6 +57,17 @@ public class Gooey extends JFrame {
             }
         });
     	footer.add(butt3); //clear button
+    	c.add(footer, BorderLayout.SOUTH);
+    	
+    	JButton butt4 = new JButton("Add 12");
+    	butt4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+               for(int i=1; i<=12; i++) {
+					addCard(generateCard());
+				}
+            }
+        });
+    	footer.add(butt4); //clear button
     	c.add(footer, BorderLayout.SOUTH);
     	
     	grid = new GridLayout(1, 0, 3, 3); //fixed 3 cols
@@ -107,9 +118,10 @@ public class Gooey extends JFrame {
 		Random rand = new Random();
 		Card.Pattern[] patA = Card.Pattern.values();
 		Card.Symbol[] symA = Card.Symbol.values();
-		Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-		System.out.println(tempColor.toString());
-		return new Card(rand.nextInt(3)+1, patA[rand.nextInt(patA.length)], tempColor, symA[rand.nextInt(symA.length)]);
+		Card.SetColor[] colA = Card.SetColor.values();
+		//Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+		//return new Card(rand.nextInt(4)+1, patA[rand.nextInt(patA.length)], tempColor, symA[rand.nextInt(symA.length)]);
+		return new Card(rand.nextInt(3)+1, patA[rand.nextInt(patA.length)], colA[rand.nextInt(colA.length)], symA[rand.nextInt(symA.length)]);
 	}
 	
 	/**
