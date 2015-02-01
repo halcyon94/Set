@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class PlayerPanel extends JPanel {
 		
-	private ArrayList<PlayerStat> playerList;
+	private ArrayList<PlayerStat> playerList = new ArrayList<PlayerStat>();
 	
 	/**
 	 *	Card grid panel constructor
@@ -20,7 +20,6 @@ public class PlayerPanel extends JPanel {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setBorder(BorderFactory.createTitledBorder("Players"));
-		playerList = new ArrayList<PlayerStat>();
 	}
 	
 	/**

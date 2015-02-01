@@ -14,7 +14,8 @@ import java.util.Random;
 public class Gooey extends JFrame {
 
 	private CardGrid grid;
-	private final PlayerPanel players;
+	private PlayerPanel players;
+	private ChatPanel chat;
 	
 	private static final int ROWS = 3;
 	
@@ -23,7 +24,7 @@ public class Gooey extends JFrame {
 	 */
 	public Gooey() {
        	setTitle("GUI Test");
-       	setSize(960, 640);
+       	setSize(960, 768);
        	setLocationRelativeTo(null);
        	setDefaultCloseOperation(EXIT_ON_CLOSE);    
        
@@ -102,6 +103,8 @@ public class Gooey extends JFrame {
     	footer.add(butt7);
     	
     	c.add(footer, BorderLayout.EAST);
+    	
+    	c.add(new ChatPanel(), BorderLayout.SOUTH);
     	
     	grid = new CardGrid(3, 3);
     	
