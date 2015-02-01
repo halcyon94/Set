@@ -32,7 +32,7 @@ public class CardGrid extends JPanel {
 		if(lastCol.getComponentCount() < rows) {
 			lastCol.add(c);
 		} else { //column full - add a new column
-			JPanel temp = new JPanel(new GridLayout(3, 1, 3, 3));
+			JPanel temp = new JPanel(new GridLayout(rows, 1, 3, 3));
 			temp.add(c);
 			add(temp);
 		}

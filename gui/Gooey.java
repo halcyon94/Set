@@ -14,6 +14,7 @@ import java.util.Random;
 public class Gooey extends JFrame {
 
 	private CardGrid grid;
+	private final PlayerPanel players;
 	
 	private static final int ROWS = 3;
 	
@@ -22,16 +23,23 @@ public class Gooey extends JFrame {
 	 */
 	public Gooey() {
        	setTitle("GUI Test");
-       	setSize(640, 640);
+       	setSize(960, 640);
        	setLocationRelativeTo(null);
        	setDefaultCloseOperation(EXIT_ON_CLOSE);    
        
     	Container c = getContentPane(); //get the content pane
-    	//c.setLayout(new FlowLayout()); //flow layout is like CSS floats
-    	c.setLayout(new BorderLayout(2,2));
-    	c.add(new JLabel("lolol dolen was here hurhurhur", SwingConstants.CENTER), BorderLayout.NORTH); //add a label
+    	c.setLayout(new BorderLayout(5,5));
+    	
+    	players = new PlayerPanel();
+    	players.addPlayer(Color.RED, "Dolen", 9000);
+    	//players.addPlayer(Color.BLUE, "Eugene", 9000);
+    	//players.addPlayer(Color.MAGENTA, "Cher", 9000);
+    	//players.addPlayer(Color.YELLOW, "Justin", -589);
+    	c.add(players, BorderLayout.NORTH);
+    	//c.add(new JLabel("lolol dolen was here hurhurhur", SwingConstants.CENTER), BorderLayout.NORTH); //add a label
     	
     	JPanel footer = new JPanel();
+    	footer.setLayout(new BoxLayout(footer, BoxLayout.Y_AXIS));
     	JButton butt = new JButton("Quit");
     	butt.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -56,22 +64,49 @@ public class Gooey extends JFrame {
         });
     	footer.add(butt3); //clear button    	
     	
-    	JButton butt4 = new JButton("Add 12");
+    	JButton butt4 = new JButton("Add 3");
     	butt4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-               for(int i=1; i<=12; i++) {
+               for(int i=1; i<=3; i++) {
 					grid.addCard(generateCard());
 				}
             }
         });
-    	footer.add(butt4); //add 12 button
+    	footer.add(butt4); //add 3
     	
-    	c.add(footer, BorderLayout.SOUTH);
+    	JButton butt5 = new JButton("Score!");
+    	butt5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+				players.increaseScore(0);
+            }
+        });
+    	footer.add(butt5);
+    	
+    	JButton butt6 = new JButton("AddPl");
+    	butt6.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	Random rand = new Random();
+            	Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+				players.addPlayer(tempColor, "PlayerName", 1234);
+            }
+        });
+    	footer.add(butt6);
+    	
+    	JButton butt7 = new JButton("RemPl");
+    	butt7.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+				players.removePlayer(players.getComponentCount()/2-1);
+				repaint();
+            }
+        });
+    	footer.add(butt7);
+    	
+    	c.add(footer, BorderLayout.EAST);
     	
     	grid = new CardGrid(3, 3);
     	
-    	//Start with 12 cards
-    	for(int i=1; i<=12; i++) {
+    	//Start with 21 cards
+    	for(int i=1; i<=21; i++) {
     		grid.addCard(generateCard());
     	}
     	

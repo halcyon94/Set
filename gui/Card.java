@@ -193,7 +193,7 @@ public class Card extends JPanel implements MouseListener {
     public void mouseReleased(MouseEvent e) {} //dont care
 
     public void mouseEntered(MouseEvent e) {
-         bgColor = Color.GRAY;
+         bgColor = Color.LIGHT_GRAY;
          repaint();
     }
 
