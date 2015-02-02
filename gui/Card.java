@@ -1,16 +1,17 @@
-/**
- *	Set GUI Card class utilizing vector drawn traditional style designs
- *	@author Dolen Le
- *	@version 1.0
- */
 package gui;
  
+import java.lang.Math;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 
+/**
+ *	Set GUI Card class utilizing vector drawn traditional style designs
+ *	@author Dolen Le
+ *	@version 1.0
+ */
 public class Card extends JPanel implements MouseListener {
 
 	/**
@@ -28,7 +29,11 @@ public class Card extends JPanel implements MouseListener {
 		/**
 		 *	White (empty) fill
 		 */
-		CLEAR
+		CLEAR,
+		/**
+		 *	Circle pattern
+		 */
+		CIRCLE
 	}
 	
 	/**
@@ -46,14 +51,18 @@ public class Card extends JPanel implements MouseListener {
 		/**
 		 *	Rectangle with round ends
 		 */
-		OVAL
+		OVAL,
+		/**
+		 *	Rectangle with square ends
+		 */
+		RECTANGLE
 	}
 	
 	/**
 	 *	Lists default colors for Card shapes
 	 */
 	public enum SetColor {
-		RED(240,30,30), GREEN(30,190,30), PURPLE(150,85,230);
+		RED(240,30,30), GREEN(30,190,30), PURPLE(150,85,230), BLUE(135, 175, 235);
 		private final int red, green, blue;
 		SetColor(int r, int g, int b) {
 			red = r;
@@ -70,6 +79,9 @@ public class Card extends JPanel implements MouseListener {
 	private int num;
 	private Paint pnt;
 	private Color bgColor = Color.WHITE;
+	private BasicStroke cardBorder = new BasicStroke();
+	private Color borderColor = Color.BLACK;
+	private boolean selected = false;
 	
 	//shape size to card size proportions
 	private static final double SHAPE_W_SCALE = 0.7;
@@ -89,7 +101,7 @@ public class Card extends JPanel implements MouseListener {
 	 *	Creates a new Card with custom defined color
 	 *	@param num Number of shapes to be shown on card
 	 *	@param pat Fill pattern for the shape on the card. Must be one of Card.Pattern.
-	 *	@param col Fill and border color for the shape on the card.
+	 *	@param col Color object representing the fill and border color of the shape.
 	 *	@param sym Shape to be shown on the card. Must be one of Card.Symbol.
 	 */
 	public Card(int num, Pattern pat, Color col, Symbol sym) {
@@ -106,21 +118,77 @@ public class Card extends JPanel implements MouseListener {
 			case CLEAR:
 				this.pnt = bgColor;
 				break;
+			case CIRCLE:
+				this.pnt = getCircleFill(this.col);
+				break;
 		}
 		this.sym = sym;
 		this.num = num;
 		addMouseListener(this);
 	}
-	
+
 	/**
 	 *	Creates a new Card using a preset color
 	 *	@param num Number of shapes to be shown on card
 	 *	@param pat Fill pattern for the shape on the card. Must be one of Card.Pattern.
-	 *	@param col Fill and border color for the shape on the card.
+	 *	@param col Fill and border color for the shape on the card. Must be one of Card.SetColor.
 	 *	@param sym Shape to be shown on the card. Must be one of Card.Symbol.
 	 */
 	public Card(int num, Pattern pat, SetColor col, Symbol sym) {
 		this(num, pat, col.toColor(), sym);
+	}
+	
+	/**
+	 *	Creates a new Card from a unique ID using presets. The total number of cards is equal to setSize^4.
+	 *	The ID is indexed from 0 to the total number of cards. The setSize determines the available
+	 *	colors, shapes, patterns and numbers for the card.
+	 *	@param id ID of the card. Must be less than setSize^4.
+	 *	@param setSize Number of cards per set, in range 2-4.
+	 */
+	public Card(int id, int setSize) {
+		//Sort by color, then pattern, then shape, then number
+		Pattern[] patA = Pattern.values();
+		Symbol[] symA = Symbol.values();
+		SetColor[] colA = SetColor.values();
+		int total = (int) Math.pow(setSize, 4);
+		int cardsPerColor = total/setSize;
+		int cardsPerPattern = cardsPerColor/setSize;
+		int cardsPerShape = cardsPerPattern/setSize;
+				
+		this.col = colA[(id/cardsPerColor)%setSize].toColor();
+		switch(patA[(id/cardsPerPattern)%setSize]) {
+			case SOLID:
+				this.pnt = this.col;
+				break;
+			case STRIPE:
+				this.pnt = getStripeFill(this.col);
+				break;
+			case CLEAR:
+				this.pnt = bgColor;
+				break;
+			case CIRCLE:
+				this.pnt = getCircleFill(this.col);
+				break;
+		}
+		this.sym = symA[(id/cardsPerShape)%setSize];
+		this.num = id%setSize+1;
+		addMouseListener(this);
+	}
+	
+	/**
+	 *	Marks or unmarks the Card as selected.
+	 *	@param highlight Border highlight color for selected card
+	 */
+	public void toggleSelection(Color highlight) {
+		if(!selected) {
+			cardBorder = new BasicStroke(5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+			borderColor = highlight;
+		} else {
+			cardBorder = new BasicStroke();
+			borderColor = Color.BLACK;
+		}
+		selected = !selected;
+		repaint();
 	}
 	
 	/**
@@ -131,6 +199,9 @@ public class Card extends JPanel implements MouseListener {
     	return new Dimension(35, 64);
 	}
 	
+	/**
+	 *	Method used by the layout manager to draw the Card graphics
+	 */
 	@Override
 	public void paintComponent(Graphics gx) {
 		super.paintComponent(gx);
@@ -141,10 +212,12 @@ public class Card extends JPanel implements MouseListener {
 		double shapeH = cardH*SHAPE_H_SCALE;
 		double margin = cardH*MARGIN_SCALE > MIN_MARGIN ? cardH*MARGIN_SCALE : MIN_MARGIN; 
 		double nFactor = 0.5*(num-1)*(shapeH+margin);
-		RoundRectangle2D.Double cardEdge = new RoundRectangle2D.Double(0,0,cardW,cardH,cardW*CORNER_SCALE,cardW*CORNER_SCALE);
-		g.draw(cardEdge);
+		RoundRectangle2D.Double cardShape = new RoundRectangle2D.Double(0,0,cardW,cardH,cardW*CORNER_SCALE,cardW*CORNER_SCALE);
 		g.setPaint(bgColor);
-		g.fill(cardEdge);
+		g.fill(cardShape);
+		g.setPaint(borderColor);
+		g.setStroke(cardBorder);
+		g.draw(cardShape);
 		//System.out.println("Card Dimensions x="+cardW+" y="+cardH);
 		
 		for(int i = 1; i <= num; i++) {
@@ -174,6 +247,12 @@ public class Card extends JPanel implements MouseListener {
 				p.curveTo(p.getCurrentPoint().getX()+cardW*INNER_W_SCALE, p.getCurrentPoint().getY()-cardH*INNER_H_SCALE, (cardW-shapeW)/2-cardW*OUTER_W_SCALE, (cardH-shapeH)/2+cardH*OUTER_H_SCALE-translation, (cardW-shapeW)/2, (cardH-shapeH)/2-translation);
 				p.closePath();
 				s = p;
+			} else if(sym == Symbol.RECTANGLE) {
+				s = new Rectangle2D.Double(	
+					cardW/2-shapeW/2,
+					cardH/2-shapeH/2-nFactor+(shapeH+margin)*(i-1),
+					shapeW,
+					shapeH); //dynamically size rectangle
 			}
 			g.setPaint(pnt);
 			g.fill(s);
@@ -185,19 +264,24 @@ public class Card extends JPanel implements MouseListener {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-       System.out.println("Click!");
-    }
+	} //handle elsewhere
     
-    public void mousePressed(MouseEvent e) {} //dont care
+    public void mousePressed(MouseEvent e) {
+    	bgColor = Color.DARK_GRAY;
+        repaint();
+    } //dont care
 
-    public void mouseReleased(MouseEvent e) {} //dont care
+    public void mouseReleased(MouseEvent e) {
+    	bgColor = Color.LIGHT_GRAY;
+        repaint();
+    } //dont care
 
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent e) { //focus
          bgColor = Color.LIGHT_GRAY;
          repaint();
     }
 
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent e) { //lose focus
          bgColor = Color.WHITE;
          repaint();
     }
@@ -215,16 +299,17 @@ public class Card extends JPanel implements MouseListener {
 	
 	//Generates the circle fill pattern
 	private TexturePaint getCircleFill(Color col) {
-		int radius=10;
-		BufferedImage bufferedImage = new BufferedImage(radius*2, radius*2, BufferedImage.TYPE_INT_RGB);
-		Graphics2D temp = bufferedImage.createGraphics();
+		int radius=18;
+		BufferedImage image = new BufferedImage(radius*2, radius*2, BufferedImage.TYPE_INT_RGB);
+		Graphics2D temp = image.createGraphics();
 		temp.setColor(Color.WHITE);
 		temp.fillRect(0, 0, radius*2, radius*2);
-		for(int i = 0; i<= radius; i+=2) {
+		for(int i = 0; i<= radius; i+=3) {
 			temp.setColor(col);
 			temp.drawOval(radius-i, radius-i, i*2, i*2); 
 		}
-		Rectangle2D rect = new Rectangle2D.Double(0, 0, radius*2, radius*2); //pattern to be tiled
-		return new TexturePaint(bufferedImage, rect);
+		Rectangle2D rect = new Rectangle2D.Double(0, 0, (int) (radius*1.41), (int) (radius*1.41)); //pattern to be tiled
+		return new TexturePaint(image.getSubimage((int) (radius*0.4142), (int) (radius*0.4142), (int) (radius*1.41), (int) (radius*1.41)), rect);
 	}
+	
 }
