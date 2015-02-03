@@ -75,9 +75,12 @@ public class Card extends JPanel implements MouseListener {
 	}
 	
 	private Symbol sym;
-	private Color col;
+	private Pattern pat;
+	private SetColor sCol;
 	private int num;
-	private Paint pnt;
+	
+	private Color col; //shape color
+	private Paint pnt; //shape fill
 	private Color bgColor = Color.WHITE;
 	private BasicStroke cardBorder = new BasicStroke();
 	private Color borderColor = Color.BLACK;
@@ -108,6 +111,7 @@ public class Card extends JPanel implements MouseListener {
 		//setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		//setBackground(Color.WHITE);
 		this.col = col;
+		this.pat = pat;
 		switch(pat) {
 			case SOLID:
 				this.pnt = this.col;
@@ -136,6 +140,7 @@ public class Card extends JPanel implements MouseListener {
 	 */
 	public Card(int num, Pattern pat, SetColor col, Symbol sym) {
 		this(num, pat, col.toColor(), sym);
+		this.sCol = col;
 	}
 	
 	/**
@@ -155,8 +160,10 @@ public class Card extends JPanel implements MouseListener {
 		int cardsPerPattern = cardsPerColor/setSize;
 		int cardsPerShape = cardsPerPattern/setSize;
 				
-		this.col = colA[(id/cardsPerColor)%setSize].toColor();
-		switch(patA[(id/cardsPerPattern)%setSize]) {
+		this.sCol = colA[(id/cardsPerColor)%setSize];
+		this.col = sCol.toColor();
+		this.pat = patA[(id/cardsPerPattern)%setSize];
+		switch(pat) {
 			case SOLID:
 				this.pnt = this.col;
 				break;
@@ -173,6 +180,22 @@ public class Card extends JPanel implements MouseListener {
 		this.sym = symA[(id/cardsPerShape)%setSize];
 		this.num = id%setSize+1;
 		addMouseListener(this);
+	}
+	
+	/**
+	 *	Compute the ID of the Card. The number of cards in the deck is setSize^4.
+	 *	@param setSize The number of choices per attribute and cards per set.
+	 *	@return The card's unique ID, or -1 if the ID exceeds the card total.
+	 */
+	public int getID(int setSize) {
+		int id =	sCol.ordinal()*((int) Math.pow(setSize, 3))
+					+pat.ordinal()*((int) Math.pow(setSize, 2))
+					+sym.ordinal()*setSize
+					+num-1;
+		if(id < Math.pow(setSize, 4))
+			return id;
+		else
+			return -1;
 	}
 	
 	/**
@@ -263,8 +286,7 @@ public class Card extends JPanel implements MouseListener {
 		g.dispose();
 	}
 	
-	public void mouseClicked(MouseEvent e) {
-	} //handle elsewhere
+	public void mouseClicked(MouseEvent e) {} //handle elsewhere
     
     public void mousePressed(MouseEvent e) {
     	bgColor = Color.DARK_GRAY;

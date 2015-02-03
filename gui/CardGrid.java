@@ -15,6 +15,7 @@ public class CardGrid extends JPanel {
 	private int cards = 0;
 	private int rows;
 	private Color playerColor;
+	private boolean selectEnabled = false;
 	
 	/**
 	 *	Card grid panel constructor
@@ -46,7 +47,8 @@ public class CardGrid extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Card test = (Card) e.getSource();
-       			test.toggleSelection(playerColor);
+				if(selectEnabled)
+				test.toggleSelection(playerColor);
 			}
 		});
 		cards++;
@@ -55,6 +57,7 @@ public class CardGrid extends JPanel {
 	
 	/**
 	 *	Remove the card in the given position and replaces it with the last card. The origin is at the top left.
+	 *	If the card to be removed is in the same column as the last card, the cards are shifted up.
 	 *	@param x Row of the card
 	 *	@param y Column of the card
 	 */
@@ -63,9 +66,11 @@ public class CardGrid extends JPanel {
 		column.remove(y);
 		cards--;
 		if(x*rows+y%rows<cards-1 && cards>0) {
-			column.add(getLastCard(), y);
-			if(cards%rows == 0) { //remove last column if needed
-				remove(cards/rows);
+			if(x!=cards/rows) {
+				column.add((Card) ((JPanel) getComponent(cards/rows)).getComponent(cards%rows), y);
+				if(cards%rows == 0) { //remove last column if needed
+					remove(cards/rows);
+				}
 			}
 		}
 		revalidate();
@@ -91,18 +96,6 @@ public class CardGrid extends JPanel {
 	}
 	
 	/**
-	 *	Get the last card on the grid
-	 *	@return The last card, null if no cards are on the grid
-	 */
-	public Card getLastCard() {
-		if(cards>0) {
-			return (Card) ((JPanel) getComponent(cards/rows)).getComponent(cards%rows);
-		} else {
-			return null;
-		}
-	}
-	
-	/**
 	 *	Generate a Card with random color, shape, and fill
 	 *	@return Randomly generated Card
 	 */
@@ -114,6 +107,10 @@ public class CardGrid extends JPanel {
 		//Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
 		//return new Card(rand.nextInt(4)+1, patA[rand.nextInt(patA.length)], tempColor, symA[rand.nextInt(symA.length)]);
 		return new Card(rand.nextInt(4)+1, patA[rand.nextInt(patA.length)], colA[rand.nextInt(colA.length)], symA[rand.nextInt(symA.length)]);
+	}
+
+	public void toggleSelection() {
+		selectEnabled = !selectEnabled;
 	}
 }
 

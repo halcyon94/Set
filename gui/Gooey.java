@@ -33,26 +33,36 @@ public class Gooey extends JFrame {
     	
     	players = new PlayerPanel();
     	players.addPlayer(Color.BLUE, "Dolen", 9000);
-    	players.addPlayer(Color.BLUE, "Eugene", 9000);
+    	players.addPlayer(Color.RED, "Eugene", 9000);
     	players.addPlayer(Color.MAGENTA, "Cher", 9000);
     	players.addPlayer(Color.YELLOW, "Justin", -589);
     	c.add(players, BorderLayout.NORTH);
-    	//c.add(new JLabel("lolol dolen was here hurhurhur", SwingConstants.CENTER), BorderLayout.NORTH); //add a label
     	
     	JPanel footer = new JPanel();
     	footer.setLayout(new BoxLayout(footer, BoxLayout.Y_AXIS));
-    	JButton butt = new JButton("Quit");
+    	JButton butt = new JButton("SET");
     	butt.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	chat.systemMessage("Card selection toggled");
+                grid.toggleSelection();
+            }
+        });
+    	footer.add(butt); //quit button
+    	
+    	footer.setLayout(new BoxLayout(footer, BoxLayout.Y_AXIS));
+    	JButton butt1 = new JButton("Quit");
+    	butt1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
         });
-    	footer.add(butt); //quit button
+    	footer.add(butt1); //quit button
     	
     	JButton butt2 = new JButton("+Card");
     	butt2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                grid.addCard(grid.generateCard());
+               chat.systemMessage("Add random card");
             }
         });
     	footer.add(butt2); //add card button
@@ -109,20 +119,22 @@ public class Gooey extends JFrame {
     	JButton butt8 = new JButton("+Deck");
     	butt8.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-               for(int i=0; i<81; i++) {
-					grid.addCard(new Card(i,3));
+               for(int i=0; i<256; i++) {
+					Card cx = new Card(i,4);
+					grid.addCard(cx);
+					System.out.println(cx.getID(4));
 				}
 				chat.systemMessage("Added full deck");
             }
         });
     	footer.add(butt8); //add 3
     	
-    	JButton butt9 = new JButton("-(1,1)");
+    	JButton butt9 = new JButton("-(0,0)");
     	butt9.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 				try {
-					grid.removeCard(1,1);
-					chat.systemMessage("Removed Card at (1,1)");
+					grid.removeCard(0,0);
+					chat.systemMessage("Removed Card at (0,0)");
 					repaint();
 				} catch (ArrayIndexOutOfBoundsException e) {
 					chat.systemMessage("Could not remove card!");
