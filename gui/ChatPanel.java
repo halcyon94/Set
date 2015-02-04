@@ -19,7 +19,7 @@ public class ChatPanel extends JPanel {
 	/**
 	 *	Chat panel constructor
 	 */
-	public ChatPanel() {
+	public ChatPanel(int height) {
 		super(new BorderLayout(3,3));
 		setBorder(BorderFactory.createTitledBorder("Chat"));
 		
@@ -43,7 +43,7 @@ public class ChatPanel extends JPanel {
         msgArea.setEditable(false);
         //msgArea.setContentType("text/html");
         JScrollPane scrollArea = new JScrollPane(msgArea);
-        scrollArea.setPreferredSize(new Dimension(500, 80));
+        scrollArea.setPreferredSize(new Dimension(100, height));
         
         JButton sendButton = new JButton("SEND");
         

@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+import java.util.ArrayList;
 
 /**
  *	Set GUI Card panel.
@@ -14,8 +15,10 @@ public class CardGrid extends JPanel {
 	
 	private int cards = 0;
 	private int rows;
+	private int setSize;
 	private Color playerColor;
 	private boolean selectEnabled = false;
+	private ArrayList<Card> selList = new ArrayList<Card>();
 	
 	/**
 	 *	Card grid panel constructor
@@ -23,9 +26,10 @@ public class CardGrid extends JPanel {
 	 *	@param margin Pixel spacing between cards
 	 *	@param playerColor Player highlight color
 	 */
-	public CardGrid(int rows, int margin, Color playerColor) {
+	public CardGrid(int rows, int margin, int setSize, Color playerColor) {
 		super(new GridLayout(1, 0, margin, margin));
 		this.rows = rows;
+		this.setSize = setSize;
 		this.playerColor = playerColor;
 		add(new JPanel(new GridLayout(rows, 1, margin, margin))); //initial column
 	}
@@ -46,13 +50,21 @@ public class CardGrid extends JPanel {
 		c.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Card test = (Card) e.getSource();
-				if(selectEnabled)
-				test.toggleSelection(playerColor);
+				Card cx = (Card) e.getSource();
+				if(selectEnabled) {
+					if(selList.contains(cx)) {
+						cx.deselect();
+						selList.remove(cx);
+					} else if(selList.size() < setSize) {
+						cx.toggleSelection(playerColor);
+						selList.add(cx);
+					}
+				}
 			}
 		});
 		cards++;
 		revalidate();
+		//System.out.println(c.toString());
 	}
 	
 	/**
@@ -90,6 +102,7 @@ public class CardGrid extends JPanel {
 	 */
 	public void clear() {
 		removeAll();
+		selList.clear();
 		cards = 0;
 		add(new JPanel(new GridLayout(rows, 1, 3, 3)));
 		revalidate();
@@ -104,19 +117,40 @@ public class CardGrid extends JPanel {
 		Card.Pattern[] patA = Card.Pattern.values();
 		Card.Symbol[] symA = Card.Symbol.values();
 		Card.SetColor[] colA = Card.SetColor.values();
-		//Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-		//return new Card(rand.nextInt(4)+1, patA[rand.nextInt(patA.length)], tempColor, symA[rand.nextInt(symA.length)]);
-		return new Card(rand.nextInt(4)+1, patA[rand.nextInt(patA.length)], colA[rand.nextInt(colA.length)], symA[rand.nextInt(symA.length)]);
+		return new Card(rand.nextInt(setSize)+1, patA[rand.nextInt(setSize)], colA[rand.nextInt(setSize)], symA[rand.nextInt(setSize)]);
 	}
 
 	public void toggleSelection() {
 		selectEnabled = !selectEnabled;
 	}
+	
+	public boolean isSet() {
+		return selList.size() == setSize && selList.get(0).equals(completeSet(new ArrayList<Card>(selList.subList(1, setSize))));
+	}
+	
+	public ArrayList<Card> getSelected() {
+		return selList;
+	}
+	
+	public void clearSelected() {
+		for(Card c : selList)
+			c.deselect();
+		selList.clear();
+	}
+	
+	public Card completeSet(ArrayList<Card> cardList) {
+		int num, pat, col, sym;
+		num = pat = col = sym = 0;
+		for(Card c : cardList) {
+			num -= c.getNum()-1;
+			pat -= c.getPatID();
+			col -= c.getColorID();
+			sym -= c.getSymID();
+		}
+		num%=setSize;
+		pat%=setSize;
+		col%=setSize;
+		sym%=setSize;
+		return new Card(num == 0 ? num+1 : num+setSize+1, pat == 0 ? pat : pat+setSize, col == 0 ? col : col+setSize, sym == 0 ? sym : sym+setSize);
+	}
 }
-
-// class MouseAdapterMod extends MouseAdapter {
-//    public void mouseClicked(MouseEvent e) {
-//        Card test = (Card) e.getSource();
-//        System.out.println(test.toString());
-//    }
-// }

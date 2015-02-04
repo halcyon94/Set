@@ -74,10 +74,10 @@ public class Card extends JPanel implements MouseListener {
 		}
 	}
 	
-	private Symbol sym;
-	private Pattern pat;
-	private SetColor sCol;
-	private int num;
+	public Symbol sym;
+	public Pattern pat;
+	public SetColor sCol;
+	public int num;
 	
 	private Color col; //shape color
 	private Paint pnt; //shape fill
@@ -183,6 +183,13 @@ public class Card extends JPanel implements MouseListener {
 	}
 	
 	/**
+	 *	Creates a new Card from indexed presets.
+	 */
+	public Card(int num, int pat, int col, int sym) {
+		this(num, Pattern.values()[pat], SetColor.values()[col], Symbol.values()[sym]);
+	}
+	
+	/**
 	 *	Compute the ID of the Card. The number of cards in the deck is setSize^4.
 	 *	@param setSize The number of choices per attribute and cards per set.
 	 *	@return The card's unique ID, or -1 if the ID exceeds the card total.
@@ -198,6 +205,22 @@ public class Card extends JPanel implements MouseListener {
 			return -1;
 	}
 	
+	public int getColorID() {
+		return sCol.ordinal();
+	}
+	
+	public int getPatID() {
+		return pat.ordinal();
+	}
+	
+	public int getSymID() {
+		return sym.ordinal();
+	}
+	
+	public int getNum() {
+		return num;
+	}
+	
 	/**
 	 *	Marks or unmarks the Card as selected.
 	 *	@param highlight Border highlight color for selected card
@@ -211,6 +234,17 @@ public class Card extends JPanel implements MouseListener {
 			borderColor = Color.BLACK;
 		}
 		selected = !selected;
+		repaint();
+	}
+	
+	/**
+	 *	Marks or unmarks the Card as selected.
+	 *	@param highlight Border highlight color for selected card
+	 */
+	public void deselect() {
+		cardBorder = new BasicStroke();
+		borderColor = Color.BLACK;
+		selected = false;
 		repaint();
 	}
 	
@@ -332,6 +366,14 @@ public class Card extends JPanel implements MouseListener {
 		}
 		Rectangle2D rect = new Rectangle2D.Double(0, 0, (int) (radius*1.41), (int) (radius*1.41)); //pattern to be tiled
 		return new TexturePaint(image.getSubimage((int) (radius*0.4142), (int) (radius*0.4142), (int) (radius*1.41), (int) (radius*1.41)), rect);
+	}
+	
+	public String toString() {
+		return num+" "+sCol.name()+" "+pat.name()+" "+sym.name()+" id="+getID(3);
+	}
+	
+	public boolean equals(Card c) {
+		return num==c.num && sCol == c.sCol && sym == c.sym && pat == c.pat;
 	}
 	
 }
