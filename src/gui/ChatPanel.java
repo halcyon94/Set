@@ -67,4 +67,8 @@ public class ChatPanel extends JPanel {
 		}
 		msgArea.setCaretPosition(d.getLength()); //scroll to bottom
 	}
+	
+	public void userMessage(String message, String username, Color userColor) {
+		
+	}
 }

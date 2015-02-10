@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- *	Set GUI Card panel.
+ *	Set GUI Card panel. Responsible for displaying cards and performing miscellaneous logic.
  *	@author Dolen Le
  *	@version 1.0
  */
@@ -18,7 +18,7 @@ public class CardGrid extends JPanel {
 	private int setSize;
 	private Color playerColor;
 	private boolean selectEnabled = false;
-	private ArrayList<Card> selList = new ArrayList<Card>();
+	private ArrayList<Card> selList = new ArrayList<Card>(); //List of selected cards
 	
 	/**
 	 *	Card grid panel constructor
@@ -119,25 +119,42 @@ public class CardGrid extends JPanel {
 		Card.SetColor[] colA = Card.SetColor.values();
 		return new Card(rand.nextInt(setSize)+1, patA[rand.nextInt(setSize)], colA[rand.nextInt(setSize)], symA[rand.nextInt(setSize)]);
 	}
-
+	
+	/**
+	 *	Toggles the selection mode for the cards.
+	 */
 	public void toggleSelection() {
 		selectEnabled = !selectEnabled;
 	}
 	
+	/**
+	 *	Checks if the currently selected cards form a Set.
+	 */
 	public boolean isSet() {
 		return selList.size() == setSize && selList.get(0).equals(completeSet(new ArrayList<Card>(selList.subList(1, setSize))));
 	}
 	
+	/**
+	 *	Returns the list of selected Cards.
+	 *	@return ArrayList of selected Cards
+	 */
 	public ArrayList<Card> getSelected() {
 		return selList;
 	}
 	
+	/**
+	 *	Clear the current selection
+	 */
 	public void clearSelected() {
 		for(Card c : selList)
 			c.deselect();
 		selList.clear();
 	}
 	
+	/**
+	 *	Determines the Card which turns the currently selected cards into a set
+	 *	@return The missing card
+	 */
 	public Card completeSet(ArrayList<Card> cardList) {
 		int num, pat, col, sym;
 		num = pat = col = sym = 0;

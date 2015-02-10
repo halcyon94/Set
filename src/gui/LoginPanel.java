@@ -47,6 +47,10 @@ public class LoginPanel extends JPanel {
 		add(registerButton);
 	}
 	
+	public JButton getButt() {
+		return loginButton;
+	}
+	
 	public String getUser() {
 		return userText.getText();
 	}

@@ -24,6 +24,9 @@ public class Gooey extends JFrame {
 	private PlayerPanel players;
 	private ChatPanel chat;
 	
+	private Timer t;
+	private int timer;
+	
 	/**
 	 *	Client GUI frame constructor - Initializes the various frames
 	 */
@@ -39,19 +42,16 @@ public class Gooey extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				Gooey window = new Gooey();
-				window.setLoginFrame();
+				window.createLoginFrame();
 			}
 		});
 	}
     
-    //Build main game GUI
+    //Assembles components of Set game GUI
     private void buildGameGUI() {
     	players = new PlayerPanel();
     	gameCard = new JPanel(new BorderLayout(5,5));
     	players.addPlayer(Color.BLUE, "Dolen", 9000);
-    	players.addPlayer(Color.RED, "Eugene", 9000);
-    	players.addPlayer(Color.MAGENTA, "Cher", 9000);
-    	players.addPlayer(Color.YELLOW, "Justin", -589);
     	gameCard.add(players, BorderLayout.NORTH);
     	
     	JPanel buttons = new JPanel();
@@ -70,43 +70,47 @@ public class Gooey extends JFrame {
     	}
     	
     	gameCard.add(grid, BorderLayout.CENTER);
-    	grid.toggleSelection();
+    	//grid.toggleSelection();
     }
 	
-	//Load the login frame
-	private void setLoginFrame() {
+	//Load and display the login dialog
+	private void createLoginFrame() {
 		setTitle("Login to Set");
 		setSize(280, 150);
        	setResizable(false);
        	setLocationRelativeTo(null);
+       	getRootPane().setDefaultButton(login.getButt());
 		JPanel c = (JPanel) getContentPane();
 		c.add(login, "LOGIN");
 		((CardLayout) c.getLayout()).show(c, "LOGIN");
 	}
 	
-	private void setLobbyFrame() {
+	//Load and display the game lobby
+	private void createLobbyFrame() {
 		setTitle("Set Lobby");
 		setSize(800, 600);
        	setResizable(true);
        	setLocationRelativeTo(null);
        	ActionListener a1 = new ActionListener() {
         	public void actionPerformed(ActionEvent event) {
-        		setGameFrame();
+        		createGameFrame();
             }
         };
-       	lobby.addListener(a1);
+       	lobby.setJoinListener(a1);
        	JPanel c = (JPanel) getContentPane();
 		c.add(lobby, "LOBBY");
 		((CardLayout) c.getLayout()).show(c, "LOBBY");
 	}
 	
-	private void setGameFrame() {
+	//Load and display the game
+	private void createGameFrame() {
 		buildGameGUI();
 		setTitle("Set");
 		setSize(960, 768);
        	setResizable(true);
        	setLocationRelativeTo(null);
        	JPanel c = (JPanel) getContentPane();
+       	c.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 		c.add(gameCard, "GAME");
 		((CardLayout) c.getLayout()).show(c, "GAME");
 	}
@@ -116,7 +120,7 @@ public class Gooey extends JFrame {
 		ActionListener a1 = new ActionListener() {
         	public void actionPerformed(ActionEvent event) {
         		if(login.getUser().equals("dolen"))
-            		setLobbyFrame();
+            		createLobbyFrame();
             	else
             		JOptionPane.showMessageDialog(new JFrame(), "WRONG!");
             }
@@ -128,6 +132,46 @@ public class Gooey extends JFrame {
             }
         };
         p.addListeners(a1, a2);
+	}
+	
+	private void setTimer(final JButton b) {
+		timer = 10;
+		grid.toggleSelection();
+		b.setEnabled(false);
+		ActionListener counter = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) 
+			{ 
+			      b.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
+			      timer--;
+			      if(timer < 0) {
+			      	t.stop();
+			      	grid.toggleSelection();
+			      	b.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+			      	b.setEnabled(true);
+			      }
+			}};
+		 t = new Timer(1000, counter);
+		 t.setInitialDelay(0);
+		 t.start();
+	}
+	
+	//Add in-game buttons to the provided panel
+	private void addGameButtons(JPanel p) {
+		JButton setButton = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+    	setButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                setTimer((JButton) event.getSource());
+            }
+        });
+    	p.add(setButton); //set button
+    	
+    	JButton logoutButton = new JButton("Logout");
+    	logoutButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                createLoginFrame();
+            }
+        });
+    	p.add(logoutButton); //logout button
 	}
 	
 	//Adds test button panel
@@ -143,16 +187,17 @@ public class Gooey extends JFrame {
     	JButton logout = new JButton("Logout");
     	logout.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                setLoginFrame();
+                createLoginFrame();
             }
         });
     	p.add(logout); //logout button
     	
-    	JButton butt1 = new JButton("SET");
+    	JButton butt1 = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+    	butt1.setPreferredSize(new Dimension(10,100));
     	butt1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	chat.systemMessage("Card selection toggled");
-                grid.toggleSelection();
+                setTimer((JButton) event.getSource());
             }
         });
     	p.add(butt1); //set button
@@ -221,7 +266,6 @@ public class Gooey extends JFrame {
                for(int i=0; i<setSize*setSize*setSize*setSize; i++) {
 					Card cx = new Card(i,setSize);
 					grid.addCard(cx);
-					//System.out.println(cx.getID(setSize));
 				}
 				chat.systemMessage("Added full deck");
             }

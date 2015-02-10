@@ -17,7 +17,7 @@ public class Card extends JPanel implements MouseListener {
 	/**
 	 *	Lists possible shape fill patterns.
 	 */
-	public enum Pattern {
+	public static enum Pattern {
 		/**
 		 *	Solid color fill
 		 */
@@ -39,7 +39,7 @@ public class Card extends JPanel implements MouseListener {
 	/**
 	 *	Lists possible Card shapes.
 	 */
-	public enum Symbol {
+	public static enum Symbol {
 		/**
 		 *	Oblong diamond
 		 */
@@ -61,7 +61,7 @@ public class Card extends JPanel implements MouseListener {
 	/**
 	 *	Lists default colors for Card shapes
 	 */
-	public enum SetColor {
+	public static enum SetColor {
 		RED(240,30,30), GREEN(30,190,30), PURPLE(150,85,230), BLUE(135, 175, 235);
 		private final int red, green, blue;
 		SetColor(int r, int g, int b) {
@@ -368,10 +368,17 @@ public class Card extends JPanel implements MouseListener {
 		return new TexturePaint(image.getSubimage((int) (radius*0.4142), (int) (radius*0.4142), (int) (radius*1.41), (int) (radius*1.41)), rect);
 	}
 	
+	/**
+	 *	Converts Card fields to string form
+	 *	@return String output
+	 */
 	public String toString() {
 		return num+" "+sCol.name()+" "+pat.name()+" "+sym.name()+" id="+getID(3);
 	}
 	
+	/**
+	 *	Checks if this Card is identical to the provided one.
+	 */
 	public boolean equals(Card c) {
 		return num==c.num && sCol == c.sCol && sym == c.sym && pat == c.pat;
 	}
