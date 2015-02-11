@@ -1,11 +1,16 @@
 package gui;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.Random;
+
 import javax.swing.UIManager.*;
+import com.alee.laf.WebLookAndFeel;
+
+import com.alee.managers.notification.*;
 
 /**
  *	Set GUI tester
@@ -13,7 +18,6 @@ import javax.swing.UIManager.*;
  *	@version 1.0
  */
 public class Gooey extends JFrame {
-
 	
 	private int setSize = 3;
 	private final int ROWS = setSize;
@@ -44,6 +48,7 @@ public class Gooey extends JFrame {
     public static void main(String[] args) {
 			SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				WebLookAndFeel.initializeManagers();
 				try {
 				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				        if ("Nimbus".equals(info.getName())) {
@@ -134,7 +139,14 @@ public class Gooey extends JFrame {
 		ActionListener a1 = new ActionListener() {
         	public void actionPerformed(ActionEvent event) {
         		System.out.println("S`"+login.getUser()+"`"+login.getPassword());
-            	createLobbyFrame();
+        		if(login.getUser().isEmpty() || login.getPassword().isEmpty()) {
+        			JOptionPane.showMessageDialog(login,
+        					"Please enter a username and password.",
+        					"Error",
+        					JOptionPane.ERROR_MESSAGE);
+        		} else {
+        			createLobbyFrame();
+        		}
             }
         };
         //Listener for register button
@@ -228,7 +240,10 @@ public class Gooey extends JFrame {
     	butt3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                grid.clear();
-               chat.systemMessage("Cleared grid");
+               WebNotificationPopup notify = new WebNotificationPopup ();
+               notify.setDisplayTime(1000);
+               notify.setContent("All cards removed");
+               NotificationManager.showNotification (notify);
             }
         });
     	p.add(butt3); //clear button    	

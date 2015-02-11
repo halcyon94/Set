@@ -262,6 +262,10 @@ public class Card extends JPanel implements MouseListener {
 	public void paintComponent(Graphics gx) {
 		super.paintComponent(gx);
 		Graphics2D g = (Graphics2D) gx.create();
+		RenderingHints rh = new RenderingHints(
+	             RenderingHints.KEY_ANTIALIASING,
+	             RenderingHints.VALUE_ANTIALIAS_ON);
+	    g.setRenderingHints(rh);
 		int cardW = getWidth()-1; 
 		int cardH = getHeight()-1;
 		double shapeW = cardW*SHAPE_W_SCALE;
