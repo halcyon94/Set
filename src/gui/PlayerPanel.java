@@ -29,10 +29,14 @@ public class PlayerPanel extends JPanel {
 	 *	@param rating The player rating
 	 */
 	public void addPlayer(int id, Color color, String name, int rating) {
-		PlayerStat player = new PlayerStat(color, name, rating);
-		add(player);
-		playerList.put(new Integer(id),player);
-		revalidate();
+		if(playerList.containsKey(new Integer(id))) {
+			System.out.println("Fatal error - player with id "+id+" already added");
+		} else {
+			PlayerStat player = new PlayerStat(color, name, rating);
+			add(player);
+			playerList.put(new Integer(id),player);
+			revalidate();
+		}
 	}
 	
 	/**
@@ -85,12 +89,21 @@ public class PlayerPanel extends JPanel {
 		return playerList.get(new Integer(id)).playerColor;
 	}
 	
+	/**
+	 *	Get the player's icon
+	 *	@return Player icon
+	 */
+	public Icon getIcon(int id) {
+		return playerList.get(new Integer(id)).icon;
+	}
+	
 	//Nested class for the player cards
 	private class PlayerStat extends JPanel {
 		
 		public JLabel scoreLabel;
 		public int score = 0;
 		public Color playerColor;
+		public ImageIcon icon;
 		
 		public PlayerStat(Color color, String name, int rating) {
 			super();
@@ -99,7 +112,7 @@ public class PlayerPanel extends JPanel {
 			temp.setLayout(new BoxLayout(temp, BoxLayout.X_AXIS));
 			temp.setBorder(BorderFactory.createMatteBorder(1, 8, 1, 1, color));
 			playerColor = color;
-			ImageIcon icon = new ImageIcon(getClass().getResource("doge.jpeg"));
+			icon = new ImageIcon(getClass().getResource("doge.jpeg"));
 			JLabel userLabel = new JLabel("<html><p><font size=+2>"+name+"</p><p><font size=-2>Rating:&nbsp;"+rating+"</p></html>", icon, JLabel.LEFT);
 			scoreLabel = new JLabel("<html><p><font size=-3><center>SCORE</center></p><p><font size=+2><center>"+score+"</center></p></html>", JLabel.RIGHT);
 			temp.add(userLabel);

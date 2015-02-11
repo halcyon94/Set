@@ -200,8 +200,8 @@ public class LobbyPanel extends JPanel {
 	private JPanel getGameInfoPanel(int id, String name) {
 		JPanel temp = new JPanel();
 		temp.setLayout(new BoxLayout(temp, BoxLayout.Y_AXIS));
-		temp.add(Box.createRigidArea(new Dimension(0,20)));
-		temp.add(Box.createRigidArea(new Dimension(20,0)));
+		temp.add(Box.createRigidArea(new Dimension(20,20)));
+		//temp.add(Box.createRigidArea(new Dimension(20,0)));
 		temp.add(new JLabel("<html><h1>"+name+"</h1></html>"));
 		//add(Box.createRigidArea(new Dimension(0,20)));
 		temp.add(new JLabel("<html><p>Players:</p></html>"));

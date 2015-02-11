@@ -1,9 +1,9 @@
 package gui;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
+import com.alee.extended.window.WebPopOver;
+
 
 /**
  *	Set GUI login
@@ -57,6 +57,24 @@ public class LoginPanel extends JPanel {
 	
 	public String getPassword() {
 		return new String(passwordText.getPassword()); //BAD! NOT SECURE!!! NO NO NO NO
+	}
+	
+	public void showUserPopup(String text) {
+		WebPopOver popOver = new WebPopOver ();
+        popOver.setCloseOnFocusLoss ( true );
+        popOver.setMovable(false);
+        popOver.setMargin ( 5 );
+        popOver.add ( new JLabel (text) );
+        popOver.show ( userText);
+	}
+	
+	public void showPassPopup(String text) {
+		WebPopOver popOver = new WebPopOver ();
+        popOver.setCloseOnFocusLoss ( true );
+        popOver.setMovable(false);
+        popOver.setMargin ( 5 );
+        popOver.add ( new JLabel (text) );
+        popOver.show ( passwordText);
 	}
 	
 	public void addListeners(ActionListener login, ActionListener reg) {

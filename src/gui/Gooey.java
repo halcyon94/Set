@@ -3,7 +3,6 @@ package gui;
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.Random;
 
@@ -32,6 +31,7 @@ public class Gooey extends JFrame {
 	
 	private Timer t;
 	private int timer;
+	private int counter = 1; //TEMPORARY id counter for players
 	
 	/**
 	 *	Client GUI frame constructor - Initializes the various frames
@@ -42,28 +42,29 @@ public class Gooey extends JFrame {
        	getContentPane().setLayout(new CardLayout());
        	addLoginListeners(login);
        	setVisible(true);
+       	NotificationManager.setMargin(10,10,50,10);
     }
     
     //Main Method
     public static void main(String[] args) {
-			SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				WebLookAndFeel.initializeManagers();
-				try {
-				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				        if ("Nimbus".equals(info.getName())) {
-				            UIManager.setLookAndFeel(info.getClassName());
-				            break;
-				        }
-				    }
-				} catch (Exception e) {
-					try {UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());}
-					catch (Exception e2) {}
-				}
-				Gooey window = new Gooey(1);
-				window.createLoginFrame();
-			}
-		});
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			WebLookAndFeel.initializeManagers();
+    			try {
+    				for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+    					if ("Nimbus".equals(info.getName())) {
+    						UIManager.setLookAndFeel(info.getClassName());
+    						break;
+    					}
+    				}
+    			} catch (Exception e) {
+    				try {UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());}
+    				catch (Exception e2) {}
+    			}
+    			Gooey window = new Gooey(1);
+    			window.createLoginFrame();
+    		}
+    	});
 	}
     
     //Assembles components of Set game GUI
@@ -138,13 +139,16 @@ public class Gooey extends JFrame {
 		//Listener for login button
 		ActionListener a1 = new ActionListener() {
         	public void actionPerformed(ActionEvent event) {
-        		System.out.println("S`"+login.getUser()+"`"+login.getPassword());
-        		if(login.getUser().isEmpty() || login.getPassword().isEmpty()) {
-        			JOptionPane.showMessageDialog(login,
-        					"Please enter a username and password.",
-        					"Error",
-        					JOptionPane.ERROR_MESSAGE);
+        		if(login.getUser().isEmpty()) {
+        			login.showUserPopup("this is garbage");
+//        			JOptionPane.showMessageDialog(login,
+//        					"Please enter a username and password.",
+//        					"Error",
+//        					JOptionPane.ERROR_MESSAGE);
+        		} else if(login.getPassword().isEmpty()) {
+        			login.showPassPopup("geez, you cant leave this empty");
         		} else {
+            		System.out.println("S`"+login.getUser()+"`"+login.getPassword());
         			createLobbyFrame();
         		}
             }
@@ -197,6 +201,14 @@ public class Gooey extends JFrame {
             }
         });
     	p.add(logoutButton); //logout button
+    	
+    	JButton quitButton = new JButton("Quit");
+    	quitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+    	p.add(quitButton); //quit button
 	}
 	
 	//Adds test button panel
@@ -240,9 +252,10 @@ public class Gooey extends JFrame {
     	butt3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                grid.clear();
-               WebNotificationPopup notify = new WebNotificationPopup ();
-               notify.setDisplayTime(1000);
+               WebNotificationPopup notify = new WebNotificationPopup();
+               notify.setDisplayTime(3000);
                notify.setContent("All cards removed");
+               notify.setIcon(NotificationIcon.cross);
                NotificationManager.showNotification (notify);
             }
         });
@@ -262,7 +275,11 @@ public class Gooey extends JFrame {
     	butt5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 				players.increaseScore(1);
-				chat.systemMessage("Player0 Score");
+				WebNotificationPopup notify = new WebNotificationPopup();
+				notify.setDisplayTime(3000);
+				notify.setContent("Player 1 Scored");
+				notify.setIcon(players.getIcon(1));
+				NotificationManager.showNotification (notify);
             }
         });
     	p.add(butt5);
@@ -272,7 +289,7 @@ public class Gooey extends JFrame {
             public void actionPerformed(ActionEvent event) {
             	Random rand = new Random();
             	Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-				players.addPlayer(rand.nextInt(255), tempColor, "PlayerName", 1234);
+				players.addPlayer(++counter, tempColor, "PlayerName", 1234);
 				chat.systemMessage("Added Player");
             }
         });
@@ -281,7 +298,7 @@ public class Gooey extends JFrame {
     	JButton butt7 = new JButton("-Player");
     	butt7.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-				players.removePlayer(1);
+				players.removePlayer(counter--);
 				chat.systemMessage("Removed Player");
 				repaint();
             }

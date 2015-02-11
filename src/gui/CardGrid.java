@@ -1,10 +1,19 @@
 package gui;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 import java.util.ArrayList;
+
+import com.alee.extended.transition.ComponentTransition;
+import com.alee.extended.transition.TransitionListener;
+import com.alee.extended.transition.effects.Direction;
+import com.alee.extended.transition.effects.slide.SlideTransitionEffect;
+import com.alee.extended.transition.effects.slide.SlideType;
+import com.alee.extended.transition.effects.zoom.ZoomTransitionEffect;
+import com.alee.extended.transition.effects.zoom.ZoomType;
 
 /**
  *	Set GUI Card panel. Responsible for displaying cards and performing miscellaneous logic.
@@ -19,6 +28,7 @@ public class CardGrid extends JPanel {
 	private Color playerColor;
 	private boolean selectEnabled = false;
 	private ArrayList<Card> selList = new ArrayList<Card>(); //List of selected cards
+	private Timer t;
 	
 	/**
 	 *	Card grid panel constructor
@@ -38,15 +48,15 @@ public class CardGrid extends JPanel {
 	 *	Add a card to the GUI and update the display
 	 *	@param c Card object to be added
 	 */
-	public void addCard(Card c) {
-		JPanel lastCol = (JPanel) getComponent(getComponentCount()-1);
-		if(lastCol.getComponentCount() < rows) {
-			lastCol.add(c);
-		} else { //column full - add a new column
-			JPanel temp = new JPanel(new GridLayout(rows, 1, 3, 3));
-			temp.add(c);
-			add(temp);
-		}
+	public void addCard(final Card c) {
+		final JPanel lastCol = (JPanel) getComponent(getComponentCount()-1);
+		final ComponentTransition ct = new ComponentTransition();
+        SlideTransitionEffect effect = new SlideTransitionEffect();
+    	effect.setSpeed(70/getComponentCount());
+    	effect.setType(SlideType.moveBoth);
+    	effect.setFade(false);
+        ct.setTransitionEffect(effect);
+		ct.setContent(new JPanel());
 		c.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -63,8 +73,27 @@ public class CardGrid extends JPanel {
 			}
 		});
 		cards++;
+	    SwingWorker worker = new SwingWorker<Integer, Void>() {
+	        @Override
+	        public Integer doInBackground() {
+	        	if(lastCol.getComponentCount() < rows) {
+	    			lastCol.add(ct);
+	    		} else { //column full - add a new column
+	    			JPanel temp = new JPanel(new GridLayout(rows, 1, 3, 3));
+	    			temp.add(ct);
+	    			add(temp);
+	    		}
+	        	revalidate();
+	        	return new Integer(0);
+	        }
+	 
+	        @Override
+	        public void done() {
+	        	ct.performTransition(c);
+	        }
+	    };
+	    worker.execute();
 		revalidate();
-		//System.out.println(c.toString());
 	}
 	
 	/**
@@ -73,19 +102,37 @@ public class CardGrid extends JPanel {
 	 *	@param x Row of the card
 	 *	@param y Column of the card
 	 */
-	public void removeCard(int x, int y) {
-		JPanel column = ((JPanel) getComponent(x));
-		column.remove(y);
-		cards--;
-		if(x*rows+y%rows<cards-1 && cards>0) {
-			if(x!=cards/rows) {
-				column.add((Card) ((JPanel) getComponent(cards/rows)).getComponent(cards%rows), y);
-				if(cards%rows == 0) { //remove last column if needed
-					remove(cards/rows);
-				}
-			}
-		}
-		revalidate();
+	public void removeCard(final int x, final int y) {
+		final JPanel column = ((JPanel) getComponent(x));
+		//column.remove(y);
+		ZoomTransitionEffect effect = new ZoomTransitionEffect ();
+        effect.setMinimumSpeed ( 0.03f );
+        effect.setSpeed ( 0.15f );
+        effect.setType(ZoomType.zoomOut);
+		ComponentTransition ct = (ComponentTransition) column.getComponent(y);
+		ct.setTransitionEffect(effect);
+		ct.performTransition(new JPanel());
+		ct.addTransitionListener ( new TransitionListener ()
+        {
+            @Override
+            public void transitionStarted () {}
+
+            @Override
+            public void transitionFinished ()
+            {
+            	column.remove(y);
+            	cards--;
+        		if(x*rows+y%rows<cards-1 && cards>0) {
+        			if(x!=cards/rows) {
+        				column.add((ComponentTransition) ((JPanel) getComponent(cards/rows)).getComponent(cards%rows), y);
+        				if(cards%rows == 0) { //remove last column if needed
+        					remove(cards/rows);
+        				}
+        			}
+        		}
+        		repaint();
+            }
+        } );
 	}
 	
 	/**
