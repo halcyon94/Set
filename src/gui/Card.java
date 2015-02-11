@@ -239,7 +239,6 @@ public class Card extends JPanel implements MouseListener {
 	
 	/**
 	 *	Marks or unmarks the Card as selected.
-	 *	@param highlight Border highlight color for selected card
 	 */
 	public void deselect() {
 		cardBorder = new BasicStroke();

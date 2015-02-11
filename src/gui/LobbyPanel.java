@@ -27,9 +27,12 @@ public class LobbyPanel extends JPanel {
 	private JButton refreshUsers = new JButton("Refresh");
 	private JButton refreshGames = new JButton("Refresh");
 	private JButton createButton = new JButton("Create");
+	private JButton createGame = new JButton("Create Game");
 	private JButton logoutButton = new JButton("Logout");
 	private JButton joinButton = new JButton("Join Game");
 	private JButton msgButton = new JButton("Send Message");
+	
+	private JTextField nameField = new JTextField(20);
 	
 	private ActionListener joinListener;
 	
@@ -122,7 +125,15 @@ public class LobbyPanel extends JPanel {
 		chat = new ChatPanel(150);
 		add(chat, BorderLayout.SOUTH);
 		
-		addTableListeners();
+		addListeners();
+		//temp - reset the splash screen
+		createButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				info.removeAll();
+				info.add(getGameCreationPanel());
+				info.revalidate();
+			}
+		});
 	}
 	
 	/**
@@ -135,7 +146,7 @@ public class LobbyPanel extends JPanel {
 	}
 	
 	//add selection listeners for the JTables
-	private void addTableListeners() {
+	private void addListeners() {
 		userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) return;
@@ -170,15 +181,6 @@ public class LobbyPanel extends JPanel {
 				}
 			}
 		});
-		
-		//temp - reset the splash screen
-		createButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-            	info.removeAll();
-            	info.add(getWelcomeMsgPanel());
-            	info.revalidate();
-            }
-        });
 	}
 	
 	//Player info panel
@@ -205,6 +207,21 @@ public class LobbyPanel extends JPanel {
 		temp.add(new JLabel("<html><p>Players:</p></html>"));
 		temp.add(Box.createVerticalGlue());
 		temp.add(joinButton);
+		return temp;
+	}
+	
+	private JPanel getGameCreationPanel() {
+		JPanel temp = new JPanel();
+		temp.add(Box.createRigidArea(new Dimension(0,20)));
+		temp.add(Box.createRigidArea(new Dimension(20,0)));
+		temp.setLayout(new BoxLayout(temp, BoxLayout.Y_AXIS));
+		temp.add(new JLabel("<html><h1>Create Game</h1></html>"));
+		JPanel names = new JPanel();
+		names.add(new JLabel("Enter a name: "));
+		names.add(nameField);
+		temp.add(names);
+		temp.add(Box.createVerticalGlue());
+		temp.add(createGame);
 		return temp;
 	}
 	

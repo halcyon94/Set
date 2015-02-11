@@ -14,11 +14,12 @@ import javax.swing.UIManager.*;
  */
 public class Gooey extends JFrame {
 
-	JPanel gameCard; //5px spacing
 	
 	private int setSize = 3;
 	private final int ROWS = setSize;
+	private int myId;
 	
+	JPanel gameCard; //5px spacing
 	private LoginPanel login = new LoginPanel();
 	private LobbyPanel lobby = new LobbyPanel();
 	private CardGrid grid;
@@ -31,7 +32,8 @@ public class Gooey extends JFrame {
 	/**
 	 *	Client GUI frame constructor - Initializes the various frames
 	 */
-	public Gooey() {
+	public Gooey(int id) {
+		myId = id;
        	setDefaultCloseOperation(EXIT_ON_CLOSE);
        	getContentPane().setLayout(new CardLayout());
        	addLoginListeners(login);
@@ -53,7 +55,7 @@ public class Gooey extends JFrame {
 					try {UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());}
 					catch (Exception e2) {}
 				}
-				Gooey window = new Gooey();
+				Gooey window = new Gooey(1);
 				window.createLoginFrame();
 			}
 		});
@@ -63,7 +65,7 @@ public class Gooey extends JFrame {
     private void buildGameGUI() {
     	players = new PlayerPanel();
     	gameCard = new JPanel(new BorderLayout(5,5));
-    	players.addPlayer(Color.BLUE, "Dolen", 9000);
+    	players.addPlayer(1, Color.BLUE, "Dolen", 9000);
     	gameCard.add(players, BorderLayout.NORTH);
     	
     	JPanel buttons = new JPanel();
@@ -74,7 +76,7 @@ public class Gooey extends JFrame {
     	chat = new ChatPanel(80);
     	gameCard.add(chat, BorderLayout.SOUTH);
     	
-    	grid = new CardGrid(ROWS, 3, setSize, players.getColor(0));
+    	grid = new CardGrid(ROWS, 3, setSize, players.getColor(1));
     	
     	//Start with 21 cards
     	for(int i=0; i<setSize*setSize*setSize*setSize; i++) {
@@ -131,16 +133,15 @@ public class Gooey extends JFrame {
 		//Listener for login button
 		ActionListener a1 = new ActionListener() {
         	public void actionPerformed(ActionEvent event) {
-        		if(login.getUser().equals("dolen"))
-            		createLobbyFrame();
-            	else
-            		JOptionPane.showMessageDialog(new JFrame(), "WRONG!");
+        		System.out.println("S`"+login.getUser()+"`"+login.getPassword());
+            	createLobbyFrame();
             }
         };
         //Listener for register button
         ActionListener a2 = new ActionListener() {
         	public void actionPerformed(ActionEvent event) {
-            	JOptionPane.showMessageDialog(new JFrame(), "No register for you!");
+        		System.out.println("R`"+login.getUser()+"`"+login.getPassword());
+            	createLobbyFrame();
             }
         };
         p.addListeners(a1, a2);
@@ -245,7 +246,7 @@ public class Gooey extends JFrame {
     	JButton butt5 = new JButton("+Score");
     	butt5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-				players.increaseScore(0);
+				players.increaseScore(1);
 				chat.systemMessage("Player0 Score");
             }
         });
@@ -256,7 +257,7 @@ public class Gooey extends JFrame {
             public void actionPerformed(ActionEvent event) {
             	Random rand = new Random();
             	Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-				players.addPlayer(tempColor, "PlayerName", 1234);
+				players.addPlayer(rand.nextInt(255), tempColor, "PlayerName", 1234);
 				chat.systemMessage("Added Player");
             }
         });
@@ -265,7 +266,7 @@ public class Gooey extends JFrame {
     	JButton butt7 = new JButton("-Player");
     	butt7.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-				players.removePlayer(players.getComponentCount()/2-1);
+				players.removePlayer(1);
 				chat.systemMessage("Removed Player");
 				repaint();
             }
