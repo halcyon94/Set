@@ -34,17 +34,17 @@ public class PlayerPanel extends JPanel {
 		} else {
 			PlayerStat player = new PlayerStat(color, name, rating);
 			add(player);
-			playerList.put(new Integer(id),player);
+			playerList.put(id, player);
 			revalidate();
 		}
 	}
 	
 	/**
 	 *	Remove a player from the panel and list.
-	 *	@param index Player index (zero-indexed from left to right)
+	 *	@param id Player id
 	 */
 	public void removePlayer(int id) {
-		PlayerStat temp = playerList.remove(new Integer(id));
+		PlayerStat temp = playerList.remove(id);
 		remove(temp);
 		revalidate();
 		System.out.println("Removed player"+id);
@@ -52,49 +52,51 @@ public class PlayerPanel extends JPanel {
 	
 	/**
 	 *	Update a player's score to a given value
-	 *	@param index Player index (zero-indexed from left to right)
+	 *	@param id Player id
 	 *	@param score New player score
 	 */
 	public void setScore(int id, int score) {
-		PlayerStat p = playerList.get(new Integer(id));
+		PlayerStat p = playerList.get(id);
 		p.score = score;
 		p.scoreLabel.setText("<html><p><font size=-3><center>SCORE</center></p><p><font size=+2><center>"+score+"</center></p></html>");
 	}
 
 	/**
 	 *	Increase a player's score
-	 *	@param index Player index (zero-indexed from left to right)
+	 *	@param id Player id
 	 */
 	public void increaseScore(int id) {
-		PlayerStat p = playerList.get(new Integer(id));
+		PlayerStat p = playerList.get(id);
 		p.score = ++p.score;
 		p.scoreLabel.setText("<html><p><font size=-3><center>SCORE</center></p><p><font size=+2><center>"+p.score+"</center></p></html>");
 	}
 	
 	/**
 	 *	Decrease a player's score
-	 *	@param index Player index (zero-indexed from left to right)
+	 *	@param id Player id
 	 */
 	public void decreaseScore(int id) {
-		PlayerStat p = playerList.get(new Integer(id));
+		PlayerStat p = playerList.get(id);
 		p.score = --p.score;
 		p.scoreLabel.setText("<html><p><font size=-3><center>SCORE</center></p><p><font size=+2><center>"+p.score+"</center></p></html>");
 	}
 	
 	/**
 	 *	Get the player's color
+	 *	@param id Player id
 	 *	@return Player color
 	 */
 	public Color getColor(int id) {
-		return playerList.get(new Integer(id)).playerColor;
+		return playerList.get(id).playerColor;
 	}
 	
 	/**
 	 *	Get the player's icon
+	 *	@param id Player id
 	 *	@return Player icon
 	 */
 	public Icon getIcon(int id) {
-		return playerList.get(new Integer(id)).icon;
+		return playerList.get(id).icon;
 	}
 	
 	//Nested class for the player cards

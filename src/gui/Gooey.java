@@ -177,6 +177,7 @@ public class Gooey extends JFrame {
 			      	grid.toggleSelection();
 			      	b.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 			      	b.setEnabled(true);
+			      	grid.clearSelected();
 			      }
 			}};
 		 t = new Timer(1000, counter);
@@ -345,12 +346,26 @@ public class Gooey extends JFrame {
         JButton butt11 = new JButton("isSet");
     	butt11.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-            	if(grid.isSet())
+            	if(grid.isSet()) {
 					chat.systemMessage("Set found!");
-				else
+					grid.clearSelected();
+            	} else
 					chat.systemMessage("Not a set");
             }
         });
         p.add(butt11);
+        
+        JButton butt12 = new JButton("-id=1");
+    	butt12.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	grid.removeCard(1);
+            	WebNotificationPopup notify = new WebNotificationPopup();
+				notify.setDisplayTime(3000);
+				notify.setContent("Removed Card 1");
+				notify.setIcon(NotificationIcon.minus);
+				NotificationManager.showNotification (notify);
+            }
+        });
+        p.add(butt12);
 	}
 }

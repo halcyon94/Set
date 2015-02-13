@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.*;
 
 import com.alee.extended.transition.ComponentTransition;
 import com.alee.extended.transition.TransitionListener;
@@ -27,9 +29,11 @@ public class CardGrid extends JPanel {
 	private int setSize;
 	private Color playerColor;
 	private boolean selectEnabled = false;
-	private ArrayList<Card> selList = new ArrayList<Card>(); //List of selected cards
-	private Timer t;
 	
+	private ArrayList<Card> selList = new ArrayList<Card>(); //List of selected cards
+	private HashMap<Integer,Location> cardMap = new HashMap<Integer,Location>();
+	private ExecutorService animationPool = Executors.newSingleThreadScheduledExecutor();
+		
 	/**
 	 *	Card grid panel constructor
 	 *	@param rows The number of rows in the grid
@@ -45,18 +49,21 @@ public class CardGrid extends JPanel {
 	}
 	
 	/**
-	 *	Add a card to the GUI and update the display
+	 *	Add a card to the end of the grid
 	 *	@param c Card object to be added
 	 */
 	public void addCard(final Card c) {
-		final JPanel lastCol = (JPanel) getComponent(getComponentCount()-1);
+		int columns = getComponentCount();
+		final JPanel lastCol = (JPanel) getComponent(columns-1);
 		final ComponentTransition ct = new ComponentTransition();
-        SlideTransitionEffect effect = new SlideTransitionEffect();
-    	effect.setSpeed(70/getComponentCount());
-    	effect.setType(SlideType.moveBoth);
-    	effect.setFade(false);
-        ct.setTransitionEffect(effect);
-		ct.setContent(new JPanel());
+//		SlideTransitionEffect effect = new SlideTransitionEffect();
+//		effect.setSpeed(80/columns);
+//		effect.setType(SlideType.moveBoth);
+//		effect.setFade(false);
+//		effect.setDirection ( Direction.horizontal );
+//		ct.setTransitionEffect(effect);
+//		ct.setContent(new JPanel());
+		ct.setContent(c);
 		c.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -73,27 +80,42 @@ public class CardGrid extends JPanel {
 			}
 		});
 		cards++;
-	    SwingWorker worker = new SwingWorker<Integer, Void>() {
-	        @Override
-	        public Integer doInBackground() {
-	        	if(lastCol.getComponentCount() < rows) {
-	    			lastCol.add(ct);
-	    		} else { //column full - add a new column
-	    			JPanel temp = new JPanel(new GridLayout(rows, 1, 3, 3));
-	    			temp.add(ct);
-	    			add(temp);
-	    		}
-	        	revalidate();
-	        	return new Integer(0);
-	        }
-	 
-	        @Override
-	        public void done() {
-	        	ct.performTransition(c);
-	        }
-	    };
-	    worker.execute();
-		revalidate();
+		int cardsInCol = lastCol.getComponentCount();
+		if(cardMap.containsKey(c.getID(setSize)))
+			System.out.println("Card already in grid");
+		if(cardsInCol < rows) {
+			lastCol.add(ct);
+			cardMap.put(c.getID(setSize), new Location(columns-1,cardsInCol));
+		} else { //column full - add a new column
+			JPanel temp = new JPanel(new GridLayout(rows, 1, 3, 3));
+			temp.add(ct);
+			add(temp);
+			cardMap.put(c.getID(setSize), new Location(columns,0));
+		}
+		//System.out.println("New card at "+cardMap.get(c.getID(setSize)).col+", "+cardMap.get(c.getID(setSize)).row);
+    	revalidate();
+//	    SwingWorker worker = new SwingWorker<Integer, Void>() {
+//	        @Override
+//	        public Integer doInBackground() {
+//	        	if(lastCol.getComponentCount() < rows) {
+//	    			lastCol.add(ct);
+//	    		} else { //column full - add a new column
+//	    			JPanel temp = new JPanel(new GridLayout(rows, 1, 3, 3));
+//	    			temp.add(ct);
+//	    			add(temp);
+//	    		}
+//	        	revalidate();
+//	        	return new Integer(0);
+//	        }
+//	 
+//	        @Override
+//	        public void done() {
+//	        	ct.performTransition(c);
+//	        }
+//	    };
+//	    animationPool.execute(worker);
+//	    worker.execute();
+//		revalidate();
 	}
 	
 	/**
@@ -109,7 +131,8 @@ public class CardGrid extends JPanel {
         effect.setMinimumSpeed ( 0.03f );
         effect.setSpeed ( 0.15f );
         effect.setType(ZoomType.zoomOut);
-		ComponentTransition ct = (ComponentTransition) column.getComponent(y);
+		final ComponentTransition ct = (ComponentTransition) column.getComponent(y);
+		final int id = ((Card) ct.getContent()).getID(setSize);
 		ct.setTransitionEffect(effect);
 		ct.performTransition(new JPanel());
 		ct.addTransitionListener ( new TransitionListener ()
@@ -120,8 +143,10 @@ public class CardGrid extends JPanel {
             @Override
             public void transitionFinished ()
             {
+            	//int id = ((Card) ct.getContent()).getID(setSize);
             	column.remove(y);
             	cards--;
+            	cardMap.remove(id);
         		if(x*rows+y%rows<cards-1 && cards>0) {
         			if(x!=cards/rows) {
         				column.add((ComponentTransition) ((JPanel) getComponent(cards/rows)).getComponent(cards%rows), y);
@@ -136,12 +161,15 @@ public class CardGrid extends JPanel {
 	}
 	
 	/**
-	 *	Get the card with the given ID. Returns null if the card is not in the grid.
+	 *	Remove the Card with the given ID from the grid.
 	 *	@param id Unique card identifier
-	 *	@return Card with provided ID or NULL
 	 */
-	public Card getCard(int id) {
-		return null;
+	public void removeCard(int id) {
+		//Optionally, re-implement for better efficiency
+		if(cardMap.containsKey(id)) {
+			Location l = cardMap.get(id);
+			removeCard(l.col, l.row);
+		}
 	}
 	
 	/**
@@ -150,6 +178,7 @@ public class CardGrid extends JPanel {
 	public void clear() {
 		removeAll();
 		selList.clear();
+		cardMap.clear();
 		cards = 0;
 		add(new JPanel(new GridLayout(rows, 1, 3, 3)));
 		revalidate();
@@ -216,5 +245,15 @@ public class CardGrid extends JPanel {
 		col%=setSize;
 		sym%=setSize;
 		return new Card(num == 0 ? num+1 : num+setSize+1, pat == 0 ? pat : pat+setSize, col == 0 ? col : col+setSize, sym == 0 ? sym : sym+setSize);
+	}
+	
+	private class Location {
+		public int col;
+		public int row;
+		
+		public Location(int c, int r) {
+			this.col = c;
+			this.row = r;
+		}
 	}
 }
