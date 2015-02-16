@@ -23,7 +23,7 @@ Messages to be sent to Client
     "O"
         -game is over, just displays a message
         
-    "S" + uid + "`" + score + "`" + ...
+    "S" + gid + "`" + uid + "`" + score + "`" + ...
         -the current scores for uids
             
     "G" + gid + "`" + numOfPlayers + "`" + ...
@@ -37,6 +37,9 @@ Messages to be sent to Client
         
     "L"
         -user is logged out
+        
+    "R"+uid+"`"+username+"`"+score+"`"+uid+...
+        -returns the rankings from the database
 
 Messages to be set to the Server
 
