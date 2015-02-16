@@ -5,34 +5,41 @@ Internal separaters are '`' (button to the left of number 1)
 
 Messages to be sent to Client
 
-    "V`"+assignedUid
+    "V"+assignedUid
         -user is valid, and the assigned id is provided
         
     "I"
         -user is invalid
         
-    "C`" +cardID + "`" + cardID + "`" + ...
+    "C" +cardID + "`" + cardID + "`" + ...
         -cards on board are returned
         
-    "B`" + seconds
+    "B" + seconds
         -block user for specified number of seconds
         
-    "UB"
+    "U"
         -unblock user
         
     "O"
         -game is over, just displays a message
         
-    "S`" + uid + "`" + score + "`" + ...
+    "S" + gid + "`" + uid + "`" + score + "`" + ...
         -the current scores for uids
             
-    "G'" + gid + "`" + numOfPlayers + "`" + ...
+    "G" + gid + "`" + numOfPlayers + "`" + ...
         -the current game list with number of players
         
-    "P'" + uid + "`" + username + "`" + ...
+    "P" + uid + "`" + username + "`" + ...
         -the current player list with usernames
+        
     "M(`)" (+ gid + "`" +) + uid + "`" + message 
         -message received from a uid, and possibly to be displayed only ingame chat 
+        
+    "L"
+        -user is logged out
+        
+    "R"+uid+"`"+username+"`"+score+"`"+uid+...
+        -returns the rankings from the database
 
 Messages to be set to the Server
 
@@ -68,6 +75,12 @@ Messages to be set to the Server
         
     "K" + uid
         -logout from the gamelobby 
+        
+    "E" + uid
+        -sends back the list of players in the gamelobby
+        
+    "G" + uid
+        -sends back the list of games in the gamelobby
     
     
 
