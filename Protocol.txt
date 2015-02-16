@@ -31,9 +31,12 @@ Messages to be sent to Client
         
     "P" + uid + "`" + username + "`" + ...
         -the current player list with usernames
+        
     "M(`)" (+ gid + "`" +) + uid + "`" + message 
         -message received from a uid, and possibly to be displayed only ingame chat 
-     
+        
+    "L"
+        -user is logged out
 
 Messages to be set to the Server
 
@@ -70,10 +73,10 @@ Messages to be set to the Server
     "K" + uid
         -logout from the gamelobby 
         
-    "FP"
+    "E"
         -sends back the list of players in the gamelobby
         
-    "FG"
+    "G"
         -sends back the list of games in the gamelobby
     
     
