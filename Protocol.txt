@@ -73,10 +73,10 @@ Messages to be set to the Server
     "K" + uid
         -logout from the gamelobby 
         
-    "E"
+    "E" + uid
         -sends back the list of players in the gamelobby
         
-    "G"
+    "G" + uid
         -sends back the list of games in the gamelobby
     
     
