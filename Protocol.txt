@@ -69,8 +69,10 @@ Messages to be set to the Server
         
     "K" + uid
         -logout from the gamelobby 
+        
     "FP"
         -sends back the list of players in the gamelobby
+        
     "FG"
         -sends back the list of games in the gamelobby
     
