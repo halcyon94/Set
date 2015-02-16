@@ -20,6 +20,7 @@ public class LobbyPanel extends JPanel {
 	private JPanel users;
 	private JPanel info;
 	private ChatPanel chat;
+	private ClientConnection connection;
 	
 	private JTable userTable;
 	private JTable gameTable;
@@ -56,7 +57,7 @@ public class LobbyPanel extends JPanel {
 	/**
 	 *	Lobby screen constructor
 	 */
-	public LobbyPanel() {
+	public LobbyPanel(ClientConnection conn) {
 		//intialize
 		super(new BorderLayout(5,5));
 		setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
@@ -65,6 +66,7 @@ public class LobbyPanel extends JPanel {
 		users = new JPanel();
 		users.setLayout(new BoxLayout(users, BoxLayout.Y_AXIS));
 		info = new JPanel(new GridLayout(1,1,0,0));
+		this.connection = conn;
 				
 		//build games panel
 		gameTable = new JTable(gameData, gameColumns) {

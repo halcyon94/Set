@@ -16,9 +16,11 @@ public class LoginPanel extends JPanel {
 	private JButton registerButton = new JButton("Register");
 	private JTextField userText = new JTextField(20);
 	private JPasswordField passwordText = new JPasswordField(20);
+	private ClientConnection connection;
 
 	
-	public LoginPanel() {
+	public LoginPanel(ClientConnection conn) {
+		this.connection = conn;
 		buildPanel();
 	}
 	
