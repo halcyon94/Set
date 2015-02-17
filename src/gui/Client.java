@@ -10,6 +10,8 @@ import javax.swing.UIManager.*;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.notification.*;
+import communication.SetClient;
+
 
 /**
  *	Set GUI tester
@@ -33,6 +35,7 @@ public class Client extends JFrame {
 		getContentPane().setLayout(new CardLayout());
 		setVisible(true);
 		NotificationManager.setMargin(10,10,50,10);
+		SetClient.Connect(this);
 	}
 
 	//Main Method
@@ -72,7 +75,7 @@ public class Client extends JFrame {
 	}
 
 	//Load and display the game lobby
-	private void createLobbyFrame() {
+	public void createLobbyFrame() {
 		setTitle("Set Lobby");
 		setSize(800, 600);
 		setResizable(true);
@@ -82,7 +85,7 @@ public class Client extends JFrame {
 				createGameFrame();
 			}
 		};
-		lobby = new LobbyPanel(connection);
+		lobby = new LobbyPanel(connection, myId);
 		lobby.setJoinListener(a1);
 		JPanel c = (JPanel) getContentPane();
 		c.add(lobby, "LOBBY");
@@ -110,13 +113,15 @@ public class Client extends JFrame {
 		//Listener for login button
 		ActionListener a1 = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				if(login.getUser().isEmpty()) {
+				String user = login.getUser();
+				String pass = login.getPassword();
+				if(user.isEmpty()) {
 					login.showUserPopup("this is garbage");
-				} else if(login.getPassword().isEmpty()) {
+				} else if(pass.isEmpty()) {
 					login.showPassPopup("geez, you cant leave this empty");
 				} else {
-					System.out.println("S`"+login.getUser()+"`"+login.getPassword());
-					createLobbyFrame();
+					connection.userLogin(user, pass);
+					//createLobbyFrame();
 				}
 			}
 		};
@@ -128,5 +133,17 @@ public class Client extends JFrame {
 			}
 		};
 		p.addListeners(a1, a2);
+	}
+	
+	public void testAsync(String s) {
+		System.out.println(s);
+	}
+	
+	public void setUser(int id) {
+		myId = id;
+	}
+	
+	public void badLogin() {
+		JOptionPane.showMessageDialog(new JFrame(), "WRONG!");
 	}
 }
