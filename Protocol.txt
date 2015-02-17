@@ -1,0 +1,94 @@
+Protocol for game of Set
+by Sheryan
+
+Internal separaters are '`' (button to the left of number 1)
+
+Messages to be sent to Client
+
+    "V"+assignedUid
+        -user is valid, and the assigned id is provided
+        
+    "I"
+        -user is invalid
+        
+    "C" +cardID + "`" + cardID + "`" + ...
+        -cards on board are returned
+        
+    "B" + seconds
+        -block user for specified number of seconds
+        
+    "U"
+        -unblock user
+        
+    "O"
+        -game is over, just displays a message
+        
+    "S" + gid + "`" + uid + "`" + score + "`" + ...
+        -the current scores for uids
+            
+    "G" + gid + "`" + numOfPlayers + "`" + ...
+        -the current game list with number of players
+        
+    "P" + uid + "`" + username + "`" + ...
+        -the current player list with usernames
+        
+    "M(`)" (+ gid + "`" +) + uid + "`" + message 
+        -message received from a uid, and possibly to be displayed only ingame chat 
+        
+    "L"
+        -user is logged out
+        
+    "R"+uid+"`"+username+"`"+score+"`"+uid+...
+        -returns the rankings from the database
+
+Messages to be set to the Server
+
+    "S" + username + "`" + password
+        -sign in user
+        
+    "R" + username + "`" + password
+        -register user
+        
+    "C" + uid
+        -create game and join the game as this uid
+        
+    "J" + gid + "`" + uid
+        -join game as this uid
+        
+    "D" + gid + "`" + uid
+        -disconnect from this game as this uid
+        
+    "B" + gid + "`" + uid
+        -block all other uids in this game
+        
+    "P" + gid + "`" + uid + "`" + card1 + "`" + card2 + "`" + card3
+        -process this set from this user in this game
+        
+    "F" + gid + '`' + uid
+        -this user in this game failed to submit after calling set
+        
+    "M(`)" (+ gid + "`" +) + uid + "`" + message
+        -sends a message to lobby or a game if gid is provided
+        
+    "L" + uid
+        -sends the rankings to the given user
+        
+    "K" + uid
+        -logout from the gamelobby 
+        
+    "E" + uid
+        -sends back the list of players in the gamelobby
+        
+    "G" + uid
+        -sends back the list of games in the gamelobby
+    
+    
+
+        
+    
+
+
+
+
+
+
