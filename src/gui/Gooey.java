@@ -23,7 +23,7 @@ public class Gooey extends JFrame {
 
 	JPanel gameCard; //5px spacing
 	private LoginPanel login = new LoginPanel(null);
-	private LobbyPanel lobby = new LobbyPanel(null);
+	private LobbyPanel lobby = new LobbyPanel(null, 0);
 	private CardGrid grid;
 	private PlayerPanel players;
 	private ChatPanel chat;

@@ -150,7 +150,7 @@ public class GamePanel extends JPanel {
 	}
 
 	//Adds test button panel
-	private void addTestButton(JButton b) {
+	public void addTestButton(JButton b) {
 		buttons.add(b);
 	}
 }
