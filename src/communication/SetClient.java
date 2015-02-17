@@ -25,7 +25,6 @@ public class SetClient {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String s;
         while((s=in.readLine())!=null && (s.length() !=0)){
-            //from gui, strings go here in stead of s 
             OUT.println(s);
             OUT.flush();
         }
@@ -49,6 +48,11 @@ public class SetClient {
                     System.err.print(X);
                     System.exit(0);
             }
+    }
+    //call from anywhere to send message to server. 
+    public static void sendMessage(String message){
+        OUT.println(message);
+        OUT.flush();
     }
 }
 
