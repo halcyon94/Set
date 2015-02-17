@@ -144,6 +144,11 @@ public class Client extends JFrame {
 	}
 	
 	public void badLogin() {
+		SetClient.Connect(this);
 		JOptionPane.showMessageDialog(new JFrame(), "WRONG!");
+	}
+	
+	public LobbyPanel getLobbyPanel() {
+		return lobby;
 	}
 }

@@ -6,10 +6,16 @@
 
 package communication;
 
+import gui.Client;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
+import javax.swing.SwingUtilities;
+
+import gui.Client;
 /**
  *
  * @author Skorpion
@@ -18,9 +24,17 @@ class ClientSideThread implements Runnable {
 
     Socket sock;
     Scanner input;
+    Client c;
 
     ClientSideThread(Socket SOCK) {
         this.sock = SOCK;
+        System.out.println("Wrong constructor!");
+    }
+    
+    ClientSideThread(Socket SOCK, Client c) {
+        this.sock = SOCK;
+        this.c=c;
+        System.out.println("right constructor!");
     }
 
     public void run()
@@ -33,9 +47,7 @@ class ClientSideThread implements Runnable {
                                 if(input.hasNext())
                                 {
                                     String MESSAGE =input.nextLine();
-                                    //here, the received message from server is MESSAGE, so call process message here
-                                    //update gui here
-                                    //messageDecypher(MESSAGE);
+                                    messageDecypher(MESSAGE);
                                     System.out.println("RECEIVED FROM SERVER: "+MESSAGE);
                                 }
 
@@ -45,18 +57,33 @@ class ClientSideThread implements Runnable {
                     finally{
                             sock.close();
                     }
-            }catch(Exception X){System.out.print(X);}
+            }catch(Exception X){X.printStackTrace();}
     }//String[] data = message.substring(1,message.length()).split("`");
     public void messageDecypher(String message){
         switch(message.substring(0,1)){
             case "V":
             {   //Gives the uid, store it somewhere, alongside with the username
-                int uid;
-                uid = Integer.parseInt(message.substring(1,message.length()));
+                final int uid = Integer.parseInt(message.substring(1,message.length()));
+                SwingUtilities.invokeLater(new Runnable() {
+        			public void run() {
+        				c.setUser(uid);
+        				c.createLobbyFrame();
+        			}
+        		});
                 break;
             }
             case "I":
             {   //Retry to connect, wrong login/pw 
+            	 SwingUtilities.invokeLater(new Runnable() {
+         			public void run() {
+         				c.badLogin();
+         			}
+         		});
+            	try {
+					sock.close();
+				} catch (IOException e) {
+					System.out.println("Smurfed up at I");
+				}
                 break;
             }
             case "C":
@@ -98,18 +125,25 @@ class ClientSideThread implements Runnable {
             {   //used to populate the gamechart in gamelobby
                 int gid;
                 int numOfPlayers;
-                String[] data = message.substring(1,message.length()).split("`");
-                gid = Integer.parseInt(data[0]); 
-                numOfPlayers = Integer.parseInt(data[1]); 
+                System.out.println(message);
+//                String[] data = message.substring(1,message.length()).split("`");
+//                gid = Integer.parseInt(data[0]); 
+//                numOfPlayers = Integer.parseInt(data[1]); 
                 break;
             }
             case "P":
             {   //used to populate the playerchar in gamelobby
-                int uid;
-                String username;
                 String[] data = message.substring(1,message.length()).split("`");
-                uid = Integer.parseInt(data[0]); 
-                username = data[1]; 
+                final Object[][] userData = new Object[data.length/2][3];
+                for(int i=0;i<data.length;i+=2){
+                	System.out.println(i);
+	                userData[i/2] = new Object[] {new Integer(data[i]), data[i+1], new Integer(9000)};
+                }
+                SwingUtilities.invokeLater(new Runnable() {
+        			public void run() {
+        				c.getLobbyPanel().refreshUserList(userData);
+        			}
+        		});
                 break;
             }
             case "M":

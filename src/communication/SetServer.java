@@ -10,8 +10,7 @@ package communication;
  *
  * @author Skorpion
  */
-import GameBackEnd.GameLobby;
-import GameBackEnd.Player;
+import GameBackEnd.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.*;
@@ -79,6 +78,7 @@ public class SetServer{
                             OUT2.println(GameLobby.returnPlayers());
                             OUT2.flush();
                         }
+                        System.out.println("alsdjasld");
                         return true;
                     }
                     else{

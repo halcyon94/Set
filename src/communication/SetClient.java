@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import gui.Client;
 
 
 /**
@@ -38,6 +39,25 @@ public class SetClient {
                    final String HOST="LocalHost";
                    Socket SOCK=new Socket(HOST,PORT);
                    ClientSideThread cst=new ClientSideThread(SOCK);
+                   OUT=new PrintWriter(SOCK.getOutputStream());
+                   Thread X=new Thread(cst);
+                   X.start();
+
+            }
+            catch(Exception X)
+            {
+                    System.err.print(X);
+                    System.exit(0);
+            }
+    }
+    public static void Connect(Client c)
+    {
+            try
+            {
+                   final int PORT=3000;
+                   final String HOST="LocalHost";
+                   Socket SOCK=new Socket(HOST,PORT);
+                   ClientSideThread cst=new ClientSideThread(SOCK, c);
                    OUT=new PrintWriter(SOCK.getOutputStream());
                    Thread X=new Thread(cst);
                    X.start();

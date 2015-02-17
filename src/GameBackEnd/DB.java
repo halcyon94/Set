@@ -31,7 +31,7 @@ public class DB{
    public int insertUser(String username, String password) throws Exception{
       try{
     Class.forName("com.mysql.jdbc.Driver").newInstance();  
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
     statement = connect.createStatement();
           
         String sql = "insert into users (login,password,score,gp)"+ "values (?,?,0,0)";
@@ -63,9 +63,8 @@ public class DB{
    //return uid
    public int findUser(String username, String password) throws Exception{
         try{
-    Class.forName("com.mysql.jdbc.Driver");  
-
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
+        	Class.forName("com.mysql.jdbc.Driver");  
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
     statement = connect.createStatement();
       
         String sql = "SELECT id,login,password FROM users WHERE login = ? and password = ?";
@@ -81,7 +80,8 @@ public class DB{
     return uid;
 
    } catch (ClassNotFoundException | SQLException e) {
-        throw e;
+       System.out.println("WHYYYYY"); 
+	   throw e;
     }
         finally {
         close();
@@ -157,6 +157,52 @@ public class DB{
     } catch (Exception e) {
 
     }
+  }
+  
+  public static void main(String[] args) throws Exception {
+	  Connection connect = null;
+	  Statement statement = null;
+	  PreparedStatement preparedStatement = null;
+	  ResultSet resultSet = null;
+	  try {
+		  DB test = new DB();
+		  System.out.println("findusr="+test.insertUser("sheryan", "recog"));
+	      // this will load the MySQL driver, each DB has its own driver
+	      Class.forName("com.mysql.jdbc.Driver");
+	      // setup the connection with the DB.
+	      connect = DriverManager
+	          .getConnection("jdbc:mysql://localhost/setdb?"
+	              + "user=root&password=password");
+
+	      // statements allow to issue SQL queries to the database
+	      statement = connect.createStatement();
+	      // resultSet gets the result of the SQL query
+	      resultSet = statement
+	          .executeQuery("select * from users");
+	      while (resultSet.next()) {
+	          // it is possible to get the columns via name
+	          // also possible to get the columns via the column number
+	          // which starts at 1
+	          // e.g., resultSet.getSTring(2);
+	          String user = resultSet.getString("id");
+	          String website = resultSet.getString("login");
+	          String summary = resultSet.getString("password");
+	          System.out.println("id: " + user);
+	          System.out.println("login: " + website);
+	          System.out.println("pwd: " + summary);
+	      }
+	      
+	    } catch (Exception e) {
+	      throw e;
+	    } finally {
+	    	try {
+	  		  resultSet.close();
+	  		  statement.close();
+	  		  connect.close();
+	  	  } catch (Exception e) {
+	  		  System.out.println(e);
+	  	  }
+	    }
   }
 
 }

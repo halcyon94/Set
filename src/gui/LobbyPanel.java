@@ -138,18 +138,28 @@ public class LobbyPanel extends JPanel {
 		
 		refreshGames.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				gameModel = new DefaultTableModel(connection.refreshGames(uid), gameColumns);
-				gameTable.setModel(gameModel);
-				formatTable(gameTable);
+				connection.refreshGames(uid);
 			}
 		});
 		refreshUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				userModel = new DefaultTableModel(connection.refreshUsers(uid), userColumns);
-				userTable.setModel(userModel);
-				formatTable(userTable);
+				connection.refreshUsers(uid);
+				System.out.println("refresh users clicked");
 			}
 		});
+	}
+	
+	public void refreshGamesList(Object[][] gameData) {
+		System.out.println("refresh users received");
+		gameModel = new DefaultTableModel(gameData, gameColumns);
+		gameTable.setModel(gameModel);
+		formatTable(gameTable);
+	}
+	
+	public void refreshUserList(Object[][] userData) {
+		userModel = new DefaultTableModel(userData, userColumns);
+		userTable.setModel(userModel);
+		formatTable(userTable);
 	}
 	
 	/**
