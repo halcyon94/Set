@@ -1,10 +1,8 @@
 package gui;
 
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -23,12 +21,9 @@ public class LobbyPanel extends JPanel {
 	private JPanel info;
 	private ChatPanel chat;
 	private ClientConnection connection;
-	private int uid;
 	
 	private JTable userTable;
 	private JTable gameTable;
-	private TableModel userModel;
-	private TableModel gameModel;
 	
 	private JButton refreshUsers = new JButton("Refresh");
 	private JButton refreshGames = new JButton("Refresh");
@@ -62,7 +57,7 @@ public class LobbyPanel extends JPanel {
 	/**
 	 *	Lobby screen constructor
 	 */
-	public LobbyPanel(ClientConnection conn, final int uid) {
+	public LobbyPanel(ClientConnection conn) {
 		//intialize
 		super(new BorderLayout(5,5));
 		setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
@@ -72,15 +67,17 @@ public class LobbyPanel extends JPanel {
 		users.setLayout(new BoxLayout(users, BoxLayout.Y_AXIS));
 		info = new JPanel(new GridLayout(1,1,0,0));
 		this.connection = conn;
-		this.uid = uid;
 				
 		//build games panel
-		gameModel = new DefaultTableModel(gameData, gameColumns);
-		gameTable = new JTable(gameModel) {
+		gameTable = new JTable(gameData, gameColumns) {
 			@Override //Disable editing
 			public boolean isCellEditable(int r, int c) {return false;}
 		};
-		formatTable(gameTable);
+		gameTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		gameTable.removeColumn(gameTable.getColumnModel().getColumn(0)); //hide IDs
+		gameTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		gameTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+		gameTable.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane2 = new JScrollPane(gameTable);
 		scrollPane2.setPreferredSize(new Dimension(COL_WIDTH, 200));
 		JLabel gamesLabel = new JLabel("Games Listing");
@@ -96,12 +93,15 @@ public class LobbyPanel extends JPanel {
 		add(games, BorderLayout.WEST);
 		
 		//build users panel
-		userModel = new DefaultTableModel(userData, userColumns);
-		userTable = new JTable(userModel) {
+		userTable = new JTable(userData, userColumns) {
 			@Override //Disable editing
 			public boolean isCellEditable(int r, int c) {return false;}
 		};
-		formatTable(userTable);
+		userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userTable.removeColumn(userTable.getColumnModel().getColumn(0)); //Hide IDs
+		userTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		userTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+		userTable.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane1 = new JScrollPane(userTable);
 		scrollPane1.setPreferredSize(new Dimension(COL_WIDTH, 200));
 		JLabel usersLabel = new JLabel("Users Online");
@@ -119,7 +119,7 @@ public class LobbyPanel extends JPanel {
 		
 		//add center info section
 		info.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-		//info.setBackground(new Color(159, 94, 230));
+		info.setBackground(new Color(159, 94, 230));
 		info.add(getWelcomeMsgPanel());
 		add(info, BorderLayout.CENTER);
 		
@@ -128,26 +128,12 @@ public class LobbyPanel extends JPanel {
 		add(chat, BorderLayout.SOUTH);
 		
 		addListeners();
+		//temp - reset the splash screen
 		createButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				info.removeAll();
 				info.add(getGameCreationPanel());
 				info.revalidate();
-			}
-		});
-		
-		refreshGames.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				gameModel = new DefaultTableModel(connection.refreshGames(uid), gameColumns);
-				gameTable.setModel(gameModel);
-				formatTable(gameTable);
-			}
-		});
-		refreshUsers.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				userModel = new DefaultTableModel(connection.refreshUsers(uid), userColumns);
-				userTable.setModel(userModel);
-				formatTable(userTable);
 			}
 		});
 	}
@@ -161,8 +147,8 @@ public class LobbyPanel extends JPanel {
 		joinButton.addActionListener(l);
 	}
 	
+	//add selection listeners for the JTables
 	private void addListeners() {
-		//add selection listeners for the JTables
 		userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) return;
@@ -251,15 +237,6 @@ public class LobbyPanel extends JPanel {
 		label.setHorizontalTextPosition(JLabel.CENTER);
 		label.setVerticalTextPosition(JLabel.BOTTOM);
 		return label;
-	}
-	
-	//format table
-	private void formatTable(JTable t) {
-		t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		t.removeColumn(t.getColumnModel().getColumn(0)); //hide IDs
-		t.getColumnModel().getColumn(0).setPreferredWidth(150);
-		t.getColumnModel().getColumn(1).setPreferredWidth(50);
-		t.setAutoCreateRowSorter(true);
 	}
 
 }

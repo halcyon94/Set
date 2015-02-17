@@ -16,8 +16,8 @@ import java.util.Iterator;
 public class Game {
     private static int gameNum;
     private int gid;
-    HashMap <Integer,Player> playerCollection = new HashMap<Integer,Player>(); 
-    GameBoard board = new GameBoard();
+    public HashMap <Integer,Player> playerCollection = new HashMap<Integer,Player>(); 
+    public GameBoard board = new GameBoard();
     int setLock; //the uid of the player who holds the Set lock
     
     
@@ -44,12 +44,12 @@ public class Game {
     }
     
     public String block(int seconds){
-        String message = "B-" + Integer.toString(seconds);
+        String message = "B" + Integer.toString(seconds);
         return message;
     }
     
     public String unblock(){
-        String message = "UB-";
+        String message = "U";
         return message;
     }
     public String onSubmit(int uid, int c1, int c2, int c3){
@@ -60,14 +60,17 @@ public class Game {
                     player = findPlayer(uid);
                     player.incScore();
                     message = board.returnCardsOnBoard() + "*" + returnScoreBoard();
+                    break;
             case 1: //send message to uid saying that its an invalid set, decrease score by 1, send new scoreboard to all
                     player = findPlayer(uid);
                     player.decScore();
                     message = returnScoreBoard();
+                    break;
             case 2: //send message saying its a valid set, increase score by 1, update the scoreboard, and send message thats its Game Over, blocking their buttons
                     player = findPlayer(uid);
                     player.incScore();
-                    message = returnScoreBoard() + "*" + "GO";
+                    message = returnScoreBoard() + "*" + "O";
+                    break;
             default:
                 message = "";
                 System.err.println("Error: game.onSubmit");
@@ -77,14 +80,14 @@ public class Game {
     }
     
     public String returnScoreBoard(){
-        String message = "";
+        String message = "S"+gid;
         int tempScore;
         int tempUid;
         //iterate over all players, returning their uids and scores in a message as a string
         for(Map.Entry<Integer,Player> entry : playerCollection.entrySet()){
             tempScore = entry.getValue().returnScore();
             tempUid = entry.getKey();
-            message = message + "P" + Integer.toString(tempUid) + "S" + Integer.toString(tempScore) + "-";
+            message = message + "`" + Integer.toString(tempUid) + "`" + Integer.toString(tempScore);
         }
         return message;
     }

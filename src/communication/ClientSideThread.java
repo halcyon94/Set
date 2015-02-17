@@ -35,7 +35,7 @@ class ClientSideThread implements Runnable {
                                     String MESSAGE =input.nextLine();
                                     //here, the received message from server is MESSAGE, so call process message here
                                     //update gui here
-                                    messageDecypher(MESSAGE);
+                                    //messageDecypher(MESSAGE);
                                     System.out.println("RECEIVED FROM SERVER: "+MESSAGE);
                                 }
 

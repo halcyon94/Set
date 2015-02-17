@@ -43,9 +43,9 @@ public class GameBoard {
     //returns the cards on the board in this format 
     // "C7-23-54-26-61-13-80-71-..." 
     public String returnCardsOnBoard(){
-        String cards = "C-";        
+        String cards = "C";        
         for (Integer cardsOnBoard1 : cardsOnBoard) {
-            cards = cards + Integer.toString(cardsOnBoard1) + "-";
+            cards = cards + Integer.toString(cardsOnBoard1) + "`";
         }
         return cards;
     }

@@ -11,7 +11,6 @@ import javax.swing.UIManager.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.notification.*;
 
-
 /**
  *	Set GUI tester
  *	@author Dolen Le
@@ -83,7 +82,7 @@ public class Client extends JFrame {
 				createGameFrame();
 			}
 		};
-		lobby = new LobbyPanel(connection, myId);
+		lobby = new LobbyPanel(connection);
 		lobby.setJoinListener(a1);
 		JPanel c = (JPanel) getContentPane();
 		c.add(lobby, "LOBBY");
@@ -111,14 +110,12 @@ public class Client extends JFrame {
 		//Listener for login button
 		ActionListener a1 = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				String user = login.getUser();
-				String pass = login.getPassword();
-				if(user.isEmpty()) {
+				if(login.getUser().isEmpty()) {
 					login.showUserPopup("this is garbage");
-				} else if(pass.isEmpty()) {
+				} else if(login.getPassword().isEmpty()) {
 					login.showPassPopup("geez, you cant leave this empty");
 				} else {
-					connection.userLogin(user, pass);
+					System.out.println("S`"+login.getUser()+"`"+login.getPassword());
 					createLobbyFrame();
 				}
 			}

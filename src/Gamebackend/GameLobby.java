@@ -44,7 +44,7 @@ public class GameLobby {
     //looks through gameCollection and forms a message with all the new games and the number of players and their IDs
     //drops games that have 0 players
     public static String returnGames(){
-        String message="";
+        String message="G";
         int numOfPlayers;
         int gid;
         //form message
@@ -52,10 +52,10 @@ public class GameLobby {
             numOfPlayers  = entry.getValue().playerNum();
             gid = entry.getKey();
             if(numOfPlayers>0){
-                message = "G" + Integer.toString(gid) + "NP" + Integer.toString(numOfPlayers) + "-" + message;
+                message = message + Integer.toString(gid) + "`" + Integer.toString(numOfPlayers) + "`";
             }
             else{
-                //remove the game from the hashmap
+                gameCollection.remove(gid);
             }
         }
         return message;
@@ -63,14 +63,14 @@ public class GameLobby {
     
     
     public static String returnPlayers(){
-        String message = "";
+        String message = "P";
         String username;
         int uid;
         //form message
         for(Map.Entry<Integer,Player> entry : playerCollection.entrySet()){
             username  = entry.getValue().Username;
             uid = entry.getKey();
-            message = "P" + Integer.toString(uid) + "UN" + username + "-" + message;
+            message = message + Integer.toString(uid) + "`" + username + "`";
         }
         return message;
     }

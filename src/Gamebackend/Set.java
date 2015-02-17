@@ -23,7 +23,7 @@ public class Set {
     /**
      * @param args the command line arguments
      */
-    public static ConcurrentMap<Integer,Socket> SocketList; //uid to socket map
+    
     
     public static void main(String[] args) throws IOException, Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -37,7 +37,47 @@ public class Set {
     public static void processMessage(String message) throws Exception{
          
         switch(message.substring(0,1)){
-
+            case "S": 
+                {
+                    String username, password;
+                    int result;
+                    String[] data = message.substring(1,message.length()).split("`");
+                    username = data[0];
+                    password = data[1];
+                    result = GameLobby.enterLobby(username,password,false);
+                    if(result >1){
+                        System.out.println(result);
+                        System.out.println("\t" + GameLobby.returnGames());
+                        System.out.println("\t" + GameLobby.returnPlayers());
+                        for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
+                            System.out.println(entry.getKey());
+                            System.out.println("\t"+GameLobby.returnPlayers());
+                        }
+                    }
+                    else{
+                        System.out.println(result);
+                        System.out.println("I");
+                    }
+                    break;
+                }
+            case "R":
+            {
+                    String username, password;
+                    int result;
+                    String[] data = message.substring(1,message.length()).split("`");
+                    username = data[0];
+                    password = data[1];
+                    result = GameLobby.enterLobby(username,password,true);
+                    System.out.println(result);
+                    System.out.println("\t" + GameLobby.returnGames());
+                    System.out.println("\t" + GameLobby.returnPlayers());
+                    for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
+                        System.out.println(entry.getKey());
+                        System.out.println("\t"+GameLobby.returnPlayers());
+                    }
+                    break;
+                               
+            } 
             case "C":
                 {   
                     String uid_s = message.substring(1,message.length());
@@ -74,7 +114,8 @@ public class Set {
                 }
 
             case "D":
-                {       
+                {   
+                    
                     String[] data = message.substring(1,message.length()).split("`");
                     int gid = Integer.parseInt(data[0]);
                     int uid = Integer.parseInt(data[1]);
@@ -193,47 +234,6 @@ public class Set {
                     System.out.println(GameLobby.db.returnRankings());
                     break;
                 }
-            case "S": 
-                {
-                    String username, password;
-                    int result;
-                    String[] data = message.substring(1,message.length()).split("`");
-                    username = data[0];
-                    password = data[1];
-                    result = GameLobby.enterLobby(username,password,false);
-                    if(result >1){
-                        System.out.println(result);
-                        System.out.println("\t" + GameLobby.returnGames());
-                        System.out.println("\t" + GameLobby.returnPlayers());
-                        for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
-                            System.out.println(entry.getKey());
-                            System.out.println("\t"+GameLobby.returnPlayers());
-                        }
-                    }
-                    else{
-                        System.out.println(result);
-                        System.out.println("I");
-                    }
-                    break;
-                }
-            case "R":
-            {
-                    String username, password;
-                    int result;
-                    String[] data = message.substring(1,message.length()).split("`");
-                    username = data[0];
-                    password = data[1];
-                    result = GameLobby.enterLobby(username,password,true);
-                    System.out.println(result);
-                    System.out.println("\t" + GameLobby.returnGames());
-                    System.out.println("\t" + GameLobby.returnPlayers());
-                    for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
-                        System.out.println(entry.getKey());
-                        System.out.println("\t"+GameLobby.returnPlayers());
-                    }
-                    break;
-                               
-            } 
             case "K":
             {
                 int uid = Integer.parseInt(message.substring(1,message.length()));
