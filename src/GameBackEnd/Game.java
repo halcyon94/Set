@@ -81,13 +81,13 @@ public class Game {
     
     public String returnScoreBoard(){
         String message = "S"+gid;
-        int tempScore;
+        Player player;
         int tempUid;
         //iterate over all players, returning their uids and scores in a message as a string
         for(Map.Entry<Integer,Player> entry : playerCollection.entrySet()){
-            tempScore = entry.getValue().returnScore();
+            player = entry.getValue();
             tempUid = entry.getKey();
-            message = message + "`" + Integer.toString(tempUid) + "`" + Integer.toString(tempScore);
+            message = message + "`" + Integer.toString(tempUid) + "`" +player.Username+"`" + Integer.toString(player.returnScore());
         }
         return message;
     }

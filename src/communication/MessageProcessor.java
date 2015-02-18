@@ -166,15 +166,16 @@ public class MessageProcessor implements Runnable {
                         Player player = GameLobby.findPlayer(uid);
                         Game game = GameLobby.findGame(gid);
                         for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                            sendMessage(entry.getKey(),"M`"+gid+'`'+uid +'`'+ actual_msg);
+                            sendMessage(entry.getKey(),"M`"+gid+'`'+uid +'`'+player.Username+'`'+ actual_msg);
                         }
                     }                       
                     else{
                         String[] data = message.substring(1,message.length()).split("`");
                         uid = Integer.parseInt(data[0]);
                         actual_msg = data[1];
+                        Player player = GameLobby.findPlayer(uid);
                         for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
-                            sendMessage(entry.getKey(),"M"+uid +'`'+ actual_msg);
+                            sendMessage(entry.getKey(),"M"+uid +'`'+player.Username+'`'+ actual_msg);
                         }
                     }
                     break;
