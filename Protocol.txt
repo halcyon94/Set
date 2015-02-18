@@ -32,7 +32,7 @@ Messages to be sent to Client
     "P" + uid + "`" + username + "`" + ...
         -the current player list with usernames
         
-    "M(`)" (+ gid + "`" +) + uid + "`" + message 
+    "M(`)" (+ gid + "`" +) + uid + "`" + username + "`" + message 
         -message received from a uid, and possibly to be displayed only ingame chat 
         
     "L"
