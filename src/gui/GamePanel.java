@@ -22,6 +22,7 @@ public class GamePanel extends JPanel {
 	
 	public JButton logoutButton = new JButton("Logout");
 	public JButton setButton = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+	public JButton quitButton = new JButton("Quit");
 	
 	private ClientConnection connection;
 
@@ -157,13 +158,6 @@ public class GamePanel extends JPanel {
 			}
 		});
 		buttons.add(logoutButton); //logout button
-
-		JButton quitButton = new JButton("Quit");
-		quitButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				connection.leaveGame(gameID, myID);
-			}
-		});
 		buttons.add(quitButton); //quit button
 	}
 

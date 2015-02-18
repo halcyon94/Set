@@ -113,6 +113,15 @@ public class Client extends JFrame {
 		if(myID != 0) {
 			game = new GamePanel(myID, 3, connection);
 			gameActive = true;
+			game.quitButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					connection.leaveGame(gameID, myID);
+					gameActive = false;
+					JPanel c = (JPanel) getContentPane();
+					((CardLayout) c.getLayout()).show(c, "LOBBY");
+				}
+			});
 			setTitle("Set");
 			setSize(960, 768);
 			setResizable(true);
