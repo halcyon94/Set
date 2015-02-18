@@ -228,6 +228,13 @@ public class CardGrid extends JPanel {
 	}
 	
 	/**
+	 *	Clear the current selection
+	 */
+	public void setPlayerColor(Color c) {
+		playerColor = c;
+	}
+	
+	/**
 	 *	Determines the Card which turns the currently selected cards into a set
 	 *	@return The missing card
 	 */

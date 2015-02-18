@@ -50,6 +50,7 @@ public class GamePanel extends JPanel {
 	
 	public void addPlayer(int id, String name, int rating) {
 		players.addPlayer(id, colors[colorIndex++], name, rating);
+		grid.setPlayerColor(players.getColor(myID));
 	}
 	
 	public void removePlayer(int id) {
@@ -88,7 +89,7 @@ public class GamePanel extends JPanel {
 
 		add(chat, BorderLayout.SOUTH); //add chat panel to gui
 
-		grid = new CardGrid(setSize, 3, setSize, colors[0]);
+		grid = new CardGrid(setSize, 3, setSize, Color.BLACK);
 
 //		for(int i=0; i<setSize*setSize*setSize*setSize; i++) {
 //			grid.addCard(new Card(i, setSize));
@@ -97,8 +98,28 @@ public class GamePanel extends JPanel {
 		add(grid, BorderLayout.CENTER); //add card grid to gui
 	}
 
+	//block user from clicking SET for a specified time
+	public void blockTimer(final int time) {
+		timer = time;
+		setButton.setEnabled(false);
+		ActionListener counter = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) 
+			{ 
+				setButton.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
+				timer--;
+				if(timer < 0) {
+					t.stop();
+					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+					setButton.setEnabled(true);
+				}
+			}};
+			t = new Timer(1000, counter);
+			t.setInitialDelay(0);
+			t.start();
+	}
+	
 	//timer countdown for SET
-	public void setTimer(final int time) {
+	private void setTimer(final int time) {
 		timer = time;
 		grid.toggleSelection();
 		setButton.setEnabled(false);
@@ -125,6 +146,7 @@ public class GamePanel extends JPanel {
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				connection.beginSet(myID, gameID);
+				setTimer(5);
 			}
 		});
 		buttons.add(setButton); //set button
@@ -153,5 +175,9 @@ public class GamePanel extends JPanel {
 	
 	public void setGameID(int gid) {
 		gameID = gid;
+	}
+	
+	public void setSelectionColor(Color c) {
+		grid.setPlayerColor(c);
 	}
 }
