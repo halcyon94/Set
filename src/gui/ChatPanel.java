@@ -48,7 +48,7 @@ public class ChatPanel extends JPanel {
 				}
 			}
 		});
-		msgField.addActionListener(new ActionListener() {
+		ActionListener sendListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String text = msgField.getText();
@@ -57,7 +57,9 @@ public class ChatPanel extends JPanel {
 					msgField.setText("");	
 				}
 			}
-		});
+		};
+		msgField.addActionListener(sendListener);
+		sendButton.addActionListener(sendListener);
         msgArea.setEditable(false);
         msgArea.setText("<html id='body'></html>");
         msgArea.setText(msgArea.getText().trim());
@@ -77,10 +79,9 @@ public class ChatPanel extends JPanel {
 		HTMLDocument d = (HTMLDocument) msgArea.getDocument();
 		SimpleAttributeSet bold = new SimpleAttributeSet();
         StyleConstants.setBold(bold, true);
-		try {
-			d.insertString(d.getLength(), message+"\n", bold);
-		} catch (javax.swing.text.BadLocationException e) {
-			System.out.println("Invalid location for msgArea");
+        try {
+			d.insertBeforeEnd(d.getElement("body"), "<div><b>"+message+"</b></div>");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		msgArea.setCaretPosition(d.getLength()); //scroll to bottom

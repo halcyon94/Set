@@ -47,7 +47,14 @@ public class PlayerPanel extends JPanel {
 		PlayerStat temp = playerList.remove(id);
 		remove(temp);
 		revalidate();
-		System.out.println("Removed player"+id);
+	}
+	
+	/**
+	 *	Remove all players. Does not revalidate.
+	 */
+	public void clearAll() {
+		playerList.clear();
+		removeAll();
 	}
 	
 	/**

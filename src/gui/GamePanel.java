@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
 
 	private Timer t;
 	private int timer;
-	private int colorIndex = 0;
+	public int colorIndex = 0;
 	private Color[] colors = new Color[] {Color.blue, Color.red, Color.green,
 												Color.orange, Color.magenta, Color.gray, 
 												Color.pink, Color.yellow, Color.cyan};
@@ -50,7 +50,6 @@ public class GamePanel extends JPanel {
 	
 	public void addPlayer(int id, String name, int rating) {
 		players.addPlayer(id, colors[colorIndex++], name, rating);
-		grid.setPlayerColor(players.getColor(myID));
 	}
 	
 	public void removePlayer(int id) {
@@ -179,5 +178,9 @@ public class GamePanel extends JPanel {
 	
 	public void setSelectionColor(Color c) {
 		grid.setPlayerColor(c);
+	}
+	
+	public void setPlayerColor() {
+		grid.setPlayerColor(players.getColor(myID));
 	}
 }

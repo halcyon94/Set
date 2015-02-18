@@ -7,6 +7,7 @@
 package communication;
 
 import gui.Client;
+import gui.GamePanel;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -127,12 +128,16 @@ class ClientSideThread implements Runnable {
                 final String[] data = message.substring(1,message.length()).split("`");
                 final int gid = Integer.parseInt(data[0]); //make sure the game youre currently in corresponds
                 SwingUtilities.invokeLater(new Runnable() {
-                	public void run() {
+                	public void run() { //reload the PlayerPanel
+                		GamePanel p = c.getGamePanel();
+                		p.getPlayers().clearAll();
+                		p.colorIndex = 0;
                 		for(int i=2; i<data.length; i+=3) {
                 			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]));;
                 		}
                 		c.setGameID(gid);
-                		c.getGamePanel().setGameID(gid);
+                		p.setGameID(gid);
+                		p.setPlayerColor();
                 	}
                 });
                 break;
