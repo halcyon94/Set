@@ -36,8 +36,8 @@ public class ClientConnection {
 		SetClient.sendMessage("K"+uid);
 	}
 	
-	public void createGame(int uid) {
-		SetClient.sendMessage("C"+uid);
+	public void createGame(int uid, String name) {
+		SetClient.sendMessage("C"+uid+"`"+name);
 	}
 	
 	public void leaveGame(int gid, int uid) {

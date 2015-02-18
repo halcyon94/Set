@@ -92,9 +92,9 @@ class ClientSideThread implements Runnable {
             case "C":
             {   //data is a string array of current table card IDs. loop through
                 //and populate the table
-                String[] data = message.substring(1,message.length()).split("`");
+                final String[] data = message.substring(1,message.length()).split("`");
                 final int[] ids = new int[data.length];
-                for(int i=0;i<data.length;i++){
+                for(int i=2;i<data.length;i++){
                     ids[i]=Integer.parseInt(data[i]);
                 }
                 SwingUtilities.invokeLater(new Runnable() {
@@ -128,7 +128,7 @@ class ClientSideThread implements Runnable {
                 final int gid = Integer.parseInt(data[0]); //make sure the game youre currently in corresponds
                 SwingUtilities.invokeLater(new Runnable() {
                 	public void run() {
-                		for(int i=1; i<data.length; i+=3) {
+                		for(int i=2; i<data.length; i+=3) {
                 			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]));;
                 		}
                 		c.setGameID(gid);
@@ -141,11 +141,11 @@ class ClientSideThread implements Runnable {
             {   //used to populate the gamechart in gamelobby
             	System.out.println("Message="+message);
             	String[] data = message.substring(1,message.length()).split("`");
-                final Object[][] gameData = new Object[data.length/2][3];
+                final Object[][] gameData = new Object[data.length/3][3];
                 if(data.length>1) {
-                	for(int i=0;i<data.length;i+=2){
+                	for(int i=0;i<data.length;i+=3){
                 		System.out.println(data.length);
-                		gameData[i/2] = new Object[] {new Integer(data[i]), "Game"+data[i], new Integer(data[i+1])};
+                		gameData[i/3] = new Object[] {new Integer(data[i]), data[i+1], new Integer(data[i+2])};
                 	}
                 	SwingUtilities.invokeLater(new Runnable() {
                 		public void run() {

@@ -153,7 +153,7 @@ public class LobbyPanel extends JPanel {
 		});
 		createGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.createGame(myID);
+				connection.createGame(myID, nameField.getText());
 			}
 		});
 	}
