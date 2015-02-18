@@ -31,7 +31,7 @@ public class DB{
    public int insertUser(String username, String password) throws Exception{
       try{
     Class.forName("com.mysql.jdbc.Driver").newInstance();  
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
     statement = connect.createStatement();
           
         String sql = "insert into users (login,password,score,gp)"+ "values (?,?,0,0)";
@@ -51,6 +51,7 @@ public class DB{
     return out;
 
       } catch (ClassNotFoundException | SQLException e) {
+          System.out.println("ERROR: "+e+" in DB.insertUser()");
         throw e;
     }
         finally {
@@ -64,7 +65,7 @@ public class DB{
    public int findUser(String username, String password) throws Exception{
         try{
         	Class.forName("com.mysql.jdbc.Driver");  
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
     statement = connect.createStatement();
       
         String sql = "SELECT id,login,password FROM users WHERE login = ? and password = ?";
@@ -80,7 +81,7 @@ public class DB{
     return uid;
 
    } catch (ClassNotFoundException | SQLException e) {
-       System.out.println("WHYYYYY"); 
+       System.out.println("ERROR: "+e+" in DB.finduser() "); 
 	   throw e;
     }
         finally {
@@ -104,6 +105,7 @@ public class DB{
     preparedStatement.executeUpdate();
       
             } catch (ClassNotFoundException | SQLException e) {
+                System.out.println("ERROR: "+e+" in DB.updateUserScore() "); 
                 throw e;
             }
             finally {
@@ -134,6 +136,7 @@ public class DB{
     return message;
 
     }catch (ClassNotFoundException | SQLException e) {
+        System.out.println("ERROR: "+e+" in DB.returnRankings() "); 
         throw e;
     }
         finally {
@@ -159,6 +162,7 @@ public class DB{
     }
   }
   
+  //test main function for DB.java
   public static void main(String[] args) throws Exception {
 	  Connection connect = null;
 	  Statement statement = null;

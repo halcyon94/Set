@@ -46,8 +46,7 @@ public class SetClient {
             }
             catch(Exception X)
             {
-                    System.err.print(X);
-                    System.exit(0);
+                    System.out.println("ERROR:"+X+" in SetClient.connect()");
             }
     }
     public static void Connect(Client c)
@@ -65,8 +64,7 @@ public class SetClient {
             }
             catch(Exception X)
             {
-                    System.err.print(X);
-                    System.exit(0);
+                    System.out.println("ERROR:"+X+" in SetClient.connect(Client C)");
             }
     }
     //call from anywhere to send message to server. 

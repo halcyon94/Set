@@ -32,10 +32,10 @@ public class MessageProcessor implements Runnable {
                 try {
                     processMessage(message);
                 } catch (Exception ex) {
-                    Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("ERROR: "+ex+" in MessageProcessor.run() (1) "); 
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(MessageProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("ERROR: "+ex+" in MessageProcessor.run() (1) ");
             }
         }
     }

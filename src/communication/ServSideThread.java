@@ -34,7 +34,7 @@ class ServSideThread implements Runnable {
         try {
             input=new Scanner(sock.getInputStream());
         } catch (IOException ex) {
-            Logger.getLogger(ServSideThread.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ERROR:"+ex+" in ServSideThread.run() (1)");
         }
         while(true)
         {
@@ -47,6 +47,7 @@ class ServSideThread implements Runnable {
                     try {
                         SetServer.bqueue.put(message);
                     } catch (InterruptedException except) {
+                        System.out.println("ERROR:"+except+" in ServSideThread.run() (2)");
                     }
                 }
         }        

@@ -42,10 +42,13 @@ public class SetServer{
                                 ServSideThread sst=new ServSideThread(SOCK);
                                 Thread X=new Thread(sst);
                                 X.start();
-                           } 
+                            }
+                            else{
+                                SOCK.close();
+                            }
                     }
             }
-            catch(Exception X){System.out.print(X);}
+            catch(Exception X){System.out.println("ERROR:"+X+" in SetServer.main() ");}
     }
 
     public static boolean validCredentials(Socket X) throws IOException, Exception
@@ -78,7 +81,6 @@ public class SetServer{
                             OUT2.println(GameLobby.returnPlayers());
                             OUT2.flush();
                         }
-                        System.out.println("alsdjasld");
                         return true;
                     }
                     else{
