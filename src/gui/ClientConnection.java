@@ -51,5 +51,9 @@ public class ClientConnection {
 	public void lobbyChat(int uid, String msg) {
 		SetClient.sendMessage("M"+uid+"`"+msg);
 	}
+	
+	public void beginSet(int uid, int gid) {
+		SetClient.sendMessage("B"+gid+"`"+uid);
+	}
 
 }

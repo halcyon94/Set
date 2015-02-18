@@ -30,7 +30,7 @@ public class PlayerPanel extends JPanel {
 	 */
 	public void addPlayer(int id, Color color, String name, int rating) {
 		if(playerList.containsKey(new Integer(id))) {
-			System.out.println("Fatal error - player with id "+id+" already added");
+			System.out.println("Warning - player with id "+id+" already added");
 		} else {
 			PlayerStat player = new PlayerStat(color, name, rating);
 			add(player);

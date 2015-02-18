@@ -21,6 +21,7 @@ public class GamePanel extends JPanel {
 	private CardGrid grid;
 	
 	public JButton logoutButton = new JButton("Logout");
+	public JButton setButton = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 	
 	private ClientConnection connection;
 
@@ -97,20 +98,20 @@ public class GamePanel extends JPanel {
 	}
 
 	//timer countdown for SET
-	private void setTimer(final JButton b) {
-		timer = 5;
+	public void setTimer(final int time) {
+		timer = time;
 		grid.toggleSelection();
-		b.setEnabled(false);
+		setButton.setEnabled(false);
 		ActionListener counter = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) 
 			{ 
-				b.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
+				setButton.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
 				timer--;
 				if(timer < 0) {
 					t.stop();
 					grid.toggleSelection();
-					b.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
-					b.setEnabled(true);
+					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+					setButton.setEnabled(true);
 					grid.clearSelected();
 				}
 			}};
@@ -121,10 +122,9 @@ public class GamePanel extends JPanel {
 
 	//Add in-game buttons to the provided panel
 	private void addGameButtons() {
-		JButton setButton = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				setTimer((JButton) event.getSource());
+				connection.beginSet(myID, gameID);
 			}
 		});
 		buttons.add(setButton); //set button
@@ -140,7 +140,7 @@ public class GamePanel extends JPanel {
 		JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.exit(0);
+				connection.leaveGame(gameID, myID);
 			}
 		});
 		buttons.add(quitButton); //quit button

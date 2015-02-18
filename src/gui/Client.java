@@ -81,6 +81,7 @@ public class Client extends JFrame {
 		setSize(280, 150);
 		setResizable(false);
 		setLocationRelativeTo(null);
+		gameActive = false;
 		getRootPane().setDefaultButton(login.getButt());
 		JPanel c = (JPanel) getContentPane();
 		c.add(login, "LOGIN");
@@ -99,6 +100,7 @@ public class Client extends JFrame {
 			}
 		};
 		getRootPane().setDefaultButton(null);
+		gameActive = false;
 		lobby = new LobbyPanel(connection, myID);
 		lobby.joinButton.addActionListener(joinListener);
 		JPanel c = (JPanel) getContentPane();
@@ -155,6 +157,10 @@ public class Client extends JFrame {
 	public void badLogin() {
 		SetClient.Connect(this);
 		login.showPassPopup("NO! WRONG!");
+	}
+	
+	public boolean isGameActive() {
+		return gameActive;
 	}
 
 	public void enterGame(int[] cardIDs) {

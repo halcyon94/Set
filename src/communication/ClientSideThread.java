@@ -106,8 +106,8 @@ class ClientSideThread implements Runnable {
             }
             case "B":
             {   //gray out the set/submit button for the specified period of time
-                int blockTime;
-                blockTime = Integer.parseInt(message.substring(1,message.length()));
+                int blockTime = Integer.parseInt(message.substring(1,message.length()));
+                c.getGamePanel().setTimer(blockTime);
                 break;
             }
             case "U":
