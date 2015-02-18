@@ -124,10 +124,17 @@ class ClientSideThread implements Runnable {
             case "S":
             {   //loop through the array, find username for each uid, 
                 //and populate the scoreboard
-                int gid;
-                String[] data = message.substring(1,message.length()).split("`");
-                gid = Integer.parseInt(data[0]); //make sure the game youre currently in corresponds
-                
+                final String[] data = message.substring(1,message.length()).split("`");
+                final int gid = Integer.parseInt(data[0]); //make sure the game youre currently in corresponds
+                SwingUtilities.invokeLater(new Runnable() {
+                	public void run() {
+                		for(int i=1; i<data.length; i+=3) {
+                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]));;
+                		}
+                		c.setGameID(gid);
+                		c.getGamePanel().setGameID(gid);
+                	}
+                });
                 break;
             }
             case "G":

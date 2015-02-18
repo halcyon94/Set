@@ -32,12 +32,12 @@ public class ClientConnection {
 
 	//return 2D Object array in format {Integer(id), String(name), String(playerCount)}
 	public void refreshGames(int uid) {
-		System.out.println("G"+uid);
-		Object[][] gameData = {
-		    	{new Integer(23), "CU-NERDS 2", "2/2"},
-		    	{new Integer(5), "FF Crew Bubbies 2", "5/5"},
-		    	{new Integer(2), "Dolen was hier 2", "5/5"}
-		};
+		SetClient.sendMessage("G"+uid);
+//		Object[][] gameData = {
+//		    	{new Integer(23), "CU-NERDS 2", "2/2"},
+//		    	{new Integer(5), "FF Crew Bubbies 2", "5/5"},
+//		    	{new Integer(2), "Dolen was hier 2", "5/5"}
+//		};
 	}
 	
 	public void logout(int uid) {
@@ -46,6 +46,14 @@ public class ClientConnection {
 	
 	public void createGame(int uid) {
 		SetClient.sendMessage("C"+uid);
+	}
+	
+	public void leaveGame(int gid, int uid) {
+		SetClient.sendMessage("D"+gid+"`"+uid);
+	}
+	
+	public void joinGame(int gid, int uid) {
+		SetClient.sendMessage("J"+gid+"`"+uid);
 	}
 
 }

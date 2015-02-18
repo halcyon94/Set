@@ -23,7 +23,8 @@ public class LobbyPanel extends JPanel {
 	private JPanel info;
 	private ChatPanel chat;
 	private ClientConnection connection;
-	private int uid;
+	private int myID;
+	public int visibleGame;
 	
 	private JTable userTable;
 	private JTable gameTable;
@@ -34,14 +35,12 @@ public class LobbyPanel extends JPanel {
 	private JButton refreshGames = new JButton("Refresh");
 	private JButton createButton = new JButton("Create");
 	public JButton createGame = new JButton("Create Game");
-	private JButton logoutButton = new JButton("Logout");
+	public JButton logoutButton = new JButton("Logout");
 	public JButton joinButton = new JButton("Join Game");
 	private JButton msgButton = new JButton("Send Message");
 	
 	private JTextField nameField = new JTextField(20);
-	
-	private ActionListener joinListener;
-	
+		
 	String[] userColumns = {"ID", "Name",
                         	"Ranking"};
     String[] gameColumns = {"ID", "Name",
@@ -72,7 +71,7 @@ public class LobbyPanel extends JPanel {
 		users.setLayout(new BoxLayout(users, BoxLayout.Y_AXIS));
 		info = new JPanel(new GridLayout(1,1,0,0));
 		this.connection = conn;
-		this.uid = uid;
+		this.myID = uid;
 				
 		//build games panel
 		gameModel = new DefaultTableModel(gameData, gameColumns);
@@ -138,23 +137,23 @@ public class LobbyPanel extends JPanel {
 		
 		refreshGames.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.refreshGames(uid);
+				connection.refreshGames(myID);
 			}
 		});
 		refreshUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.refreshUsers(uid);
+				connection.refreshUsers(myID);
 				System.out.println("refresh users clicked");
 			}
 		});
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.logout(uid);
+				connection.logout(myID);
 			}
 		});
 		createGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.createGame(uid);
+				connection.createGame(myID);
 			}
 		});
 	}
@@ -231,6 +230,7 @@ public class LobbyPanel extends JPanel {
 	//Game info panel
 	private JPanel getGameInfoPanel(int id, String name) {
 		JPanel temp = new JPanel();
+		visibleGame = id;
 		temp.setLayout(new BoxLayout(temp, BoxLayout.Y_AXIS));
 		temp.add(Box.createRigidArea(new Dimension(20,20)));
 		//temp.add(Box.createRigidArea(new Dimension(20,0)));

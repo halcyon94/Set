@@ -19,11 +19,14 @@ public class GamePanel extends JPanel {
 
 	private int setSize;
 	private int myID;
+	private int gameID;
 
 	private PlayerPanel players = new PlayerPanel();
 	private ChatPanel chat = new ChatPanel(80);
 	private JPanel buttons = new JPanel(); //button panel
 	private CardGrid grid;
+	
+	public JButton logoutButton = new JButton("Logout");
 	
 	private ClientConnection connection;
 
@@ -81,7 +84,7 @@ public class GamePanel extends JPanel {
 
 	//Assembles components of Set game GUI
 	private void buildGameGUI() {
-		players.addPlayer(myID, colors[colorIndex++], connection.getPlayerName(myID), connection.getPlayerRating(myID)); //add current user
+		//players.addPlayer(myID, colors[colorIndex++], connection.getPlayerName(myID), connection.getPlayerRating(myID)); //add current user
 		add(players, BorderLayout.NORTH); //add player panel to gui
 
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -90,7 +93,7 @@ public class GamePanel extends JPanel {
 
 		add(chat, BorderLayout.SOUTH); //add chat panel to gui
 
-		grid = new CardGrid(setSize, 3, setSize, players.getColor(myID));
+		grid = new CardGrid(setSize, 3, setSize, colors[0]);
 
 //		for(int i=0; i<setSize*setSize*setSize*setSize; i++) {
 //			grid.addCard(new Card(i, setSize));
@@ -132,10 +135,10 @@ public class GamePanel extends JPanel {
 		});
 		buttons.add(setButton); //set button
 
-		JButton logoutButton = new JButton("Logout");
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				
+				connection.leaveGame(gameID, myID);
+				connection.logout(myID);
 			}
 		});
 		buttons.add(logoutButton); //logout button
@@ -152,5 +155,9 @@ public class GamePanel extends JPanel {
 	//Adds test button panel
 	public void addTestButton(JButton b) {
 		buttons.add(b);
+	}
+	
+	public void setGameID(int gid) {
+		gameID = gid;
 	}
 }

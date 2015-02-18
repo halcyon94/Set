@@ -22,7 +22,8 @@ public class Client extends JFrame {
 
 	private int setSize = 3;
 	private final int ROWS = setSize;
-	private int myId;
+	private int myID;
+	private int gameID;
 	private boolean gameActive = false;
 
 	private LoginPanel login;
@@ -36,11 +37,12 @@ public class Client extends JFrame {
 		getContentPane().setLayout(new CardLayout());
 		setVisible(true);
 		NotificationManager.setMargin(10,10,50,10);
-		SetClient.Connect(this);
 		WindowListener exitListener = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                connection.logout(myId);
+            	if(gameActive)
+            		connection.leaveGame(gameID, myID);
+                connection.logout(myID);
                 System.exit(NORMAL);
             }
         };
@@ -72,6 +74,7 @@ public class Client extends JFrame {
 	//Load and display the login dialog
 	public void createLoginFrame() {
 		login = new LoginPanel(connection);
+		SetClient.Connect(this);
 		addLoginListeners(login);
 		setTitle("Login to Set");
 		setSize(280, 150);
@@ -91,17 +94,11 @@ public class Client extends JFrame {
 		setLocationRelativeTo(null);
 		ActionListener joinListener = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				createGameFrame();
+				connection.joinGame(lobby.visibleGame, myID);
 			}
 		};
-		ActionListener createListener = new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				gameActive = true;
-			}
-		};
-		lobby = new LobbyPanel(connection, myId);
+		lobby = new LobbyPanel(connection, myID);
 		lobby.joinButton.addActionListener(joinListener);
-		lobby.createGame.addActionListener(createListener);
 		JPanel c = (JPanel) getContentPane();
 		c.add(lobby, "LOBBY");
 		((CardLayout) c.getLayout()).show(c, "LOBBY");
@@ -110,10 +107,7 @@ public class Client extends JFrame {
 	//Load and display the game
 	private void createGameFrame() {
 		game = new GamePanel(1, 3, connection);
-		game.addPlayer(23, "test", 453);
-		game.addPlayer(34, "sable", 453);
-		game.addPlayer(6, "hakner", 453);
-		game.addPlayer(2, "fred", 453);
+		gameActive = true;
 		setTitle("Set");
 		setSize(960, 768);
 		setResizable(true);
@@ -149,22 +143,34 @@ public class Client extends JFrame {
 	}
 	
 	public void setUser(int id) {
-		myId = id;
+		myID = id;
 	}
 	
 	public void badLogin() {
 		SetClient.Connect(this);
 		login.showPassPopup("NO! WRONG!");
 	}
-	
+
 	public void enterGame(int[] cardIDs) {
-		createGameFrame();
-		for(int id : cardIDs) {
-			game.addCard(id);
+		if(!gameActive) {
+			createGameFrame();
+			for(int id : cardIDs) {
+				game.addCard(id);
+			}
+		} else {
+			System.err.println("ERROR - attempted to join new game when already in game");
 		}
 	}
 	
 	public LobbyPanel getLobbyPanel() {
 		return lobby;
+	}
+	
+	public GamePanel getGamePanel() {
+		return game;
+	}
+	
+	public void setGameID(int gid) {
+		gameID = gid;
 	}
 }
