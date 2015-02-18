@@ -108,16 +108,20 @@ public class Client extends JFrame {
 
 	//Load and display the game
 	private void createGameFrame() {
-		game = new GamePanel(1, 3, connection);
-		gameActive = true;
-		setTitle("Set");
-		setSize(960, 768);
-		setResizable(true);
-		setLocationRelativeTo(null);
-		JPanel c = (JPanel) getContentPane();
-		c.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
-		c.add(game, "GAME");
-		((CardLayout) c.getLayout()).show(c, "GAME");
+		if(myID != 0) {
+			game = new GamePanel(myID, 3, connection);
+			gameActive = true;
+			setTitle("Set");
+			setSize(960, 768);
+			setResizable(true);
+			setLocationRelativeTo(null);
+			JPanel c = (JPanel) getContentPane();
+			c.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+			c.add(game, "GAME");
+			((CardLayout) c.getLayout()).show(c, "GAME");
+		} else {
+			System.err.println("Error: Attempted to start game without logging in");
+		}
 	}
 
 	private void addLoginListeners(LoginPanel p) {
