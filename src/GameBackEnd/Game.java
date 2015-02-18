@@ -16,6 +16,7 @@ import java.util.Iterator;
 public class Game {
     private static int gameNum;
     private int gid;
+    public String name;
     public HashMap <Integer,Player> playerCollection = new HashMap<Integer,Player>(); 
     public GameBoard board = new GameBoard();
     int setLock; //the uid of the player who holds the Set lock
@@ -80,7 +81,7 @@ public class Game {
     }
     
     public String returnScoreBoard(){
-        String message = "S"+gid;
+        String message = "S"+gid + "`"+name;
         Player player;
         int tempUid;
         //iterate over all players, returning their uids and scores in a message as a string

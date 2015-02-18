@@ -28,6 +28,7 @@ public class SetServer{
     public static BlockingQueue<String> bqueue = new LinkedBlockingQueue<String>();
     public static ConcurrentMap<Integer,Socket> waitingSockets = new ConcurrentHashMap<>();
     private static int sid=0;
+    
     public static void main(String[] args)throws IOException
     {
             try{
@@ -39,92 +40,15 @@ public class SetServer{
                     processM.start();
                     while(true)
                     {
-                            Socket SOCK=SERVER.accept();
-                            sid++;
-                            waitingSockets.put(sid,SOCK);
-                            //   if(validCredentials(SOCK)){
-                            ServSideThread sst=new ServSideThread(SOCK,sid);
-                            Thread X=new Thread(sst);
-                            X.start();
-                         //   }
-                          //  else{
-                          //      SOCK.close();
-                           // }
-                    }
+                        Socket SOCK=SERVER.accept();
+                        sid++;
+                        waitingSockets.put(sid,SOCK);
+                        ServSideThread sst=new ServSideThread(SOCK,sid);
+                        Thread X=new Thread(sst);
+                        X.start();
+                }
             }
             catch(Exception X){System.out.println("ERROR:"+X+" in SetServer.main() ");}
     }
 
-    public static boolean validCredentials(Socket X) throws IOException, Exception
-    {
-        int uid;
-        Scanner INPUT=new Scanner(X.getInputStream());
-        String message=INPUT.nextLine();
-        switch(message.substring(0,1)){
-            case "S": 
-                {
-                    String username, password;
-                    int result;
-                    String[] data = message.substring(1,message.length()).split("`");
-                    username = data[0];
-                    password = data[1];
-                    result = GameLobby.enterLobby(username,password,false);
-                    if(result >1){
-                        SocketList.put(result, X);
-                        PrintWriter OUT=new PrintWriter(X.getOutputStream());
-                        OUT.println("V"+result);
-                        OUT.flush();
-                        OUT.println(GameLobby.returnGames()); 
-                        OUT.flush();
-                        OUT.println(GameLobby.returnPlayers()); 
-                        OUT.flush();
-                        for(Map.Entry<Integer,Player> entry1 : GameLobby.playerCollection.entrySet()){
-                            uid = entry1.getKey();
-                            Socket Temp_Sock = SocketList.get(uid);
-                            PrintWriter OUT2=new PrintWriter(Temp_Sock.getOutputStream());
-                            OUT2.println(GameLobby.returnPlayers());
-                            OUT2.flush();
-                        }
-                        return true;
-                    }
-                    else{
-                        PrintWriter OUT=new PrintWriter(X.getOutputStream());
-                        OUT.println("I");
-                        OUT.flush();
-                        return false;
-                    }
-                }
-            case "R":
-            {
-                    String username, password;
-                    int result;
-                    String[] data = message.substring(1,message.length()).split("`");
-                    username = data[0];
-                    password = data[1];
-                    result = GameLobby.enterLobby(username,password,true);
-                    SocketList.put(result, X);
-                    PrintWriter OUT=new PrintWriter(X.getOutputStream());
-                    OUT.println("V"+result);
-                    OUT.flush();
-                    OUT.println(GameLobby.returnGames()); 
-                    OUT.flush();
-                    OUT.println(GameLobby.returnPlayers()); 
-                    OUT.flush();
-                    for(Map.Entry<Integer,Player> entry1 : GameLobby.playerCollection.entrySet()){
-                        uid = entry1.getKey();
-                        Socket Temp_Sock = SocketList.get(uid);
-                        PrintWriter OUT2=new PrintWriter(Temp_Sock.getOutputStream());
-                        OUT2.println(GameLobby.returnPlayers());
-                        OUT2.flush();
-                    }
-                    return true;
-            }
-            default:
-            {
-                    System.err.println("Error: Wrong Protocol in SetServer.checkUser()");
-                    System.exit(01);
-            }
-        }
-        return false;
-    }
 }

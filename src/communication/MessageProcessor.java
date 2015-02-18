@@ -113,9 +113,12 @@ public class MessageProcessor implements Runnable {
             }
             case "C":
                 {   
-                    String uid_s = message.substring(1,message.length());
+                    String[] data = message.substring(1,message.length()).split("`");
+                    String uid_s = data[0];
+                    String gameName = data[1];
                     int uid =Integer.parseInt(uid_s);
                     Game game = GameLobby.createGame(uid);
+                    game.name = gameName;
                     sendMessage(uid,game.board.returnCardsOnBoard());
                     sendMessage(uid,game.returnScoreBoard());                    
                     for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
@@ -263,6 +266,9 @@ public class MessageProcessor implements Runnable {
                 Socket sock = SetServer.SocketList.get(uid);
                 sock.close();
                 SetServer.SocketList.remove(uid);
+                for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
+                    sendMessage(entry.getKey(),GameLobby.returnPlayers());
+                }
                 break;
             
             }

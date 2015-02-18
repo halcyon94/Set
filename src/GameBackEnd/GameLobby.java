@@ -54,7 +54,7 @@ public class GameLobby {
             numOfPlayers  = entry.getValue().playerNum();
             gid = entry.getKey();
             if(numOfPlayers>0){
-                message = message + Integer.toString(gid) + "`" + Integer.toString(numOfPlayers) + "`";
+                message = message + Integer.toString(gid) + "`" +entry.getValue().name + "`" + Integer.toString(numOfPlayers) + "`";
             }
             else{
                 gameCollection.remove(gid);
