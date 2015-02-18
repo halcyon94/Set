@@ -49,7 +49,7 @@ Messages to be set to the Server
     "R" + username + "`" + password
         -register user
         
-    "C" + uid
+    "C" + uid + "`" + game name
         -create game and join the game as this uid
         
     "J" + gid + "`" + uid
