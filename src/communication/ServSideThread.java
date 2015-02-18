@@ -20,12 +20,13 @@ import java.util.logging.Logger;
  */
 class ServSideThread implements Runnable {
     Socket sock;
+    int sid;
     private Scanner input;
     private PrintWriter out;
     String message="";
-    public ServSideThread(Socket SOCK) {
+    public ServSideThread(Socket SOCK, int sid) {
         this.sock = SOCK;
-
+        this.sid  = sid;
     }
 
     @Override
@@ -45,6 +46,8 @@ class ServSideThread implements Runnable {
                 message=input.nextLine(); //queue message in blocking queue
                 if(message != null){
                     try {
+                        if(message.substring(0,1).equals("S")|| message.substring(0,1).equals("R"))
+                            message = message + "`"+Integer.toString(sid);
                         SetServer.bqueue.put(message);
                     } catch (InterruptedException except) {
                         System.out.println("ERROR:"+except+" in ServSideThread.run() (2)");

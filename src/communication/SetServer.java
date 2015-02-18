@@ -14,6 +14,7 @@ import GameBackEnd.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
@@ -25,7 +26,8 @@ public class SetServer{
     
     public static ConcurrentMap<Integer,Socket> SocketList = new ConcurrentHashMap<>(); //uid to socket map
     public static BlockingQueue<String> bqueue = new LinkedBlockingQueue<String>();
-    
+    public static ConcurrentMap<Integer,Socket> waitingSockets = new ConcurrentHashMap<>();
+    private static int sid=0;
     public static void main(String[] args)throws IOException
     {
             try{
@@ -38,14 +40,16 @@ public class SetServer{
                     while(true)
                     {
                             Socket SOCK=SERVER.accept();
-                            if(validCredentials(SOCK)){
-                                ServSideThread sst=new ServSideThread(SOCK);
-                                Thread X=new Thread(sst);
-                                X.start();
-                            }
-                            else{
-                                SOCK.close();
-                            }
+                            sid++;
+                            waitingSockets.put(sid,SOCK);
+                            //   if(validCredentials(SOCK)){
+                            ServSideThread sst=new ServSideThread(SOCK,sid);
+                            Thread X=new Thread(sst);
+                            X.start();
+                         //   }
+                          //  else{
+                          //      SOCK.close();
+                           // }
                     }
             }
             catch(Exception X){System.out.println("ERROR:"+X+" in SetServer.main() ");}

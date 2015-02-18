@@ -7,6 +7,7 @@
 package communication;
 
 import GameBackEnd.*;
+import static communication.SetServer.SocketList;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -32,17 +33,84 @@ public class MessageProcessor implements Runnable {
                 try {
                     processMessage(message);
                 } catch (Exception ex) {
-                    System.out.println("ERROR: "+ex+" in MessageProcessor.run() (1) "); 
+                    ex.printStackTrace();
                 }
             } catch (InterruptedException ex) {
-                    System.out.println("ERROR: "+ex+" in MessageProcessor.run() (1) ");
+                    System.out.println("ERROR: "+ex+" in MessageProcessor.run() (2) ");
             }
         }
     }
-    public static void processMessage(String message) throws Exception{
+    public static void processMessage(String message) throws Exception {
          
         switch(message.substring(0,1)){
-
+            case "S": 
+                {
+                    int uid, addr;
+                    String username, password;
+                    int result;
+                    Socket X;
+                    String[] data = message.substring(1,message.length()).split("`");
+                    username = data[0];
+                    password = data[1];
+                    addr = Integer.parseInt(data[2]);
+                    X =  SetServer.waitingSockets.get(addr);
+                    result = GameLobby.enterLobby(username,password,false);
+                    if(result >1){
+                        SocketList.put(result, X);
+                        SetServer.waitingSockets.remove(addr);
+                        PrintWriter OUT=new PrintWriter(X.getOutputStream());
+                        OUT.println("V"+result);
+                        OUT.flush();
+                        OUT.println(GameLobby.returnGames()); 
+                        OUT.flush();
+                        OUT.println(GameLobby.returnPlayers()); 
+                        OUT.flush();
+                        for(Map.Entry<Integer,Player> entry1 : GameLobby.playerCollection.entrySet()){
+                            uid = entry1.getKey();
+                            Socket Temp_Sock = SocketList.get(uid);
+                            PrintWriter OUT2=new PrintWriter(Temp_Sock.getOutputStream());
+                            OUT2.println(GameLobby.returnPlayers());
+                            OUT2.flush();
+                        }
+                    }
+                    else{
+                        PrintWriter OUT=new PrintWriter(X.getOutputStream());
+                        OUT.println("I");
+                        OUT.flush();
+                        SetServer.waitingSockets.remove(addr);
+                        X.close();
+                    }
+                    break;
+                }
+            case "R":
+            {       
+                    int uid, addr;
+                    String username, password;
+                    int result;
+                    Socket X;
+                    String[] data = message.substring(1,message.length()).split("`");
+                    username = data[0];
+                    password = data[1];
+                    addr = Integer.parseInt(data[2]);
+                    X =  SetServer.waitingSockets.get(addr);
+                    SetServer.waitingSockets.remove(addr);
+                    result = GameLobby.enterLobby(username,password,true);
+                    SocketList.put(result, X);
+                    PrintWriter OUT=new PrintWriter(X.getOutputStream());
+                    OUT.println("V"+result);
+                    OUT.flush();
+                    OUT.println(GameLobby.returnGames()); 
+                    OUT.flush();
+                    OUT.println(GameLobby.returnPlayers()); 
+                    OUT.flush();
+                    for(Map.Entry<Integer,Player> entry1 : GameLobby.playerCollection.entrySet()){
+                        uid = entry1.getKey();
+                        Socket Temp_Sock = SocketList.get(uid);
+                        PrintWriter OUT2=new PrintWriter(Temp_Sock.getOutputStream());
+                        OUT2.println(GameLobby.returnPlayers());
+                        OUT2.flush();
+                    }
+            }
             case "C":
                 {   
                     String uid_s = message.substring(1,message.length());
