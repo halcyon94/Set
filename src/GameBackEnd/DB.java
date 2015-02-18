@@ -162,51 +162,6 @@ public class DB{
     }
   }
   
-  //test main function for DB.java
-  public static void main(String[] args) throws Exception {
-	  Connection connect = null;
-	  Statement statement = null;
-	  PreparedStatement preparedStatement = null;
-	  ResultSet resultSet = null;
-	  try {
-		  DB test = new DB();
-		  System.out.println("findusr="+test.insertUser("sheryan", "recog"));
-	      // this will load the MySQL driver, each DB has its own driver
-	      Class.forName("com.mysql.jdbc.Driver");
-	      // setup the connection with the DB.
-	      connect = DriverManager
-	          .getConnection("jdbc:mysql://localhost/setdb?"
-	              + "user=root&password=password");
 
-	      // statements allow to issue SQL queries to the database
-	      statement = connect.createStatement();
-	      // resultSet gets the result of the SQL query
-	      resultSet = statement
-	          .executeQuery("select * from users");
-	      while (resultSet.next()) {
-	          // it is possible to get the columns via name
-	          // also possible to get the columns via the column number
-	          // which starts at 1
-	          // e.g., resultSet.getSTring(2);
-	          String user = resultSet.getString("id");
-	          String website = resultSet.getString("login");
-	          String summary = resultSet.getString("password");
-	          System.out.println("id: " + user);
-	          System.out.println("login: " + website);
-	          System.out.println("pwd: " + summary);
-	      }
-	      
-	    } catch (Exception e) {
-	      throw e;
-	    } finally {
-	    	try {
-	  		  resultSet.close();
-	  		  statement.close();
-	  		  connect.close();
-	  	  } catch (Exception e) {
-	  		  System.out.println(e);
-	  	  }
-	    }
-  }
 
 }
