@@ -167,7 +167,11 @@ class ClientSideThread implements Runnable {
             }
             case "L":
             {   //kick player into the same state as someone trying to login 
-                
+            	SwingUtilities.invokeLater(new Runnable() {
+        			public void run() {
+        				c.createLoginFrame();
+        			}
+        		});
                 break;
             }
             case "R":

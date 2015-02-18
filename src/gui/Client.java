@@ -69,7 +69,7 @@ public class Client extends JFrame {
 	}
 
 	//Load and display the login dialog
-	private void createLoginFrame() {
+	public void createLoginFrame() {
 		login = new LoginPanel(connection);
 		addLoginListeners(login);
 		setTitle("Login to Set");
@@ -139,10 +139,6 @@ public class Client extends JFrame {
 			}
 		};
 		p.addListeners(a1, a2);
-	}
-	
-	public void testAsync(String s) {
-		System.out.println(s);
 	}
 	
 	public void setUser(int id) {

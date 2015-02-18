@@ -152,6 +152,11 @@ public class LobbyPanel extends JPanel {
 				connection.logout(uid);
 			}
 		});
+		createGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				connection.createGame(uid);
+			}
+		});
 	}
 	
 	public void refreshGamesList(Object[][] gameData) {

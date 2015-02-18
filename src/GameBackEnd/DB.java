@@ -31,7 +31,7 @@ public class DB{
    public int insertUser(String username, String password) throws Exception{
       try{
     Class.forName("com.mysql.jdbc.Driver").newInstance();  
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
     statement = connect.createStatement();
           
         String sql = "insert into users (login,password,score,gp)"+ "values (?,?,0,0)";
@@ -65,7 +65,7 @@ public class DB{
    public int findUser(String username, String password) throws Exception{
         try{
         	Class.forName("com.mysql.jdbc.Driver");  
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
     statement = connect.createStatement();
       
         String sql = "SELECT id,login,password FROM users WHERE login = ? and password = ?";
@@ -95,7 +95,7 @@ public class DB{
    public void updateUserScore(int uid, int score) throws Exception{
         try{
     Class.forName("com.mysql.jdbc.Driver");  
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
     statement = connect.createStatement();
 
         String sql = "UPDATE users SET score=score + ?, gp=gp+1 WHERE id = ?";
@@ -119,7 +119,7 @@ public class DB{
        String message="R";
         try{
     Class.forName("com.mysql.jdbc.Driver");  
-        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/setdb?" + "user=root&password=password");
     statement = connect.createStatement();
 
     resultSet = statement.executeQuery("select id,login,score from users where score IS NOT NULL order by score DESC;");
