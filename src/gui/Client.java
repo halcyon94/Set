@@ -23,6 +23,7 @@ public class Client extends JFrame {
 	private int setSize = 3;
 	private final int ROWS = setSize;
 	private int myId;
+	private boolean gameActive = false;
 
 	private LoginPanel login;
 	private LobbyPanel lobby;
@@ -88,13 +89,19 @@ public class Client extends JFrame {
 		setSize(800, 600);
 		setResizable(true);
 		setLocationRelativeTo(null);
-		ActionListener a1 = new ActionListener() {
+		ActionListener joinListener = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				createGameFrame();
 			}
 		};
+		ActionListener createListener = new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				gameActive = true;
+			}
+		};
 		lobby = new LobbyPanel(connection, myId);
-		lobby.setJoinListener(a1);
+		lobby.joinButton.addActionListener(joinListener);
+		lobby.createGame.addActionListener(createListener);
 		JPanel c = (JPanel) getContentPane();
 		c.add(lobby, "LOBBY");
 		((CardLayout) c.getLayout()).show(c, "LOBBY");
@@ -148,6 +155,13 @@ public class Client extends JFrame {
 	public void badLogin() {
 		SetClient.Connect(this);
 		login.showPassPopup("NO! WRONG!");
+	}
+	
+	public void enterGame(int[] cardIDs) {
+		createGameFrame();
+		for(int id : cardIDs) {
+			game.addCard(id);
+		}
 	}
 	
 	public LobbyPanel getLobbyPanel() {

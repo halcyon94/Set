@@ -33,9 +33,9 @@ public class LobbyPanel extends JPanel {
 	private JButton refreshUsers = new JButton("Refresh");
 	private JButton refreshGames = new JButton("Refresh");
 	private JButton createButton = new JButton("Create");
-	private JButton createGame = new JButton("Create Game");
+	public JButton createGame = new JButton("Create Game");
 	private JButton logoutButton = new JButton("Logout");
-	private JButton joinButton = new JButton("Join Game");
+	public JButton joinButton = new JButton("Join Game");
 	private JButton msgButton = new JButton("Send Message");
 	
 	private JTextField nameField = new JTextField(20);
@@ -171,15 +171,6 @@ public class LobbyPanel extends JPanel {
 		userModel = new DefaultTableModel(userData, userColumns);
 		userTable.setModel(userModel);
 		formatTable(userTable);
-	}
-	
-	/**
-	 *	Initialize the ActionListener to be assigned to the "Join Game" buttons
-	 *	@param l The ActionListener to be attached to the Join buttons
-	 */
-	public void setJoinListener(ActionListener l) {
-		//joinListener = l;
-		joinButton.addActionListener(l);
 	}
 	
 	private void addListeners() {
