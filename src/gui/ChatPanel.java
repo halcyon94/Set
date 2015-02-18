@@ -51,8 +51,11 @@ public class ChatPanel extends JPanel {
 		msgField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				connection.lobbyChat(myID, msgField.getText());
-				msgField.setText("");
+				String text = msgField.getText();
+				if(!text.isEmpty()) {
+					connection.lobbyChat(myID, text);
+					msgField.setText("");	
+				}
 			}
 		});
         msgArea.setEditable(false);
