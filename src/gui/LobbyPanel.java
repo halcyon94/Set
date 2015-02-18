@@ -159,11 +159,15 @@ public class LobbyPanel extends JPanel {
 		});
 	}
 	
-	public void refreshGamesList(Object[][] gameData) {
+	public void refreshGamesList(Object[][] gameData, boolean isEmpty) {
 		System.out.println("[LobbyPanel] GameList refreshed");
-		gameModel = new DefaultTableModel(gameData, gameColumns);
-		gameTable.setModel(gameModel);
-		formatTable(gameTable);
+		if(!isEmpty) {
+			gameModel = new DefaultTableModel(gameData, gameColumns);
+			gameTable.setModel(gameModel);
+			formatTable(gameTable);
+		} else {
+			((DefaultTableModel) gameTable.getModel()).setRowCount(0);
+		}
 	}
 	
 	public void refreshUserList(Object[][] userData) {

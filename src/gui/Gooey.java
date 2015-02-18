@@ -115,7 +115,7 @@ public class Gooey extends JFrame {
 				createGameFrame();
 			}
 		};
-		lobby.setJoinListener(a1);
+		lobby.joinButton.addActionListener(a1);
 		JPanel c = (JPanel) getContentPane();
 		c.add(lobby, "LOBBY");
 		((CardLayout) c.getLayout()).show(c, "LOBBY");

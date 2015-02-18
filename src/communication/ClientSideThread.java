@@ -59,6 +59,7 @@ class ClientSideThread implements Runnable {
                     }
             }catch(Exception X){
                 System.out.println("ERROR: "+X+" in ClientSideThread.run() "); 
+                X.printStackTrace();
             }
     }//String[] data = message.substring(1,message.length()).split("`");
     public void messageDecypher(String message){
@@ -92,9 +93,15 @@ class ClientSideThread implements Runnable {
             {   //data is a string array of current table card IDs. loop through
                 //and populate the table
                 String[] data = message.substring(1,message.length()).split("`");
+                final int[] ids = new int[data.length];
                 for(int i=0;i<data.length;i++){
-                    ;
+                    ids[i]=Integer.parseInt(data[i]);
                 }
+                SwingUtilities.invokeLater(new Runnable() {
+         			public void run() {
+         				c.enterGame(ids);
+         			}
+         		});
                 break;
             }
             case "B":
@@ -125,12 +132,26 @@ class ClientSideThread implements Runnable {
             }
             case "G":
             {   //used to populate the gamechart in gamelobby
-                int gid;
-                int numOfPlayers;
-                System.out.println(message);
-//                String[] data = message.substring(1,message.length()).split("`");
-//                gid = Integer.parseInt(data[0]); 
-//                numOfPlayers = Integer.parseInt(data[1]); 
+            	System.out.println("Message="+message);
+            	String[] data = message.substring(1,message.length()).split("`");
+                final Object[][] gameData = new Object[data.length/2][3];
+                if(data.length>1) {
+                	for(int i=0;i<data.length;i+=2){
+                		System.out.println(data.length);
+                		gameData[i/2] = new Object[] {new Integer(data[i]), "Game"+data[i], new Integer(data[i+1])};
+                	}
+                	SwingUtilities.invokeLater(new Runnable() {
+                		public void run() {
+                			c.getLobbyPanel().refreshGamesList(gameData, false);
+                		}
+                	});
+                } else {
+                	SwingUtilities.invokeLater(new Runnable() {
+                		public void run() {
+                			c.getLobbyPanel().refreshGamesList(null, true);
+                		}
+                	});
+                }
                 break;
             }
             case "P":
