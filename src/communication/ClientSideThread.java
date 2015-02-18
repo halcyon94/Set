@@ -57,9 +57,7 @@ class ClientSideThread implements Runnable {
                     finally{
                             sock.close();
                     }
-            }catch(Exception X){
-                System.out.println("ERROR: "+X+" in ClientSideThread.run() "); 
-            }
+            }catch(Exception X){X.printStackTrace();}
     }//String[] data = message.substring(1,message.length()).split("`");
     public void messageDecypher(String message){
         switch(message.substring(0,1)){
@@ -84,7 +82,7 @@ class ClientSideThread implements Runnable {
             	try {
 					sock.close();
 				} catch (IOException e) {
-                                    System.out.println("ERROR: "+e+" in ClientSideThread.messageDecypher() "); 
+					System.out.println("Smurfed up at I");
 				}
                 break;
             }

@@ -31,11 +31,19 @@ public class Client extends JFrame {
 	private ClientConnection connection = new ClientConnection();
 	
 	public Client() {
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		getContentPane().setLayout(new CardLayout());
 		setVisible(true);
 		NotificationManager.setMargin(10,10,50,10);
 		SetClient.Connect(this);
+		WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                connection.logout(myId);
+                System.exit(NORMAL);
+            }
+        };
+        addWindowListener(exitListener);
 	}
 
 	//Main Method
@@ -52,7 +60,7 @@ public class Client extends JFrame {
 					}
 				} catch (Exception e) {
 					try {UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());}
-					catch (Exception e2) {}
+					catch (Exception e2) {System.out.println("Could not set UI LaF!");}
 				}
 				Client window = new Client();
 				window.createLoginFrame();
@@ -121,14 +129,12 @@ public class Client extends JFrame {
 					login.showPassPopup("geez, you cant leave this empty");
 				} else {
 					connection.userLogin(user, pass);
-					//createLobbyFrame();
 				}
 			}
 		};
 		//Listener for register button
 		ActionListener a2 = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.out.println("R`"+login.getUser()+"`"+login.getPassword());
 				createLobbyFrame();
 			}
 		};
@@ -145,7 +151,7 @@ public class Client extends JFrame {
 	
 	public void badLogin() {
 		SetClient.Connect(this);
-		JOptionPane.showMessageDialog(new JFrame(), "WRONG!");
+		login.showPassPopup("NO! WRONG!");
 	}
 	
 	public LobbyPanel getLobbyPanel() {

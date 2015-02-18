@@ -39,5 +39,9 @@ public class ClientConnection {
 		    	{new Integer(2), "Dolen was hier 2", "5/5"}
 		};
 	}
+	
+	public void logout(int uid) {
+		SetClient.sendMessage("K"+uid);
+	}
 
 }

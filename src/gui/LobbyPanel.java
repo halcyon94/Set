@@ -147,16 +147,22 @@ public class LobbyPanel extends JPanel {
 				System.out.println("refresh users clicked");
 			}
 		});
+		logoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				connection.logout(uid);
+			}
+		});
 	}
 	
 	public void refreshGamesList(Object[][] gameData) {
-		System.out.println("refresh users received");
+		System.out.println("[LobbyPanel] GameList refreshed");
 		gameModel = new DefaultTableModel(gameData, gameColumns);
 		gameTable.setModel(gameModel);
 		formatTable(gameTable);
 	}
 	
 	public void refreshUserList(Object[][] userData) {
+		System.out.println("[LobbyPanel] UserList refreshed");
 		userModel = new DefaultTableModel(userData, userColumns);
 		userTable.setModel(userModel);
 		formatTable(userTable);

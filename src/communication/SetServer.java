@@ -42,13 +42,10 @@ public class SetServer{
                                 ServSideThread sst=new ServSideThread(SOCK);
                                 Thread X=new Thread(sst);
                                 X.start();
-                            }
-                            else{
-                                SOCK.close();
-                            }
+                           } 
                     }
             }
-            catch(Exception X){System.out.println("ERROR:"+X+" in SetServer.main() ");}
+            catch(Exception X){System.out.print(X);}
     }
 
     public static boolean validCredentials(Socket X) throws IOException, Exception

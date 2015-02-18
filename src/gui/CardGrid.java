@@ -81,8 +81,8 @@ public class CardGrid extends JPanel {
 		});
 		cards++;
 		int cardsInCol = lastCol.getComponentCount();
-		if(cardMap.containsKey(c.getID(setSize)))
-			System.out.println("Card already in grid");
+//		if(cardMap.containsKey(c.getID(setSize)))
+//			System.out.println("Card already in grid");
 		if(cardsInCol < rows) {
 			lastCol.add(ct);
 			cardMap.put(c.getID(setSize), new Location(columns-1,cardsInCol));

@@ -64,6 +64,7 @@ public class ChatPanel extends JPanel {
 			d.insertString(d.getLength(), message+"\n", bold);
 		} catch (javax.swing.text.BadLocationException e) {
 			System.out.println("You smurfed up");
+			e.printStackTrace();
 		}
 		msgArea.setCaretPosition(d.getLength()); //scroll to bottom
 	}
