@@ -9,7 +9,10 @@ Messages to be sent to Client
         -user is valid, and the assigned id is provided
         
     "I"
-        -user is invalid
+        -user is invalid    
+    
+    "E"
+        -user already exists
         
     "C" + cardID + "`" + cardID + "`" + ...
         -cards on board are returned
