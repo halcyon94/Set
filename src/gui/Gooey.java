@@ -78,7 +78,7 @@ public class Gooey extends JFrame {
 		addTestButtons(buttons);
 		gameCard.add(buttons, BorderLayout.EAST);
 
-		chat = new ChatPanel(80);
+		chat = new ChatPanel(80, null, 1);
 		gameCard.add(chat, BorderLayout.SOUTH);
 
 		grid = new CardGrid(ROWS, 3, setSize, players.getColor(1));

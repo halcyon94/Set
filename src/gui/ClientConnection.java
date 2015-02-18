@@ -12,17 +12,9 @@ public class ClientConnection {
 
 	}
 
-	public String getPlayerName(int id) {
-		return null;
-	}
-
-	public int getPlayerRating(int id) {
-		return 0;
-	}
-
 	public void userLogin(String username, String password) {
 		SetClient.sendMessage("S"+username+"`"+password);
-		System.out.println("S"+username+"`"+password);
+		//System.out.println("S"+username+"`"+password);
 	}
 
 	//return 2D Object array in format {Integer(id), String(name), Integer(rating)}
@@ -54,6 +46,10 @@ public class ClientConnection {
 	
 	public void joinGame(int gid, int uid) {
 		SetClient.sendMessage("J"+gid+"`"+uid);
+	}
+	
+	public void lobbyChat(int uid, String msg) {
+		SetClient.sendMessage("M"+uid+"`"+msg);
 	}
 
 }

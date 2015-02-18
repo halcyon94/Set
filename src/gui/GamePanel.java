@@ -3,12 +3,6 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
-
-import javax.swing.UIManager.*;
-import com.alee.laf.WebLookAndFeel;
-
-import com.alee.managers.notification.*;
 
 /**
  *	Set GUI tester
@@ -22,7 +16,7 @@ public class GamePanel extends JPanel {
 	private int gameID;
 
 	private PlayerPanel players = new PlayerPanel();
-	private ChatPanel chat = new ChatPanel(80);
+	private ChatPanel chat;
 	private JPanel buttons = new JPanel(); //button panel
 	private CardGrid grid;
 	
@@ -46,7 +40,6 @@ public class GamePanel extends JPanel {
 		this.setSize = 3;
 		myID = playerID;
 		this.connection = connection;
-		
 		buildGameGUI();
 	}
 	
@@ -85,6 +78,7 @@ public class GamePanel extends JPanel {
 	//Assembles components of Set game GUI
 	private void buildGameGUI() {
 		//players.addPlayer(myID, colors[colorIndex++], connection.getPlayerName(myID), connection.getPlayerRating(myID)); //add current user
+		chat = new ChatPanel(80, connection, myID);
 		add(players, BorderLayout.NORTH); //add player panel to gui
 
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));

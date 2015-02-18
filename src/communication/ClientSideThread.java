@@ -178,6 +178,7 @@ class ClientSideThread implements Runnable {
             }
             case "M":
         {       int uid,gid;
+        		String username;
                 String actual_msg;
                 if(message.substring(1,2).equals("`")){
                     String[] data = message.substring(2,message.length()).split("`");
@@ -187,8 +188,9 @@ class ClientSideThread implements Runnable {
                 }                       
                 else{
                     String[] data = message.substring(1,message.length()).split("`");
-                    uid = Integer.parseInt(data[0]);
-                    actual_msg = data[1];
+                    username = data[1];
+                    actual_msg = data[2];
+                    c.getLobbyPanel().addLobbyChatMsg(username, actual_msg);
                 }
                 
                 break;

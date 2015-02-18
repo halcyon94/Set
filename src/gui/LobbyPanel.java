@@ -123,7 +123,7 @@ public class LobbyPanel extends JPanel {
 		add(info, BorderLayout.CENTER);
 		
 		//add chat
-		chat = new ChatPanel(150);
+		chat = new ChatPanel(150, connection, myID);
 		add(chat, BorderLayout.SOUTH);
 		
 		addListeners();
@@ -174,6 +174,10 @@ public class LobbyPanel extends JPanel {
 		userModel = new DefaultTableModel(userData, userColumns);
 		userTable.setModel(userModel);
 		formatTable(userTable);
+	}
+	
+	public void addLobbyChatMsg(String username, String msg) {
+		chat.userMessage(username, msg, Color.black);
 	}
 	
 	private void addListeners() {

@@ -1,10 +1,13 @@
 package gui;
 
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
+
 import java.awt.*;
+import java.io.IOException;
 
 /**
  *	Set GUI in-game chat panel
@@ -15,15 +18,20 @@ public class ChatPanel extends JPanel {
 			
 	private final static String defaultString = "Enter Message";
 	private JEditorPane msgArea = new JEditorPane("text/html", null);
+	private JButton sendButton = new JButton("SEND");
+	private JFormattedTextField msgField = new JFormattedTextField(defaultString);
+	private ClientConnection connection;
+	private int myID;
 	
 	/**
 	 *	Chat panel constructor
 	 */
-	public ChatPanel(int height) {
+	public ChatPanel(int height, ClientConnection connect, int uid) {
 		super(new BorderLayout(3,3));
+		myID = uid;
+		connection = connect;
 		setBorder(BorderFactory.createTitledBorder("Chat"));
 		
-		final JFormattedTextField msgField = new JFormattedTextField(defaultString);
 		msgField.setForeground(Color.LIGHT_GRAY);
 		msgField.addFocusListener(new FocusListener() {
 			@Override
@@ -40,12 +48,18 @@ public class ChatPanel extends JPanel {
 				}
 			}
 		});
+		msgField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				connection.lobbyChat(myID, msgField.getText());
+				msgField.setText("");
+			}
+		});
         msgArea.setEditable(false);
-        //msgArea.setContentType("text/html");
+        msgArea.setText("<html id='body'></html>");
+        msgArea.setText(msgArea.getText().trim());
         JScrollPane scrollArea = new JScrollPane(msgArea);
         scrollArea.setPreferredSize(new Dimension(100, height));
-        
-        JButton sendButton = new JButton("SEND");
         
         add(msgField, BorderLayout.CENTER);
         add(sendButton, BorderLayout.EAST);
@@ -63,13 +77,20 @@ public class ChatPanel extends JPanel {
 		try {
 			d.insertString(d.getLength(), message+"\n", bold);
 		} catch (javax.swing.text.BadLocationException e) {
-			System.out.println("You smurfed up");
+			System.out.println("Invalid location for msgArea");
 			e.printStackTrace();
 		}
 		msgArea.setCaretPosition(d.getLength()); //scroll to bottom
 	}
 	
-	public void userMessage(String message, String username, Color userColor) {
-		
+	public void userMessage(String username, String message, Color userColor) {
+		HTMLDocument d = (HTMLDocument) msgArea.getDocument();
+		try {
+			//d.insertString(d.getLength(), username+": "+message+"\n", null);
+			d.insertBeforeEnd(d.getElement("body"), "<div><b>"+username+":</b> "+message+"</div>");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		msgArea.setCaretPosition(d.getLength()); //scroll to bottom
 	}
 }

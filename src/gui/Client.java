@@ -4,7 +4,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
 
 import javax.swing.UIManager.*;
 
@@ -22,7 +21,7 @@ public class Client extends JFrame {
 
 	private int setSize = 3;
 	private final int ROWS = setSize;
-	private int myID;
+	private int myID = 0;
 	private int gameID;
 	private boolean gameActive = false;
 
@@ -40,10 +39,12 @@ public class Client extends JFrame {
 		WindowListener exitListener = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-            	if(gameActive)
-            		connection.leaveGame(gameID, myID);
-                connection.logout(myID);
-                System.exit(NORMAL);
+            	if(myID != 0) {
+            		if(gameActive)
+            			connection.leaveGame(gameID, myID);
+            		connection.logout(myID);
+            		System.exit(NORMAL);
+            	}
             }
         };
         addWindowListener(exitListener);
@@ -97,6 +98,7 @@ public class Client extends JFrame {
 				connection.joinGame(lobby.visibleGame, myID);
 			}
 		};
+		getRootPane().setDefaultButton(null);
 		lobby = new LobbyPanel(connection, myID);
 		lobby.joinButton.addActionListener(joinListener);
 		JPanel c = (JPanel) getContentPane();
