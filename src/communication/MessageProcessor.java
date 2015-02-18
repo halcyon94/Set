@@ -152,8 +152,8 @@ public class MessageProcessor implements Runnable {
             case "D":
                 {       
                     String[] data = message.substring(1,message.length()).split("`");
-                    int gid = Integer.parseInt(data[1]);
-                    int uid = Integer.parseInt(data[2]);
+                    int gid = Integer.parseInt(data[0]);
+                    int uid = Integer.parseInt(data[1]);
                     Game game = GameLobby.findGame(gid);
                     GameLobby.db.updateUserScore(uid, game.findPlayer(uid).returnScore());
                     game.leave(uid);
