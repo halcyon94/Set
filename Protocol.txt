@@ -11,7 +11,7 @@ Messages to be sent to Client
     "I"
         -user is invalid
         
-    "C" + gid + "`" + game name + "`" +cardID + "`" + cardID + "`" + ...
+    "C" + cardID + "`" + cardID + "`" + ...
         -cards on board are returned
         
     "B" + seconds
