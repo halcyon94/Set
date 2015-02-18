@@ -107,13 +107,14 @@ public class GameLobby {
     }
     
     public static int enterLobby(String Username, String Password, boolean newUser) throws Exception{
-        int uid=0;
+        int uid;
         int result=0;
-        //input into Database, receive a uid, insert the uid/socket combo into the socketList
-        //mark user a valid user and continue to GameLobby interface
         if(newUser){
 
             uid = db.insertUser(Username,Password);
+            if(playerCollection.containsKey(uid)){
+                return -1;
+            }
             Player player = new Player();
             player.initialize(uid, Username);
             playerCollection.put(uid, player);
@@ -122,6 +123,9 @@ public class GameLobby {
         }        
         else{
             if((uid = db.findUser(Username,Password)) > 1){
+                    if(playerCollection.containsKey(uid)){
+                       return -1;
+                    }
                     result = uid;
                     Player player = new Player();
                     player.initialize(uid, Username);

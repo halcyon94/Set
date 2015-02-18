@@ -75,7 +75,12 @@ public class MessageProcessor implements Runnable {
                     }
                     else{
                         PrintWriter OUT=new PrintWriter(X.getOutputStream());
-                        OUT.println("I");
+                        if(result == -1){
+                            OUT.println("E");
+                        }
+                        else{
+                            OUT.println("I");
+                        }
                         OUT.flush();
                         SetServer.waitingSockets.remove(addr);
                         X.close();
