@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -104,33 +106,29 @@ public class GameLobby {
         }
     }
     
-    //pretty much done, need DB.java methods however
-    //after a socket connects, the first thing that must happen is either sign in or register
     public static int enterLobby(String Username, String Password, boolean newUser) throws Exception{
-        int uid;
-        int result;
+        int uid=0;
+        int result=0;
         //input into Database, receive a uid, insert the uid/socket combo into the socketList
         //mark user a valid user and continue to GameLobby interface
         if(newUser){
+
             uid = db.insertUser(Username,Password);
             Player player = new Player();
             player.initialize(uid, Username);
             playerCollection.put(uid, player);
             //SocketList.put(uid,sock);
             result = uid;
-        }
-        //check if user exists in DB, return the uid, and insert the uid/socket into the socket list
-        //mark user as valid
+        }        
         else{
-            if((uid = db.findUser(Username,Password)) == -1){
-                result = 1;
-            }
+            if((uid = db.findUser(Username,Password)) > 1){
+                    result = uid;
+                    Player player = new Player();
+                    player.initialize(uid, Username);
+                    playerCollection.put(uid, player);
+                }
             else{
-                result = uid;
-                Player player = new Player();
-                player.initialize(uid, Username);
-                playerCollection.put(uid, player);
-                //SocketList.put(uid,sock);
+                result = 1;
             }
         }
         return result;
