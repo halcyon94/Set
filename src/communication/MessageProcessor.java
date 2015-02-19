@@ -203,8 +203,9 @@ public class MessageProcessor implements Runnable {
 
             case "P": 
                 {
-                    String new_message="";
+                    String new_message;
                     String[] data = message.substring(1,message.length()).split("`");
+                    String [] cmds = {""};
                     int gid = Integer.parseInt(data[0]);
                     int uid = Integer.parseInt(data[1]);
                     int c1 = Integer.parseInt(data[2]);
@@ -213,7 +214,11 @@ public class MessageProcessor implements Runnable {
                     Game game = GameLobby.findGame(gid);
                     if(uid == game.lockOwner()){
                         new_message = game.onSubmit(uid, c1, c2, c3);
-                        String[] cmds = new_message.split("*");
+                        if(new_message.contains("~"))
+                            cmds = new_message.split("~");
+                        else{
+                            cmds[0] = new_message;
+                        }
                         for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                             for (String cmd : cmds) {
                                 sendMessage(entry.getKey(),cmd);

@@ -60,17 +60,20 @@ public class Game {
             case 0: //send message to uid saying its a valid set, increase score by 1, and send new scoreboard and new board to all
                     player = findPlayer(uid);
                     player.incScore();
-                    message = board.returnCardsOnBoard() + "*" + returnScoreBoard();
+                    message = board.returnCardsOnBoard() + "~" + returnScoreBoard();
+                    System.out.println("Case0 "+message);
                     break;
             case 1: //send message to uid saying that its an invalid set, decrease score by 1, send new scoreboard to all
                     player = findPlayer(uid);
                     player.decScore();
                     message = returnScoreBoard();
+                    System.out.println("Case1 "+message);
                     break;
             case 2: //send message saying its a valid set, increase score by 1, update the scoreboard, and send message thats its Game Over, blocking their buttons
                     player = findPlayer(uid);
                     player.incScore();
-                    message = returnScoreBoard() + "*" + "O";
+                    message = returnScoreBoard() + "~" + "O";
+                    System.out.println("Case2 "+message);
                     break;
             default:
                 message = "";
