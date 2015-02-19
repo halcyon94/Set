@@ -17,12 +17,10 @@ public class ClientConnection {
 		//System.out.println("S"+username+"`"+password);
 	}
 
-	//return 2D Object array in format {Integer(id), String(name), Integer(rating)}
 	public void refreshUsers(int uid) {
 		SetClient.sendMessage("E"+uid);
 	}
 
-	//return 2D Object array in format {Integer(id), String(name), String(playerCount)}
 	public void refreshGames(int uid) {
 		SetClient.sendMessage("G"+uid);
 //		Object[][] gameData = {
@@ -54,6 +52,11 @@ public class ClientConnection {
 	
 	public void beginSet(int uid, int gid) {
 		SetClient.sendMessage("B"+gid+"`"+uid);
+	}
+	
+	public void submitSet(int uid, int gid, String cards) {
+		//System.out.println("SUBMITSET="+"P"+gid+"`"+uid+"`"+cards);
+		SetClient.sendMessage("P"+gid+"`"+uid+"`"+cards);
 	}
 
 }

@@ -90,6 +90,20 @@ class ClientSideThread implements Runnable {
 				}
                 break;
             }
+            case "E":
+            {
+            	 SwingUtilities.invokeLater(new Runnable() {
+          			public void run() {
+          				c.userExists();
+          			}
+          		});
+             	try {
+ 					sock.close();
+ 				} catch (IOException e) {
+                                     System.out.println("ERROR: "+e+" in ClientSideThread.messageDecypher() "); 
+ 				}
+                 break;
+        	}
             case "C":
             {   //data is a string array of current table card IDs. loop through
                 //and populate the table

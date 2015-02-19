@@ -168,6 +168,11 @@ public class Client extends JFrame {
 		login.showPassPopup("NO! WRONG!");
 	}
 	
+	public void userExists() {
+		SetClient.Connect(this);
+		login.showPassPopup("User is already logged in!");
+	}
+	
 	public boolean isGameActive() {
 		return gameActive;
 	}

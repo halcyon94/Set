@@ -1,8 +1,10 @@
 package gui;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  *	Set GUI tester
@@ -26,7 +28,7 @@ public class GamePanel extends JPanel {
 	
 	private ClientConnection connection;
 
-	private Timer t;
+	private Timer t = new Timer(1, null);
 	private int timer;
 	public int colorIndex = 0;
 	private Color[] colors = new Color[] {Color.blue, Color.red, Color.green,
@@ -117,36 +119,50 @@ public class GamePanel extends JPanel {
 			t.setInitialDelay(0);
 			t.start();
 	}
-	
+
 	//timer countdown for SET
 	private void setTimer(final int time) {
 		timer = time;
 		grid.toggleSelection();
-		setButton.setEnabled(false);
 		ActionListener counter = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) 
 			{ 
-				setButton.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
+				setButton.setText("<html><span style=\"text-align:center\">Submit<br>"+timer+"<br>&nbsp;</span></html>");
 				timer--;
 				if(timer < 0) {
 					t.stop();
 					grid.toggleSelection();
 					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
-					setButton.setEnabled(true);
 					grid.clearSelected();
 				}
-			}};
-			t = new Timer(1000, counter);
-			t.setInitialDelay(0);
-			t.start();
+			}
+		};
+		t = new Timer(1000, counter);
+		t.setInitialDelay(0);
+		t.start();
 	}
 
 	//Add in-game buttons to the provided panel
 	private void addGameButtons() {
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.beginSet(myID, gameID);
-				setTimer(5);
+				System.out.println(t.isRunning());
+				if(!t.isRunning()) {
+					connection.beginSet(myID, gameID);
+					setTimer(5);
+				} else {
+					ArrayList<Card> selList = grid.getSelected();
+					if(selList.size() == setSize) {
+						String ids = "";
+						for(Card c : selList)
+							ids+=(c.getID(setSize)+"`");
+						connection.submitSet(myID, gameID, ids);
+					}
+					t.stop();
+					grid.toggleSelection();
+					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+					grid.clearSelected();
+				}
 			}
 		});
 		buttons.add(setButton); //set button
