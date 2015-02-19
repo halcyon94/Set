@@ -178,7 +178,7 @@ public class Client extends JFrame {
 		login.showPassPopup("User is already logged in!");
 	}
 	
-	public boolean isGameActive() {
+	public boolean isGameActive() { 
 		return gameActive;
 	}
 
