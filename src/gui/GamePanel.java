@@ -51,7 +51,6 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void addCard(int id) {
-		System.out.println("Adding card with id="+id+" and setSize="+setSize);
 		grid.addCard(new Card(id, setSize));
 	}
 	
