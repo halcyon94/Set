@@ -35,9 +35,9 @@ public class SetClient {
     {
             try
             {
-                   final int PORT=3000;
-                   //final String HOST="199.98.20.114";
-                   final String HOST="localhost";
+                   final int PORT=8080;
+                   final String HOST="199.98.21.14";
+                   //final String HOST="localhost";
                    Socket SOCK=new Socket(HOST,PORT);
                    ClientSideThread cst=new ClientSideThread(SOCK);
                    OUT=new PrintWriter(SOCK.getOutputStream());
@@ -53,8 +53,9 @@ public class SetClient {
     {
             try
             {
-                   final int PORT=3000;
-                   final String HOST="LocalHost";
+                   final int PORT=8080;
+                   final String HOST = "localhost";
+                   //final String HOST="199.98.20.114";
                    Socket SOCK=new Socket(HOST,PORT);
                    ClientSideThread cst=new ClientSideThread(SOCK, c);
                    OUT=new PrintWriter(SOCK.getOutputStream());

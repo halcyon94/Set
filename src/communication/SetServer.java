@@ -32,7 +32,7 @@ public class SetServer{
     public static void main(String[] args)throws IOException
     {
             try{
-                    final int port=3000;
+                    final int port=8080;
                     ServerSocket SERVER=new ServerSocket(port);
                     System.out.println("Waiting for clients...");
                     MessageProcessor pm = new MessageProcessor();
