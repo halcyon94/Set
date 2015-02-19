@@ -32,7 +32,7 @@ public class SetServer{
     public static void main(String[] args)throws IOException
     {
             try{
-                    final int port=3000;
+                    final int port=8080;
                     ServerSocket SERVER=new ServerSocket(port);
                     System.out.println("Waiting for clients...");
                     MessageProcessor pm = new MessageProcessor();
@@ -41,6 +41,7 @@ public class SetServer{
                     while(true)
                     {
                         Socket SOCK=SERVER.accept();
+                        System.out.println("ConnectFrom="+SOCK.getInetAddress().getHostAddress());
                         sid++;
                         waitingSockets.put(sid,SOCK);
                         ServSideThread sst=new ServSideThread(SOCK,sid);
