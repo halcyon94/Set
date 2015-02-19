@@ -107,6 +107,10 @@ public class PlayerPanel extends JPanel {
 		return playerList.get(id).icon;
 	}
 	
+	public boolean containsPlayer(int id) {
+		return playerList.containsKey(id);
+	}
+	
 	//Nested class for the player cards
 	private class PlayerStat extends JPanel {
 		

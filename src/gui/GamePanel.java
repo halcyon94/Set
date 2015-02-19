@@ -2,6 +2,9 @@ package gui;
 
 import javax.swing.*;
 
+import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.WebNotificationPopup;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -192,5 +195,14 @@ public class GamePanel extends JPanel {
 	
 	public void setPlayerColor() {
 		grid.setPlayerColor(players.getColor(myID));
+	}
+	
+	public void showNotification(String message, Icon icon, boolean hasIcon) {
+		WebNotificationPopup notify = new WebNotificationPopup();
+		notify.setDisplayTime(3000);
+		notify.setContent(message);
+		if(hasIcon && icon!=null)
+			notify.setIcon(players.getIcon(1));
+		NotificationManager.showNotification (notify);
 	}
 }

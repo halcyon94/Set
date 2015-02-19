@@ -150,6 +150,7 @@ class ClientSideThread implements Runnable {
                 			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), 9001);;
                 		}
                 		c.setGameID(gid);
+                		p.showNotification("A player joined or scored, who knows", null, false);
                 		p.setGameID(gid);
                 		p.setPlayerColor();
                 	}
@@ -209,7 +210,7 @@ class ClientSideThread implements Runnable {
                     String[] data = message.substring(1,message.length()).split("`");
                     username = data[1];
                     actual_msg = data[2];
-                    c.getLobbyPanel().addLobbyChatMsg(username, actual_msg);
+                    c.getLobbyPanel().addLobbyChatMsg(username, actual_msg); //is this thread safe?
                 }
                 
                 break;

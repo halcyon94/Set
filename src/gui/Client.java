@@ -72,8 +72,13 @@ public class Client extends JFrame {
 		});
 	}
 
-	//Load and display the login dialog
+	//Load and display the login dialog, also called upon logout
 	public void createLoginFrame() {
+		myID = 0;
+		gameID = 0;
+		gameActive = false;
+		if(login!=null)
+			login.detachListeners(); //prevent memory leaks here
 		login = new LoginPanel(connection);
 		SetClient.Connect(this);
 		addLoginListeners(login);

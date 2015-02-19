@@ -96,4 +96,12 @@ public class LoginPanel extends JPanel {
 		loginButton.addActionListener(login);
 		registerButton.addActionListener(reg);
 	}
+	
+	//remove all action listeners
+	public void detachListeners() {
+		for(ActionListener l : loginButton.getActionListeners())
+			loginButton.removeActionListener(l);
+		for(ActionListener l : registerButton.getActionListeners())
+			registerButton.removeActionListener(l);
+	}
 }
