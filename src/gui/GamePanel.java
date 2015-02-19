@@ -81,6 +81,10 @@ public class GamePanel extends JPanel {
 	public ChatPanel getChat() {
 		return chat;
 	}
+	
+	public void clearGrid() {
+		grid.clear();
+	}
 
 	//Assembles components of Set game GUI
 	private void buildGameGUI() {

@@ -41,6 +41,7 @@ public class SetServer{
                     while(true)
                     {
                         Socket SOCK=SERVER.accept();
+                        System.out.println("ConnectFrom="+SOCK.getInetAddress().getHostAddress());
                         sid++;
                         waitingSockets.put(sid,SOCK);
                         ServSideThread sst=new ServSideThread(SOCK,sid);

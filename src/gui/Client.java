@@ -43,8 +43,8 @@ public class Client extends JFrame {
             		if(gameActive)
             			connection.leaveGame(gameID, myID);
             		connection.logout(myID);
-            		System.exit(NORMAL);
             	}
+            	System.exit(NORMAL);
             }
         };
         addWindowListener(exitListener);
@@ -189,7 +189,10 @@ public class Client extends JFrame {
 				game.addCard(id);
 			}
 		} else {
-			System.err.println("ERROR - attempted to join new game when already in game");
+			game.clearGrid();
+			for(int id : cardIDs) {
+				game.addCard(id);
+			}
 		}
 	}
 	
