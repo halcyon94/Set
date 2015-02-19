@@ -109,7 +109,7 @@ class ClientSideThread implements Runnable {
                 //and populate the table
                 final String[] data = message.substring(1,message.length()).split("`");
                 final int[] ids = new int[data.length];
-                for(int i=2;i<data.length;i++){
+                for(int i=0;i<data.length;i++) {
                     ids[i]=Integer.parseInt(data[i]);
                 }
                 SwingUtilities.invokeLater(new Runnable() {
