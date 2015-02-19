@@ -147,7 +147,7 @@ class ClientSideThread implements Runnable {
                 		p.getPlayers().clearAll();
                 		p.colorIndex = 0;
                 		for(int i=2; i<data.length; i+=3) {
-                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]));;
+                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), 9001);;
                 		}
                 		c.setGameID(gid);
                 		p.setGameID(gid);

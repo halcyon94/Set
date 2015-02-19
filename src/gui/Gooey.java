@@ -70,7 +70,7 @@ public class Gooey extends JFrame {
 	private void buildGameGUI() {
 		players = new PlayerPanel();
 		gameCard = new JPanel(new BorderLayout(5,5));
-		players.addPlayer(1, Color.BLUE, "Dolen", 9000);
+		players.addPlayer(1, Color.BLUE, "Dolen", 0, 9000);
 		gameCard.add(players, BorderLayout.NORTH);
 
 		JPanel buttons = new JPanel();
@@ -289,7 +289,7 @@ public class Gooey extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				Random rand = new Random();
 				Color tempColor = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
-				players.addPlayer(++counter, tempColor, "PlayerName", 1234);
+				players.addPlayer(++counter, tempColor, "PlayerName", 1234, 9000);
 				chat.systemMessage("Added Player");
 			}
 		});

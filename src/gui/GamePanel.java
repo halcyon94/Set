@@ -51,8 +51,8 @@ public class GamePanel extends JPanel {
 		grid.addCard(new Card(id, setSize));
 	}
 	
-	public void addPlayer(int id, String name, int rating) {
-		players.addPlayer(id, colors[colorIndex++], name, rating);
+	public void addPlayer(int id, String name, int score, int rating) {
+		players.addPlayer(id, colors[colorIndex++], name, score, rating);
 	}
 	
 	public void removePlayer(int id) {

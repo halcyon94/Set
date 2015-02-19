@@ -26,13 +26,14 @@ public class PlayerPanel extends JPanel {
 	 *	Add a player to the player panel
 	 *	@param color The player color
 	 *	@param name The player name
-	 *	@param rating The player rating
+	 *	@param score The player score
+	 *  @param rating The player rating
 	 */
-	public void addPlayer(int id, Color color, String name, int rating) {
+	public void addPlayer(int id, Color color, String name, int score, int rating) {
 		if(playerList.containsKey(new Integer(id))) {
 			System.out.println("Warning - player with id "+id+" already added");
 		} else {
-			PlayerStat player = new PlayerStat(color, name, rating);
+			PlayerStat player = new PlayerStat(color, name, score, rating);
 			add(player);
 			playerList.put(id, player);
 			revalidate();
@@ -114,7 +115,7 @@ public class PlayerPanel extends JPanel {
 		public Color playerColor;
 		public ImageIcon icon;
 		
-		public PlayerStat(Color color, String name, int rating) {
+		public PlayerStat(Color color, String name, int score, int rating) {
 			super();
 			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 			JPanel temp = new JPanel();
