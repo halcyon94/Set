@@ -158,7 +158,9 @@ public class Client extends JFrame {
 		//Listener for register button
 		ActionListener a2 = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				createLobbyFrame();
+				String user = login.getUser();
+				String pass = login.getPassword();
+				connection.userRegister(user, pass);
 			}
 		};
 		p.addListeners(a1, a2);

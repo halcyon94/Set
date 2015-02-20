@@ -1,20 +1,16 @@
 package gui;
 
-import java.io.IOException;
-
 import communication.SetClient;
 
-
-//Placeholder for connection class
+//Implements client to server protocol
 public class ClientConnection {
-
-	public ClientConnection() {
-
-	}
 
 	public void userLogin(String username, String password) {
 		SetClient.sendMessage("S"+username+"`"+password);
-		//System.out.println("S"+username+"`"+password);
+	}
+	
+	public void userRegister(String username, String password) {
+		SetClient.sendMessage("R"+username+"`"+password);
 	}
 
 	public void refreshUsers(int uid) {
@@ -23,11 +19,6 @@ public class ClientConnection {
 
 	public void refreshGames(int uid) {
 		SetClient.sendMessage("G"+uid);
-//		Object[][] gameData = {
-//		    	{new Integer(23), "CU-NERDS 2", "2/2"},
-//		    	{new Integer(5), "FF Crew Bubbies 2", "5/5"},
-//		    	{new Integer(2), "Dolen was hier 2", "5/5"}
-//		};
 	}
 	
 	public void logout(int uid) {
@@ -55,7 +46,6 @@ public class ClientConnection {
 	}
 	
 	public void submitSet(int uid, int gid, String cards) {
-		//System.out.println("SUBMITSET="+"P"+gid+"`"+uid+"`"+cards);
 		SetClient.sendMessage("P"+gid+"`"+uid+"`"+cards);
 	}
 
