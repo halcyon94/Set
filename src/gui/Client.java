@@ -174,6 +174,7 @@ public class Client extends JFrame {
 	public void badLogin() {
 		SetClient.Connect(this);
 		login.showPassPopup("NO! WRONG!");
+		login.wongSound();
 	}
 	
 	public void userExists() {

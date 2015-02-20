@@ -87,7 +87,7 @@ class ClientSideThread implements Runnable {
             	try {
 					sock.close();
 				} catch (IOException e) {
-                                    System.out.println("ERROR: "+e+" in ClientSideThread.messageDecypher() "); 
+                     System.out.println("ERROR: "+e+" in ClientSideThread.messageDecypher() "); 
 				}
                 break;
             }
