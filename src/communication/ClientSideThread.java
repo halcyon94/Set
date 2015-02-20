@@ -27,6 +27,7 @@ class ClientSideThread implements Runnable {
     Socket sock;
     Scanner input;
     Client c;
+    boolean threadDone=false;
 
     ClientSideThread(Socket SOCK) {
         this.sock = SOCK;
@@ -51,6 +52,8 @@ class ClientSideThread implements Runnable {
                                     String MESSAGE =input.nextLine();
                                     messageDecypher(MESSAGE);
                                     System.out.println("RECEIVED FROM SERVER: "+MESSAGE);
+                                    if(threadDone)
+                                            break;
                                 }
 
                             }
@@ -89,6 +92,7 @@ class ClientSideThread implements Runnable {
 				} catch (IOException e) {
                      System.out.println("ERROR: "+e+" in ClientSideThread.messageDecypher() "); 
 				}
+                threadDone=true;
                 break;
             }
             case "E":
@@ -103,6 +107,7 @@ class ClientSideThread implements Runnable {
  				} catch (IOException e) {
                                      System.out.println("ERROR: "+e+" in ClientSideThread.messageDecypher() "); 
  				}
+                threadDone=true;
                  break;
         	}
             case "C":
@@ -224,6 +229,7 @@ class ClientSideThread implements Runnable {
         				c.createLoginFrame();
         			}
         		});
+                threadDone=true;
                 break;
             }
             case "R":

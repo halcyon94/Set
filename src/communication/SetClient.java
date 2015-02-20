@@ -21,33 +21,6 @@ import gui.Client;
 public class SetClient {
     public static PrintWriter OUT;
     
-    public static void main(String[] args) throws IOException{
-        Connect();
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String s;
-        while((s=in.readLine())!=null && (s.length() !=0)){
-            OUT.println(s);
-            OUT.flush();
-        }
-    }
-    
-    public static void Connect()
-    {
-            try
-            {
-                   final int PORT=8080;
-                   final String HOST="localhost";
-                   Socket SOCK=new Socket(HOST,PORT);
-                   ClientSideThread cst=new ClientSideThread(SOCK);
-                   OUT=new PrintWriter(SOCK.getOutputStream());
-                   Thread X=new Thread(cst);
-                   X.start();
-            }
-            catch(Exception X)
-            {
-                    System.out.println("ERROR:"+X+" in SetClient.connect()");
-            }
-    }
     public static void Connect(Client c)
     {
             try
