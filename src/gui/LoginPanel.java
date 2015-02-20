@@ -1,6 +1,5 @@
 package gui;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 
 import java.awt.event.*;
@@ -106,16 +105,5 @@ public class LoginPanel extends JPanel {
 			loginButton.removeActionListener(l);
 		for(ActionListener l : registerButton.getActionListeners())
 			registerButton.removeActionListener(l);
-	}
-	
-	public void wongSound() {
-		try {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("wrong.wav"));
-	        Clip clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	        clip.start();
-	    } catch (Exception e) {
-	        System.err.println(e.getMessage());
-	    }
 	}
 }

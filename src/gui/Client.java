@@ -1,5 +1,8 @@
 package gui;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import java.awt.*;
@@ -9,6 +12,7 @@ import javax.swing.UIManager.*;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.notification.*;
+
 import communication.SetClient;
 
 
@@ -172,13 +176,20 @@ public class Client extends JFrame {
 	}
 	
 	public void badLogin() {
-		SetClient.Connect(this);
+		SetClient.Connect(this); //reset connection
 		login.showPassPopup("NO! WRONG!");
-		login.wongSound();
+		try {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("wrong.wav"));
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    } catch (Exception e) {
+	        System.err.println(e.getMessage());
+	    }
 	}
 	
 	public void userExists() {
-		SetClient.Connect(this);
+		SetClient.Connect(this); //reset connection
 		login.showPassPopup("User is already logged in!");
 	}
 	
