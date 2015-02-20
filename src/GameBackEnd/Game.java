@@ -95,7 +95,7 @@ public class Game {
     }
     
     public String returnScore(int uid, int scoreChange) throws Exception{
-        return "X"+gid+"`"+name+"`"+Integer.toString(uid)+"`"+Integer.toString(scoreChange);
+        return "X"+gid+"`"+Integer.toString(uid)+"`"+Integer.toString(scoreChange);
     }
     
     public String dropPlayerFromSB(int uid){
