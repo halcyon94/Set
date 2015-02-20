@@ -99,11 +99,11 @@ public class Game {
     }
     
     public String dropPlayerFromSB(int uid){
-        return "Y"+gid+"`"+name+"`"+Integer.toString(uid);
+        return "Y"+gid+"`"+Integer.toString(uid);
     }
     
     public String addPlayerToSB(int uid) throws Exception{
-        return "Z"+gid+"`"+name+"`"+Integer.toString(uid)+"`"+playerCollection.get(uid).Username+"`"+"0"+Integer.toString(GameLobby.db.returnRating(uid));
+        return "Z"+gid+"`"+Integer.toString(uid)+"`"+playerCollection.get(uid).Username+"`"+"0"+Integer.toString(GameLobby.db.returnRating(uid));
    }
     //pretty much done
     //add player to the scoreboard, send the player the gameboard, update the scoreboard for all players
