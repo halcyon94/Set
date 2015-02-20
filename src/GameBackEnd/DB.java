@@ -88,6 +88,32 @@ public class DB{
         close();
     }
    }
+   
+   public int returnRating(int uid) throws Exception{
+        try{
+        	Class.forName("com.mysql.jdbc.Driver");  
+        connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing?" + "user=root&password=recognitio");
+    statement = connect.createStatement();
+      
+        String sql = "SELECT score FROM users WHERE id = ?";
+        
+    preparedStatement = connect.prepareStatement(sql);
+    preparedStatement.setString(1, Integer.toString(uid));
+    ResultSet k = preparedStatement.executeQuery();
+    int rating=0;
+        if(k.next())
+            rating = Integer.parseInt(k.getString("score"));
+        
+    return rating;
+
+   } catch (ClassNotFoundException | SQLException e) {
+       System.out.println("ERROR: "+e+" in DB.returnRating() "); 
+	   throw e;
+    }
+        finally {
+        close();
+    }
+   }
   
    //Performed at end of Game or at disconnect, whenever a player leaves a game
    //adds score to the current score of the player stored in the Database

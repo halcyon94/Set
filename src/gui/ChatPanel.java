@@ -26,6 +26,9 @@ public class ChatPanel extends JPanel {
 	
 	/**
 	 *	Chat panel constructor
+	 *	@param height Preferred height of the message field
+	 *	@param connect	ClientConnection object
+	 *	@param uid	ID of currently logged in user
 	 */
 	public ChatPanel(int height, ClientConnection connect, int uid) {
 		super(new BorderLayout(3,3));
