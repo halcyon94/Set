@@ -48,5 +48,9 @@ public class ClientConnection {
 	public void submitSet(int uid, int gid, String cards) {
 		SetClient.sendMessage("P"+gid+"`"+uid+"`"+cards);
 	}
+	
+	public void setFail(int uid, int gid) {
+		SetClient.sendMessage("F"+gid+"`"+uid);
+	}
 
 }

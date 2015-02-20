@@ -47,6 +47,7 @@ public class GamePanel extends JPanel {
 		this.setSize = 3;
 		myID = playerID;
 		this.connection = connection;
+		setButton.setHorizontalAlignment(SwingConstants.CENTER);
 		buildGameGUI();
 	}
 	
@@ -88,26 +89,23 @@ public class GamePanel extends JPanel {
 
 	//Assembles components of Set game GUI
 	private void buildGameGUI() {
-		//players.addPlayer(myID, colors[colorIndex++], connection.getPlayerName(myID), connection.getPlayerRating(myID)); //add current user
 		chat = new ChatPanel(80, connection, myID);
 		add(players, BorderLayout.NORTH); //add player panel to gui
 
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
 		addGameButtons();
 		add(buttons, BorderLayout.EAST); //add button panel to gui
-
+		
 		add(chat, BorderLayout.SOUTH); //add chat panel to gui
 
 		grid = new CardGrid(setSize, 3, setSize, Color.BLACK);
-
-//		for(int i=0; i<setSize*setSize*setSize*setSize; i++) {
-//			grid.addCard(new Card(i, setSize));
-//		}
-
 		add(grid, BorderLayout.CENTER); //add card grid to gui
 	}
 
-	//block user from clicking SET for a specified time
+	/**
+	 * Disables the player's SET button for the specified amount of time.
+	 * @param time Time (in seconds) to disable the button
+	 */
 	public void blockTimer(final int time) {
 		timer = time;
 		setButton.setEnabled(false);
@@ -133,14 +131,11 @@ public class GamePanel extends JPanel {
 		grid.toggleSelection();
 		ActionListener counter = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) 
-			{ 
-				setButton.setText("<html><span style=\"text-align:center\">Submit<br>"+timer+"<br>&nbsp;</span></html>");
+			{
+				setButton.setText("<html><center>OK<br>"+timer+"<br>&nbsp;</center></html>");
 				timer--;
 				if(timer < 0) {
-					t.stop();
-					grid.toggleSelection();
-					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
-					grid.clearSelected();
+					submitSet();
 				}
 			}
 		};
@@ -158,17 +153,7 @@ public class GamePanel extends JPanel {
 					connection.beginSet(myID, gameID);
 					setTimer(5);
 				} else {
-					ArrayList<Card> selList = grid.getSelected();
-					if(selList.size() == setSize) {
-						String ids = "";
-						for(Card c : selList)
-							ids+=(c.getID(setSize)+"`");
-						connection.submitSet(myID, gameID, ids);
-					}
-					t.stop();
-					grid.toggleSelection();
-					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
-					grid.clearSelected();
+					submitSet();
 				}
 			}
 		});
@@ -182,6 +167,23 @@ public class GamePanel extends JPanel {
 		});
 		buttons.add(logoutButton); //logout button
 		buttons.add(quitButton); //quit button
+	}
+	
+	private void submitSet() {
+		ArrayList<Card> selList = grid.getSelected();
+		if(selList.size() == setSize) {
+			setButton.setEnabled(false);
+			String ids = "";
+			for(Card c : selList)
+				ids+=(c.getID(setSize)+"`");
+			connection.submitSet(myID, gameID, ids);
+		} else {
+			connection.setFail(myID, gameID);
+		}
+		t.stop();
+		grid.toggleSelection();
+		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+		grid.clearSelected();
 	}
 
 	//Adds test button panel
@@ -199,6 +201,12 @@ public class GamePanel extends JPanel {
 	
 	public void setPlayerColor() {
 		grid.setPlayerColor(players.getColor(myID));
+	}
+	
+	public void unblockButton() {
+		t.stop();
+		setButton.setEnabled(true);
+		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 	}
 	
 	public void showNotification(String message, Icon icon, boolean hasIcon) {

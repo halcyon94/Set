@@ -128,6 +128,11 @@ class ClientSideThread implements Runnable {
             case "U":
             {
                 //unblock the buttons
+            	SwingUtilities.invokeLater(new Runnable() {
+         			public void run() {
+         				c.getGamePanel().unblockButton();
+         			}
+         		});
                 break;
             }
             case "O":
