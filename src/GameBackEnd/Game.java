@@ -60,20 +60,17 @@ public class Game {
             case 0: //send message to uid saying its a valid set, increase score by 1, and send new scoreboard and new board to all
                     player = findPlayer(uid);
                     player.incScore();
-                    message = board.returnCardsOnBoard() + "~" + returnScoreBoard();
-                    System.out.println("Case0 "+message);
+                    message = board.returnCardsOnBoard() + "~" + returnScore(uid,1+player.returnScore());
                     break;
             case 1: //send message to uid saying that its an invalid set, decrease score by 1, send new scoreboard to all
                     player = findPlayer(uid);
                     player.decScore();
-                    message = returnScoreBoard();
-                    System.out.println("Case1 "+message);
+                    message = returnScore(uid,player.returnScore()-1);
                     break;
             case 2: //send message saying its a valid set, increase score by 1, update the scoreboard, and send message thats its Game Over, blocking their buttons
                     player = findPlayer(uid);
                     player.incScore();
-                    message = returnScoreBoard() + "~" + "O";
-                    System.out.println("Case2 "+message);
+                    message = returnScore(uid,player.returnScore()+1) + "~" + "O";
                     break;
             default:
                 message = "";
@@ -97,6 +94,17 @@ public class Game {
         return message;
     }
     
+    public String returnScore(int uid, int scoreChange) throws Exception{
+        return "X"+gid+"`"+name+"`"+Integer.toString(uid)+"`"+Integer.toString(scoreChange);
+    }
+    
+    public String dropPlayerFromSB(int uid){
+        return "Y"+gid+"`"+name+"`"+Integer.toString(uid);
+    }
+    
+    public String addPlayerToSB(int uid) throws Exception{
+        return "Z"+gid+"`"+name+"`"+Integer.toString(uid)+"`"+playerCollection.get(uid).Username+"`"+"0"+Integer.toString(GameLobby.db.returnRating(uid));
+   }
     //pretty much done
     //add player to the scoreboard, send the player the gameboard, update the scoreboard for all players
     public void join(int uid, Player player){
