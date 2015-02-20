@@ -22,6 +22,7 @@ public class ChatPanel extends JPanel {
 	private JFormattedTextField msgField = new JFormattedTextField(defaultString);
 	private ClientConnection connection;
 	private int myID;
+	private int gameID = 0;
 	
 	/**
 	 *	Chat panel constructor
@@ -53,7 +54,10 @@ public class ChatPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String text = msgField.getText();
 				if(!text.isEmpty()) {
-					connection.lobbyChat(myID, text);
+					if(gameID != 0)
+						connection.sendChat(myID, text, gameID);
+					else
+						connection.sendChat(myID, text);
 					msgField.setText("");	
 				}
 			}
@@ -69,6 +73,11 @@ public class ChatPanel extends JPanel {
         add(msgField, BorderLayout.CENTER);
         add(sendButton, BorderLayout.EAST);
         add(scrollArea, BorderLayout.NORTH);
+	}
+	
+	public ChatPanel(int height, ClientConnection connect, int uid, int gid) {
+		this(height, connect, uid);
+		this.gameID = gid;
 	}
 	
 	/**
@@ -90,11 +99,14 @@ public class ChatPanel extends JPanel {
 	public void userMessage(String username, String message, Color userColor) {
 		HTMLDocument d = (HTMLDocument) msgArea.getDocument();
 		try {
-			//d.insertString(d.getLength(), username+": "+message+"\n", null);
 			d.insertBeforeEnd(d.getElement("body"), "<div><b>"+username+":</b> "+message+"</div>");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		msgArea.setCaretPosition(d.getLength()); //scroll to bottom
+	}
+	
+	public void setGameID(int gid) {
+		this.gameID = gid;
 	}
 }

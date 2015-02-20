@@ -50,46 +50,10 @@ public class GamePanel extends JPanel {
 		setButton.setHorizontalAlignment(SwingConstants.CENTER);
 		buildGameGUI();
 	}
-	
-	public void addCard(int id) {
-		grid.addCard(new Card(id, setSize));
-	}
-	
-	public void addPlayer(int id, String name, int score, int rating) {
-		players.addPlayer(id, colors[colorIndex++], name, score, rating);
-	}
-	
-	public void removePlayer(int id) {
-		players.removePlayer(id);
-	}
-	
-	public void increaseScore(int id) {
-		players.increaseScore(id);
-	}
-	
-	public void decreaseScore(int id) {
-		players.increaseScore(id);
-	}
-	
-	public CardGrid getCards() {
-		return grid;
-	}
-	
-	public PlayerPanel getPlayers() {
-		return players;
-	}
-	
-	public ChatPanel getChat() {
-		return chat;
-	}
-	
-	public void clearGrid() {
-		grid.clear();
-	}
 
 	//Assembles components of Set game GUI
 	private void buildGameGUI() {
-		chat = new ChatPanel(80, connection, myID);
+		chat = new ChatPanel(80, connection, myID, 0);
 		add(players, BorderLayout.NORTH); //add player panel to gui
 
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -193,6 +157,7 @@ public class GamePanel extends JPanel {
 	
 	public void setGameID(int gid) {
 		gameID = gid;
+		chat.setGameID(gid);
 	}
 	
 	public void setSelectionColor(Color c) {
@@ -216,5 +181,41 @@ public class GamePanel extends JPanel {
 		if(hasIcon && icon!=null)
 			notify.setIcon(players.getIcon(1));
 		NotificationManager.showNotification (notify);
+	}
+	
+	public void addCard(int id) {
+		grid.addCard(new Card(id, setSize));
+	}
+	
+	public void addPlayer(int id, String name, int score, int rating) {
+		players.addPlayer(id, colors[colorIndex++], name, score, rating);
+	}
+	
+	public void removePlayer(int id) {
+		players.removePlayer(id);
+	}
+	
+	public void increaseScore(int id) {
+		players.increaseScore(id);
+	}
+	
+	public void decreaseScore(int id) {
+		players.increaseScore(id);
+	}
+	
+	public CardGrid getCards() {
+		return grid;
+	}
+	
+	public PlayerPanel getPlayers() {
+		return players;
+	}
+	
+	public ChatPanel getChat() {
+		return chat;
+	}
+	
+	public void clearGrid() {
+		grid.clear();
 	}
 }

@@ -195,6 +195,7 @@ public class Client extends JFrame {
 			for(int id : cardIDs) {
 				game.addCard(id);
 			}
+			revalidate();
 		}
 	}
 	

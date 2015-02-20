@@ -204,9 +204,9 @@ class ClientSideThread implements Runnable {
                 String actual_msg;
                 if(message.substring(1,2).equals("`")){
                     String[] data = message.substring(2,message.length()).split("`");
-                    gid = Integer.parseInt(data[0]);
-                    uid = Integer.parseInt(data[1]);
-                    actual_msg = data[2];
+                    username = data[2];
+                    actual_msg = data[3];
+                    c.getGamePanel().getChat().userMessage(username, actual_msg, null);
                 }                       
                 else{
                     String[] data = message.substring(1,message.length()).split("`");
