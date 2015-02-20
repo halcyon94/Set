@@ -159,12 +159,10 @@ class ClientSideThread implements Runnable {
             }
             case "G":
             {   //used to populate the gamechart in gamelobby
-            	System.out.println("Message="+message);
             	String[] data = message.substring(1,message.length()).split("`");
                 final Object[][] gameData = new Object[data.length/3][3];
                 if(data.length>1) {
                 	for(int i=0;i<data.length;i+=3){
-                		System.out.println(data.length);
                 		gameData[i/3] = new Object[] {new Integer(data[i]), data[i+1], new Integer(data[i+2])};
                 	}
                 	SwingUtilities.invokeLater(new Runnable() {
@@ -186,7 +184,6 @@ class ClientSideThread implements Runnable {
                 String[] data = message.substring(1,message.length()).split("`");
                 final Object[][] userData = new Object[data.length/2][3];
                 for(int i=0;i<data.length;i+=2){
-                	System.out.println(i);
 	                userData[i/2] = new Object[] {new Integer(data[i]), data[i+1], new Integer(9000)};
                 }
                 SwingUtilities.invokeLater(new Runnable() {

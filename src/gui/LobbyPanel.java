@@ -143,7 +143,6 @@ public class LobbyPanel extends JPanel {
 		refreshUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				connection.refreshUsers(myID);
-				System.out.println("refresh users clicked");
 			}
 		});
 		logoutButton.addActionListener(new ActionListener() {
