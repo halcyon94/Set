@@ -115,6 +115,7 @@ public class MessageProcessor implements Runnable {
                         OUT2.println(GameLobby.returnPlayers());
                         OUT2.flush();
                     }
+                    break;
             }
             case 'C':
                 {   
