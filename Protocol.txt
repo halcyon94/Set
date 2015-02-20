@@ -70,6 +70,9 @@ Messages to be set to the Server
     "D" + gid + "`" + uid
         -disconnect from this game as this uid
         
+    "A" + gid + "`" + uid    
+        -send this player the scoreboard of this game
+        
     "B" + gid + "`" + uid
         -block all other uids in this game
         
