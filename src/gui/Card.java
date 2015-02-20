@@ -322,29 +322,29 @@ public class Card extends JPanel implements MouseListener {
 		}
 		g.dispose();
 	}
-	
+
 	public void mouseClicked(MouseEvent e) {} //handle elsewhere
-    
-    public void mousePressed(MouseEvent e) {
-    	bgColor = Color.DARK_GRAY;
-        repaint();
-    } //dont care
 
-    public void mouseReleased(MouseEvent e) {
-//    	bgColor = Color.LIGHT_GRAY;
-//        repaint();
-    }
+	public void mousePressed(MouseEvent e) {
+//		bgColor = Color.DARK_GRAY;
+//		repaint();
+	} //dont care
 
-    public void mouseEntered(MouseEvent e) { //focus
-         bgColor = Color.LIGHT_GRAY;
-         repaint();
-    }
+	public void mouseReleased(MouseEvent e) {
+		bgColor = Color.LIGHT_GRAY;
+		repaint();
+	}
 
-    public void mouseExited(MouseEvent e) { //lose focus
-         bgColor = Color.WHITE;
-         repaint();
-    }
-	
+	public void mouseEntered(MouseEvent e) { //focus
+		bgColor = Color.LIGHT_GRAY;
+		repaint();
+	}
+
+	public void mouseExited(MouseEvent e) { //lose focus
+		bgColor = Color.WHITE;
+		repaint();
+	}
+
 	//Generates the striped fill pattern
 	private TexturePaint getStripeFill(Color col) {
 		BufferedImage bufferedImage = new BufferedImage(STRIPE_WEIGHT, STRIPE_WEIGHT, BufferedImage.TYPE_INT_RGB);
