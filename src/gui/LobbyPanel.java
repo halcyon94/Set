@@ -37,7 +37,6 @@ public class LobbyPanel extends JPanel {
 	public JButton createGame = new JButton("Create Game");
 	public JButton logoutButton = new JButton("Logout");
 	public JButton joinButton = new JButton("Join Game");
-	private JButton msgButton = new JButton("Send Message");
 	
 	private JTextField nameField = new JTextField(20);
 		
@@ -231,7 +230,6 @@ public class LobbyPanel extends JPanel {
 		ImageIcon icon = new ImageIcon(getClass().getResource("doge.jpeg"));
 		temp.add(new JLabel("<html><h1>"+name+"</h1>", icon, JLabel.LEFT));
 		temp.add(Box.createVerticalGlue());
-		temp.add(msgButton);
 		return temp;
 	}
 	
