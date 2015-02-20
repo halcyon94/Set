@@ -64,15 +64,16 @@ public class GameLobby {
     }
     
     
-    public static String returnPlayers(){
+    public static String returnPlayers() throws Exception{
         String message = "P";
         String username;
-        int uid;
+        int uid,rating;
         //form message
         for(Map.Entry<Integer,Player> entry : playerCollection.entrySet()){
             username  = entry.getValue().Username;
             uid = entry.getKey();
-            message = message + Integer.toString(uid) + "`" + username + "`";
+            rating = GameLobby.db.returnRating(uid);
+            message = message + Integer.toString(uid) + "`" + username + "`"+ Integer.toString(rating)+"`";
         }
         return message;
     }

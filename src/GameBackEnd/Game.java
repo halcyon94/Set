@@ -53,7 +53,7 @@ public class Game {
         String message = "U";
         return message;
     }
-    public String onSubmit(int uid, int c1, int c2, int c3){
+    public String onSubmit(int uid, int c1, int c2, int c3) throws Exception{
         String message;
         Player player;
         switch (board.processSubmit(c1,c2,c3)){
@@ -83,15 +83,16 @@ public class Game {
         return message;
     }
     
-    public String returnScoreBoard(){
+    public String returnScoreBoard() throws Exception{
         String message = "S"+gid + "`"+name;
         Player player;
-        int tempUid;
+        int tempUid,rating;
         //iterate over all players, returning their uids and scores in a message as a string
         for(Map.Entry<Integer,Player> entry : playerCollection.entrySet()){
             player = entry.getValue();
             tempUid = entry.getKey();
-            message = message + "`" + Integer.toString(tempUid) + "`" +player.Username+"`" + Integer.toString(player.returnScore());
+            rating = GameLobby.db.returnRating(tempUid);
+            message = message + "`" + Integer.toString(tempUid) + "`" +player.Username+"`" + Integer.toString(player.returnScore())+"`"+Integer.toString(rating);
         }
         return message;
     }
