@@ -123,6 +123,7 @@ public class Client extends JFrame {
 				public void actionPerformed(ActionEvent event) {
 					connection.leaveGame(gameID, myID);
 					gameActive = false;
+					lobby.resetInfoPanel();
 					JPanel c = (JPanel) getContentPane();
 					((CardLayout) c.getLayout()).show(c, "LOBBY");
 				}
@@ -195,7 +196,7 @@ public class Client extends JFrame {
 			for(int id : cardIDs) {
 				game.addCard(id);
 			}
-			revalidate();
+			game.repaint();
 		}
 	}
 	

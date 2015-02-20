@@ -8,6 +8,7 @@ package communication;
 
 import gui.Client;
 import gui.GamePanel;
+import gui.PlayerPanel;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -155,7 +156,7 @@ class ClientSideThread implements Runnable {
                 			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]));;
                 		}
                 		c.setGameID(gid);
-                		p.showNotification("A player joined or scored, who knows", null, false);
+                		p.showNotification("A player joined or left, who knows", null, false);
                 		p.setGameID(gid);
                 		p.setPlayerColor();
                 	}
@@ -235,6 +236,23 @@ class ClientSideThread implements Runnable {
                 username = data[1];
                 score = Integer.parseInt(data[2]);
                 
+                break;
+            }
+            case "X":
+            {
+            	String[] data = message.substring(1,message.length()).split("`");
+            	final int uid = Integer.parseInt(data[1]);
+            	final int newScore = Integer.parseInt(data[2]);
+            	SwingUtilities.invokeLater(new Runnable() {
+        			public void run() {
+        				PlayerPanel p = c.getGamePanel().getPlayers();
+        				if(newScore > p.getScore(uid))
+        					c.getGamePanel().showNotification(p.getName(uid)+" scored a SET!", p.getIcon(uid), true);
+        				else
+        					c.getGamePanel().showNotification(p.getName(uid)+" didn't find SET!", p.getIcon(uid), true);
+        				p.setScore(uid, newScore);
+        			}
+        		});
                 break;
             }
             default:

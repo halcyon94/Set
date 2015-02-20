@@ -179,7 +179,7 @@ public class GamePanel extends JPanel {
 		notify.setDisplayTime(3000);
 		notify.setContent(message);
 		if(hasIcon && icon!=null)
-			notify.setIcon(players.getIcon(1));
+			notify.setIcon(icon);
 		NotificationManager.showNotification (notify);
 	}
 	

@@ -107,6 +107,24 @@ public class PlayerPanel extends JPanel {
 		return playerList.get(id).icon;
 	}
 	
+	/**
+	 *	Get the player's score
+	 *	@param id Player id
+	 *	@return Player score
+	 */
+	public int getScore(int id) {
+		return playerList.get(id).score;
+	}
+	
+	/**
+	 *	Get the player's name
+	 *	@param id Player id
+	 *	@return Player name
+	 */
+	public String getName(int id) {
+		return playerList.get(id).name;
+	}
+	
 	public boolean containsPlayer(int id) {
 		return playerList.containsKey(id);
 	}
@@ -115,12 +133,15 @@ public class PlayerPanel extends JPanel {
 	private class PlayerStat extends JPanel {
 		
 		public JLabel scoreLabel;
-		public int score = 0;
+		public int score;
 		public Color playerColor;
 		public ImageIcon icon;
+		public String name;
 		
 		public PlayerStat(Color color, String name, int score, int rating) {
 			super();
+			this.name = name;
+			this.score = score;
 			setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 			JPanel temp = new JPanel();
 			temp.setLayout(new BoxLayout(temp, BoxLayout.X_AXIS));

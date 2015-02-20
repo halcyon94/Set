@@ -179,6 +179,11 @@ public class LobbyPanel extends JPanel {
 		chat.userMessage(username, msg, Color.black);
 	}
 	
+	public void resetInfoPanel() {
+		info.removeAll();
+		info.add(getWelcomeMsgPanel());
+	}
+	
 	private void addListeners() {
 		//add selection listeners for the JTables
 		userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

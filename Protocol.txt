@@ -29,7 +29,7 @@ Messages to be sent to Client
     "S" + gid + "`" + game name + "`" + uid + "`" + username + "`" + score + "`" + ...
         -the current scores for uids
     
-    "X" + gid + "`" + name + "`" + uid + "`"+scoreChange
+    "X" + gid + "`" + uid + "`"+scoreChange
         -returns the score of uid in gid
         
     "Y" + gid + "`" + name + "`" + uid
