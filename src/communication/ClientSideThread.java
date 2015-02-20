@@ -153,10 +153,9 @@ class ClientSideThread implements Runnable {
                 		p.getPlayers().clearAll();
                 		p.buildColorList();
                 		for(int i=2; i<data.length; i+=4) {
-                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]));
+                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]), false);
                 		}
                 		c.setGameID(gid);
-                		p.showNotification("A player joined or left, who knows", null, false);
                 		p.setGameID(gid);
                 		p.setPlayerColor();
                 	}
@@ -270,7 +269,7 @@ class ClientSideThread implements Runnable {
             	final String[] data = message.substring(1,message.length()).split("`");
             	SwingUtilities.invokeLater(new Runnable() {
         			public void run() {
-        				c.getGamePanel().addPlayer(Integer.parseInt(data[1]), data[2], Integer.parseInt(data[3]), Integer.parseInt(data[4]));
+        				c.getGamePanel().addPlayer(Integer.parseInt(data[1]), data[2], Integer.parseInt(data[3]), Integer.parseInt(data[4]), true);
         			}
         		});
                 break;

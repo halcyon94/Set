@@ -111,7 +111,6 @@ public class GamePanel extends JPanel {
 	private void addGameButtons() {
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.out.println(t.isRunning());
 				if(!t.isRunning()) {
 					connection.beginSet(myID, gameID);
 					setTimer(5);
@@ -199,9 +198,10 @@ public class GamePanel extends JPanel {
 		grid.addCard(new Card(id, setSize));
 	}
 	
-	public void addPlayer(int id, String name, int score, int rating) {
+	public void addPlayer(int id, String name, int score, int rating, boolean notify) {
 		players.addPlayer(id, colorList.pop(), name, score, rating);
-		showNotification(name+" joined the game.", players.getIcon(id), true);
+		if(notify)
+			showNotification(name+" joined the game.", players.getIcon(id), true);
 	}
 	
 	public void removePlayer(int id) {
