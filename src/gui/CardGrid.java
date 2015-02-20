@@ -66,7 +66,7 @@ public class CardGrid extends JPanel {
 		ct.setContent(c);
 		c.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseReleased(MouseEvent e) {
 				Card cx = (Card) e.getSource();
 				if(selectEnabled) {
 					if(selList.contains(cx)) {
