@@ -42,8 +42,8 @@ public class MessageProcessor implements Runnable {
     }
     public static void processMessage(String message) throws Exception {
          
-        switch(message.substring(0,1)){
-            case "S": 
+        switch(message.charAt(0)){
+            case 'S': 
                 {
                     int uid, addr;
                     String username, password;
@@ -87,7 +87,7 @@ public class MessageProcessor implements Runnable {
                     }
                     break;
                 }
-            case "R":
+            case 'R':
             {       
                     int uid, addr;
                     String username, password;
@@ -116,7 +116,7 @@ public class MessageProcessor implements Runnable {
                         OUT2.flush();
                     }
             }
-            case "C":
+            case 'C':
                 {   
                     String[] data = message.substring(1,message.length()).split("`");
                     String uid_s = data[0];
@@ -132,7 +132,7 @@ public class MessageProcessor implements Runnable {
                     break;
                 }
 
-            case "J": 
+            case 'J': 
                 {
                     String[] data = message.substring(1,message.length()).split("`");
                     int gid = Integer.parseInt(data[0]);
@@ -153,7 +153,7 @@ public class MessageProcessor implements Runnable {
                     break;
                 }
 
-            case "D":
+            case 'D':
                 {       
                     String[] data = message.substring(1,message.length()).split("`");
                     int gid = Integer.parseInt(data[0]);
@@ -171,7 +171,7 @@ public class MessageProcessor implements Runnable {
                     break;
                 }
 
-            case "B":
+            case 'B':
                 {   
                     String[] data = message.substring(1,message.length()).split("`");
                     int gid = Integer.parseInt(data[0]);
@@ -186,7 +186,7 @@ public class MessageProcessor implements Runnable {
                     break;
                 }
 
-            case "F": 
+            case 'F': 
                 {        
                     String[] data = message.substring(1,message.length()).split("`");
                     int gid = Integer.parseInt(data[0]);
@@ -196,13 +196,13 @@ public class MessageProcessor implements Runnable {
                     Game game = GameLobby.findGame(gid);
                     game.resetLock();
                     for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                        sendMessage(entry.getKey(),game.returnScoreBoard());
+                        sendMessage(entry.getKey(),game.returnScore(uid,player.returnScore()));
                         sendMessage(entry.getKey(),game.unblock());
                     }
                     break;
                 }
 
-            case "P": 
+            case 'P': 
                 {
                     String new_message;
                     String[] data = message.substring(1,message.length()).split("`");
@@ -233,7 +233,7 @@ public class MessageProcessor implements Runnable {
                     break;
                 }
 
-            case "M": 
+            case 'M': 
                 {   int uid,gid;
                     String actual_msg;
                     System.out.println(message.substring(1,2));
@@ -259,14 +259,14 @@ public class MessageProcessor implements Runnable {
                     }
                     break;
                 }
-            case "L": 
+            case 'L': 
                 {
                     int uid;
                     uid = Integer.parseInt(message.substring(1,message.length())); 
                     sendMessage(uid,GameLobby.db.returnRankings());
                     break;
                 }
-            case "K":
+            case 'K':
             {
                 int uid = Integer.parseInt(message.substring(1,message.length()));
                 GameLobby.delPlayer(uid);
@@ -280,14 +280,14 @@ public class MessageProcessor implements Runnable {
                 break;
             
             }
-            case "E":
+            case 'E':
             {
                 int uid;
                 uid = Integer.parseInt(message.substring(1,message.length()));
                 sendMessage(uid,GameLobby.returnPlayers());
                 break;
             }
-            case "G":
+            case 'G':
             {
                 int uid;
                 uid = Integer.parseInt(message.substring(1,message.length())); 

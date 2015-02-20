@@ -30,8 +30,11 @@ public class GameBoard {
             if(!isBoardPlayable()){    //game cant continue
                 return 2;
             }
-            else{
+            else if (cardsOnBoard.size()<12){
                 addCards(3);
+                return 0;
+            }
+            else{
                 return 0;
             }
         }
