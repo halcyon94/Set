@@ -35,7 +35,7 @@ Messages to be sent to Client
     "Y" + gid + "`" + name + "`" + uid
         -drops uid from gid SB
         
-    "Y" + gid + "`" + game name + "`" + uid + "`" + username + "`" + score + "`" + rating 
+    "Z" + gid + "`" + game name + "`" + uid + "`" + username + "`" + score + "`" + rating 
         -adds uid to gid SB
             
     "G" + gid + "`" + game name + "`" + numOfPlayers + "`" + ...
