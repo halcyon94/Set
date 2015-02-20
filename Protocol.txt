@@ -32,10 +32,10 @@ Messages to be sent to Client
     "X" + gid + "`" + uid + "`"+scoreChange
         -returns the score of uid in gid
         
-    "Y" + gid + "`" + name + "`" + uid
+    "Y" + gid  + "`" + uid
         -drops uid from gid SB
         
-    "Z" + gid + "`" + game name + "`" + uid + "`" + username + "`" + score + "`" + rating 
+    "Z" + gid + "`" + uid + "`" + username + "`" + score + "`" + rating 
         -adds uid to gid SB
             
     "G" + gid + "`" + game name + "`" + numOfPlayers + "`" + ...

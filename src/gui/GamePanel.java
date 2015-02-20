@@ -8,6 +8,7 @@ import com.alee.managers.notification.WebNotificationPopup;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  *	Set GUI tester
@@ -33,10 +34,7 @@ public class GamePanel extends JPanel {
 
 	private Timer t = new Timer(1, null);
 	private int timer;
-	public int colorIndex = 0;
-	private Color[] colors = new Color[] {Color.blue, Color.red, Color.green,
-												Color.orange, Color.magenta, Color.gray, 
-												Color.pink, Color.yellow, Color.cyan};
+	private Stack<Color> colorList = new Stack<Color>();
 
 
 	/**
@@ -48,6 +46,7 @@ public class GamePanel extends JPanel {
 		myID = playerID;
 		this.connection = connection;
 		setButton.setHorizontalAlignment(SwingConstants.CENTER);
+		buildColorList();
 		buildGameGUI();
 	}
 
@@ -149,6 +148,19 @@ public class GamePanel extends JPanel {
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		grid.clearSelected();
 	}
+	
+	public void buildColorList() {
+		colorList.removeAllElements();
+		colorList.add(Color.cyan);
+		colorList.add(Color.yellow);
+		colorList.add(Color.pink);
+		colorList.add(Color.gray);
+		colorList.add(Color.magenta);
+		colorList.add(Color.orange);
+		colorList.add(Color.green);
+		colorList.add(Color.red);
+		colorList.add(Color.blue);
+	}
 
 	//Adds test button panel
 	public void addTestButton(JButton b) {
@@ -188,10 +200,13 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void addPlayer(int id, String name, int score, int rating) {
-		players.addPlayer(id, colors[colorIndex++], name, score, rating);
+		players.addPlayer(id, colorList.pop(), name, score, rating);
+		showNotification(name+" joined the game.", players.getIcon(id), true);
 	}
 	
 	public void removePlayer(int id) {
+		showNotification(players.getName(id)+" left the game.", players.getIcon(id), true);
+		colorList.push(players.getColor(id));
 		players.removePlayer(id);
 	}
 	

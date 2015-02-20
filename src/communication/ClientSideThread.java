@@ -151,9 +151,9 @@ class ClientSideThread implements Runnable {
                 	public void run() { //reload the PlayerPanel
                 		GamePanel p = c.getGamePanel();
                 		p.getPlayers().clearAll();
-                		p.colorIndex = 0;
+                		p.buildColorList();
                 		for(int i=2; i<data.length; i+=4) {
-                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]));;
+                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]));
                 		}
                 		c.setGameID(gid);
                 		p.showNotification("A player joined or left, who knows", null, false);
@@ -251,6 +251,26 @@ class ClientSideThread implements Runnable {
         				else
         					c.getGamePanel().showNotification(p.getName(uid)+" didn't find SET!", p.getIcon(uid), true);
         				p.setScore(uid, newScore);
+        			}
+        		});
+                break;
+            }
+            case "Y":
+            {
+            	final String[] data = message.substring(1,message.length()).split("`");
+            	SwingUtilities.invokeLater(new Runnable() {
+        			public void run() {
+        				c.getGamePanel().removePlayer(Integer.parseInt(data[1]));
+        			}
+        		});
+                break;
+            }
+            case "Z":
+            {
+            	final String[] data = message.substring(1,message.length()).split("`");
+            	SwingUtilities.invokeLater(new Runnable() {
+        			public void run() {
+        				c.getGamePanel().addPlayer(Integer.parseInt(data[1]), data[2], Integer.parseInt(data[3]), Integer.parseInt(data[4]));
         			}
         		});
                 break;
