@@ -31,6 +31,7 @@ public class GameBoard {
                 return 2;
             }
             else{
+                addCards(3);
                 return 0;
             }
         }
