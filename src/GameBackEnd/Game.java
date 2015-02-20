@@ -103,7 +103,7 @@ public class Game {
     }
     
     public String addPlayerToSB(int uid) throws Exception{
-        return "Z"+gid+"`"+Integer.toString(uid)+"`"+playerCollection.get(uid).Username+"`"+"0"+Integer.toString(GameLobby.db.returnRating(uid));
+        return "Z"+gid+"`"+Integer.toString(uid)+"`"+playerCollection.get(uid).Username+"`"+"0`"+Integer.toString(GameLobby.db.returnRating(uid));
    }
     //pretty much done
     //add player to the scoreboard, send the player the gameboard, update the scoreboard for all players
