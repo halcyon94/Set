@@ -28,6 +28,15 @@ Messages to be sent to Client
         
     "S" + gid + "`" + game name + "`" + uid + "`" + username + "`" + score + "`" + ...
         -the current scores for uids
+    
+    "X" + gid + "`" + name + "`" + uid + "`"+scoreChange
+        -returns the score of uid in gid
+        
+    "Y" + gid + "`" + name + "`" + uid
+        -drops uid from gid SB
+        
+    "Y" + gid + "`" + name + "`" + uid
+        -adds uid to gid SB
             
     "G" + gid + "`" + game name + "`" + numOfPlayers + "`" + ...
         -the current game list with number of players
