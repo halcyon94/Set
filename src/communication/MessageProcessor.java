@@ -193,9 +193,6 @@ public class MessageProcessor implements Runnable {
                     game.resetLock();
                     for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                         sendMessage(entry.getKey(),game.returnScoreBoard());
-                        if(entry.getKey() == uid){
-                            continue;
-                        }
                         sendMessage(entry.getKey(),game.unblock());
                     }
                     break;
@@ -226,9 +223,6 @@ public class MessageProcessor implements Runnable {
                         } 
                         game.resetLock();
                         for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                            if(entry.getKey() == uid){
-                                continue;
-                            }
                             sendMessage(entry.getKey(),game.unblock());
                         }
                     }

@@ -151,8 +151,8 @@ class ClientSideThread implements Runnable {
                 		GamePanel p = c.getGamePanel();
                 		p.getPlayers().clearAll();
                 		p.colorIndex = 0;
-                		for(int i=2; i<data.length; i+=3) {
-                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), 9001);;
+                		for(int i=2; i<data.length; i+=4) {
+                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]));;
                 		}
                 		c.setGameID(gid);
                 		p.showNotification("A player joined or scored, who knows", null, false);
@@ -188,8 +188,8 @@ class ClientSideThread implements Runnable {
             {   //used to populate the playerchar in gamelobby
                 String[] data = message.substring(1,message.length()).split("`");
                 final Object[][] userData = new Object[data.length/2][3];
-                for(int i=0;i<data.length;i+=2){
-	                userData[i/2] = new Object[] {new Integer(data[i]), data[i+1], new Integer(9000)};
+                for(int i=0;i<data.length;i+=3){
+	                userData[i/2] = new Object[] {new Integer(data[i]), data[i+1], Integer.parseInt(data[i+2])};
                 }
                 SwingUtilities.invokeLater(new Runnable() {
         			public void run() {
