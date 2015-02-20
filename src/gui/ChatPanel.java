@@ -52,7 +52,7 @@ public class ChatPanel extends JPanel {
 		ActionListener sendListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String text = msgField.getText();
+				String text = msgField.getText().replace('`', ' ');
 				if(!text.isEmpty()) {
 					if(gameID != 0)
 						connection.sendChat(myID, text, gameID);
