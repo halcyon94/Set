@@ -85,7 +85,6 @@ public class GameLobby {
             return gameCollection.get(gid);
         else{
             System.err.println("error in gameLobby.findGame with gid: "+gid);
-            System.exit(-1);
             return null;
         }
     }

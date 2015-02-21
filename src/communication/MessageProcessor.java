@@ -140,16 +140,18 @@ public class MessageProcessor implements Runnable {
                     int uid = Integer.parseInt(data[1]);
                     GameLobby.joinGame(uid, gid);
                     Game game = GameLobby.findGame(gid);
-                    sendMessage(uid,game.board.returnCardsOnBoard());
-                    for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                        if(entry.getKey() == uid)
-                            sendMessage(entry.getKey(),game.returnScoreBoard());
-                        else{
-                            sendMessage(entry.getKey(),game.addPlayerToSB(uid));
+                    if(game!=null){
+                        sendMessage(uid,game.board.returnCardsOnBoard());
+                        for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
+                            if(entry.getKey() == uid)
+                                sendMessage(entry.getKey(),game.returnScoreBoard());
+                            else{
+                                sendMessage(entry.getKey(),game.addPlayerToSB(uid));
+                            }
                         }
-                    }
-                    for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
-                        sendMessage(entry.getKey(),GameLobby.returnGames());
+                        for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
+                            sendMessage(entry.getKey(),GameLobby.returnGames());
+                        }
                     }
                     break;
                 }
