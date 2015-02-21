@@ -112,4 +112,12 @@ public class ChatPanel extends JPanel {
 	public void setGameID(int gid) {
 		this.gameID = gid;
 	}
+	
+	public void addNelodListener(ActionListener l) { //FOR TESTING ONLY, I SWEAR!!!
+		sendButton.addActionListener(l);
+	}
+	
+	public String getMsg() { //FOR TESTING ONLY, I SWEAR!!!
+		return msgField.getText();
+	}
 }

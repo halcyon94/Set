@@ -46,7 +46,7 @@ public class ClientConnection {
 		SetClient.sendMessage("M"+uid+"`"+msg);
 	}
 	
-	public void sendChat(int uid, String msg, int gid) {
+	public void sendChat(int uid, String msg, int gid) {		
 		SetClient.sendMessage("M`"+gid+"`"+uid+"`"+msg);
 	}
 	

@@ -29,7 +29,7 @@ public class CardGrid extends JPanel {
 	private int setSize;
 	private Color playerColor;
 	private boolean selectEnabled = false;
-	
+		
 	private ArrayList<Card> selList = new ArrayList<Card>(); //List of selected cards
 	private HashMap<Integer,Location> cardMap = new HashMap<Integer,Location>();
 	private ExecutorService animationPool = Executors.newSingleThreadScheduledExecutor();

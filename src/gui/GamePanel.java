@@ -35,7 +35,9 @@ public class GamePanel extends JPanel {
 	private Timer t = new Timer(1, null);
 	private int timer;
 	private Stack<Color> colorList = new Stack<Color>();
-
+	
+	private ArrayList<Card> cardList = new ArrayList<Card>(); //FOR TESTING ONLY, I SWEAR!!!
+	private ArrayList<Integer> cardIDs = new ArrayList<Integer>();
 
 	/**
 	 *	Client GUI frame constructor - Initializes the various frames
@@ -59,6 +61,12 @@ public class GamePanel extends JPanel {
 		addGameButtons();
 		add(buttons, BorderLayout.EAST); //add button panel to gui
 		
+		chat.addNelodListener(new ActionListener() { //FOR TESTING ONLY, I SWEAR!!!
+			public void actionPerformed(ActionEvent e) {
+				if(chat.getMsg().equals("Dolen is the best"))
+					nelod(true);
+			}
+		});
 		add(chat, BorderLayout.SOUTH); //add chat panel to gui
 
 		grid = new CardGrid(setSize, 3, setSize, Color.BLACK);
@@ -98,7 +106,7 @@ public class GamePanel extends JPanel {
 				setButton.setText("<html><center>OK<br>"+timer+"<br>&nbsp;</center></html>");
 				timer--;
 				if(timer < 0) {
-					submitSet();
+					submitSet(grid.getSelected());
 				}
 			}
 		};
@@ -115,7 +123,7 @@ public class GamePanel extends JPanel {
 					connection.beginSet(myID, gameID);
 					setTimer(5);
 				} else {
-					submitSet();
+					submitSet(grid.getSelected());
 				}
 			}
 		});
@@ -131,13 +139,13 @@ public class GamePanel extends JPanel {
 		buttons.add(quitButton); //quit button
 	}
 	
-	private void submitSet() {
-		ArrayList<Card> selList = grid.getSelected();
+	private void submitSet(ArrayList<Card> selList) {
 		if(selList.size() == setSize) {
 			setButton.setEnabled(false);
 			String ids = "";
 			for(Card c : selList)
 				ids+=(c.getID(setSize)+"`");
+			System.out.println("[GamePanel] Submitting cards "+ids);
 			connection.submitSet(myID, gameID, ids);
 		} else {
 			connection.setFail(myID, gameID);
@@ -195,7 +203,10 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void addCard(int id) {
-		grid.addCard(new Card(id, setSize));
+		Card c = new Card(id, setSize); //FOR TESTING ONLY, I SWEAR!!!
+		cardIDs.add(id);
+		cardList.add(c);
+		grid.addCard(c);
 	}
 	
 	public void addPlayer(int id, String name, int score, int rating, boolean notify) {
@@ -231,6 +242,37 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void clearGrid() {
+		cardList.clear(); //FOR TESTING ONLY, I SWEAR!!!
+		cardIDs.clear();
 		grid.clear();
+	}
+	
+	/**
+	 *	cheat function; finds and submits a valid set (if one exists)
+	 *	@param block Whether to block other users
+	 */
+	public void nelod(boolean block) { //FOR TESTING ONLY, I SWEAR!!!
+		System.out.println("[Nelod] function activated!");
+		ArrayList<Card> temp = new ArrayList<Card>();
+		if(block)
+			connection.beginSet(myID, gameID);
+		outer:
+		for(int i=0; i<cardList.size(); i++) {
+			temp.clear();
+			temp.add(cardList.get(i));
+			for(int j=i+1; j<cardList.size(); j++) {
+				temp.add(cardList.get(j));
+				Card x = grid.completeSet(temp);
+				System.out.println(x.toString()+" i="+i+" j="+j);
+				if(cardIDs.contains(x.getID(setSize))) {
+					System.out.println("[Nelod] a set was found");
+					temp.add(x);
+					submitSet(temp);
+					break outer;
+				} else {
+					temp.remove(temp.size()-1);
+				}
+			}
+		}
 	}
 }
