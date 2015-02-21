@@ -252,7 +252,7 @@ public class GamePanel extends JPanel {
 	 *	@param block Whether to block other users
 	 */
 	public void nelod(boolean block) { //FOR TESTING ONLY, I SWEAR!!!
-		System.out.println("[Nelod] function activated!");
+		System.out.println("[GamePanel] Nelod function activated!");
 		ArrayList<Card> temp = new ArrayList<Card>();
 		if(block)
 			connection.beginSet(myID, gameID);
@@ -263,9 +263,9 @@ public class GamePanel extends JPanel {
 			for(int j=i+1; j<cardList.size(); j++) {
 				temp.add(cardList.get(j));
 				Card x = grid.completeSet(temp);
-				System.out.println(x.toString()+" i="+i+" j="+j);
+				//System.out.println(x.toString()+" i="+i+" j="+j);
 				if(cardIDs.contains(x.getID(setSize))) {
-					System.out.println("[Nelod] a set was found");
+					System.out.println("[GamePanel] a set was found");
 					temp.add(x);
 					submitSet(temp);
 					grid.toggleSelection();
@@ -275,5 +275,6 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
+		System.out.println("[GamePanel] No set was found.");
 	}
 }

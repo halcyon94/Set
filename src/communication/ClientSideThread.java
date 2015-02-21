@@ -145,6 +145,11 @@ class ClientSideThread implements Runnable {
             {
                 //Game is over, basically a pop up that tells players to leave
                 //does not close off the game, however
+            	SwingUtilities.invokeLater(new Runnable() {
+         			public void run() {
+         				c.getGamePanel().showNotification("No sets remaining. Game over!", null, false);
+         			}
+         		});
                 break;
             }
             case "S":
