@@ -66,7 +66,7 @@ public class GameBoard {
     //checks if there is a set on the board
     private boolean isBoardPlayable(){
         boolean playable = false;
-        while(!playable && deck.size()>0){
+        while(!playable && deck.size()>=0){
             for(int i = 0;i<cardsOnBoard.size();i++){
                 for(int j = 1;j<cardsOnBoard.size();j++){
                     if(j == i)

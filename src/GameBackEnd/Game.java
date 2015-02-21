@@ -70,7 +70,7 @@ public class Game {
             case 2: //send message saying its a valid set, increase score by 1, update the scoreboard, and send message thats its Game Over, blocking their buttons
                     player = findPlayer(uid);
                     player.incScore();
-                    message = returnScore(uid,player.returnScore()) + "~" + "O";
+                    message = returnScore(uid,player.returnScore()) + "~" + board.returnCardsOnBoard() + "~" + "O";
                     break;
             default:
                 message = "";
