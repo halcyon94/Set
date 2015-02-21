@@ -9,6 +9,9 @@ import javax.swing.text.html.*;
 import java.awt.*;
 import java.io.IOException;
 
+import com.alee.extended.panel.WebButtonGroup;
+import com.alee.laf.button.*;
+
 /**
  *	Set GUI in-game chat panel
  *	@author Dolen Le
@@ -23,7 +26,11 @@ public class ChatPanel extends JPanel {
 	private ClientConnection connection;
 	private int myID;
 	private int gameID = 0;
-	
+
+	WebToggleButton lobbyToggle = new WebToggleButton("Lobby");
+	WebToggleButton gameToggle = new WebToggleButton("Game");
+	WebButtonGroup toggleGroup = new WebButtonGroup(true, lobbyToggle, gameToggle);
+
 	/**
 	 *	Chat panel constructor
 	 *	@param height Preferred height of the message field
@@ -56,7 +63,7 @@ public class ChatPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String text = msgField.getText().replace('`', ' ');
-				if(!text.isEmpty()) {
+				if(!text.isEmpty() && !text.equals(defaultString)) {
 					if(gameID != 0)
 						connection.sendChat(myID, text, gameID);
 					else
@@ -78,8 +85,20 @@ public class ChatPanel extends JPanel {
         add(scrollArea, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * ChatPanel constructor with gameID
+	 * @param height Preferred height of the message field
+	 * @param connect ClientConnection object
+	 * @param uid user ID
+	 * @param gid game ID
+	 */
 	public ChatPanel(int height, ClientConnection connect, int uid, int gid) {
 		this(height, connect, uid);
+		toggleGroup.setButtonsDrawFocus(false);
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
+		buttonPanel.add(toggleGroup);
+        buttonPanel.add(sendButton);
+        add(buttonPanel, BorderLayout.EAST);
 		this.gameID = gid;
 	}
 	
