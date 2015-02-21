@@ -22,7 +22,7 @@ public class Gooey extends JFrame {
 	private int myId;
 
 	JPanel gameCard; //5px spacing
-	private LoginPanel login = new LoginPanel(null);
+	private LoginPanel login = new LoginPanel();
 	private LobbyPanel lobby = new LobbyPanel(null, 0);
 	private CardGrid grid;
 	private PlayerPanel players;

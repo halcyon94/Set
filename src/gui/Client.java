@@ -32,6 +32,7 @@ public class Client extends JFrame {
 	private LoginPanel login;
 	private LobbyPanel lobby;
 	private GamePanel game;
+	private Clip wongsound;
 	
 	private ClientConnection connection = new ClientConnection();
 	
@@ -52,6 +53,14 @@ public class Client extends JFrame {
             }
         };
         addWindowListener(exitListener);
+        //open wrong login sound
+        try {
+        	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("wrong.wav"));
+        	wongsound = AudioSystem.getClip();
+        	wongsound.open(audioInputStream);
+        } catch (Exception e) {
+        	System.err.println("Could not open WONGSOUND");
+        }
 	}
 
 	//Main Method
@@ -83,7 +92,7 @@ public class Client extends JFrame {
 		gameActive = false;
 		if(login!=null)
 			login.detachListeners(); //prevent memory leaks here
-		login = new LoginPanel(connection);
+		login = new LoginPanel();
 		SetClient.Connect(this);
 		addLoginListeners(login);
 		setTitle("Login to Set");
@@ -178,14 +187,8 @@ public class Client extends JFrame {
 	public void badLogin() {
 		SetClient.Connect(this); //reset connection
 		login.showPassPopup("NO! WRONG!");
-		try {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("wrong.wav"));
-	        Clip clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	        clip.start();
-	    } catch (Exception e) {
-	        System.err.println(e.getMessage());
-	    }
+		wongsound.setFramePosition(0);
+		wongsound.start();
 	}
 	
 	public void userExists() {

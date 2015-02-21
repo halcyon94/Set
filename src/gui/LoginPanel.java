@@ -18,11 +18,11 @@ public class LoginPanel extends JPanel {
 	private JButton registerButton = new JButton("Register");
 	private JTextField userText = new JTextField(20);
 	private JPasswordField passwordText = new JPasswordField(20);
-	private ClientConnection connection;
+	private WebPopOver popupMsg = new WebPopOver();
+	private JLabel popupLabel = new JLabel();
 
 	
-	public LoginPanel(ClientConnection conn) {
-		this.connection = conn;
+	public LoginPanel() {
 		buildPanel();
 	}
 	
@@ -49,12 +49,17 @@ public class LoginPanel extends JPanel {
 		
 		registerButton.setBounds(180, 80, 80, 25);
 		add(registerButton);
+
+		popupMsg.setCloseOnFocusLoss(true);
+		popupMsg.setMovable(false);
+		popupMsg.setMargin(5);
+		popupMsg.add(popupLabel);
 	}
-	
+
 	public JButton getButt() {
 		return loginButton;
 	}
-	
+
 	public String getUser() {
 		return userText.getText();
 	}
@@ -75,30 +80,22 @@ public class LoginPanel extends JPanel {
 //		return "Error";
 		return new String(passwordText.getPassword()); //BAD! NOT SECURE!!! NO NO NO NO
 	}
-	
+
 	public void showUserPopup(String text) {
-		WebPopOver popOver = new WebPopOver ();
-        popOver.setCloseOnFocusLoss ( true );
-        popOver.setMovable(false);
-        popOver.setMargin ( 5 );
-        popOver.add ( new JLabel (text) );
-        popOver.show ( userText);
+		popupLabel.setText(text);
+		popupMsg.show(userText);
 	}
-	
+
 	public void showPassPopup(String text) {
-		WebPopOver popOver = new WebPopOver ();
-        popOver.setCloseOnFocusLoss ( true );
-        popOver.setMovable(false);
-        popOver.setMargin ( 5 );
-        popOver.add ( new JLabel (text) );
-        popOver.show ( passwordText);
+		popupLabel.setText(text);
+		popupMsg.show(passwordText);
 	}
-	
+
 	public void addListeners(ActionListener login, ActionListener reg) {
 		loginButton.addActionListener(login);
 		registerButton.addActionListener(reg);
 	}
-	
+
 	//remove all action listeners
 	public void detachListeners() {
 		for(ActionListener l : loginButton.getActionListeners())
