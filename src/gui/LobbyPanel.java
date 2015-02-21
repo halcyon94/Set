@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import javax.swing.border.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -21,6 +22,7 @@ public class LobbyPanel extends JPanel {
 	private JPanel games;
 	private JPanel users;
 	private JPanel info;
+	private JPanel gameScoreboard;
 	private ChatPanel chat;
 	private ClientConnection connection;
 	private int myID;
@@ -183,6 +185,17 @@ public class LobbyPanel extends JPanel {
 		info.add(getWelcomeMsgPanel());
 	}
 	
+	public void updateScoreboard(int gid, String[] data) {
+		if(visibleGame == gid) {
+			for(int i=2; i<data.length; i+=4) {
+				gameScoreboard.add(new JLabel(data[i+1]+" Score: "+data[i+2]));
+			}
+			gameScoreboard.revalidate();
+		} else {
+			System.out.println("[LobbyPanel] Error: scoreboard gameID doesn't match visibleGame ID");
+		}
+	}
+	
 	private void addListeners() {
 		//add selection listeners for the JTables
 		userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -195,7 +208,6 @@ public class LobbyPanel extends JPanel {
 					gameTable.clearSelection();
 					int selectedRow = lsm.getMinSelectionIndex();
 					int id = ((Integer) userTable.getModel().getValueAt(selectedRow, 0)).intValue();
-					//System.out.println(id);
 					info.removeAll();
 					info.add(getPlayerInfoPanel(id, (String) userTable.getModel().getValueAt(selectedRow, 1)));
 					info.revalidate();
@@ -211,8 +223,7 @@ public class LobbyPanel extends JPanel {
 				if (!lsm.isSelectionEmpty()) {
 					userTable.clearSelection();
 					int selectedRow = lsm.getMinSelectionIndex();
-					int id = ((Integer) gameTable.getModel().getValueAt(selectedRow, 0)).intValue();
-					//System.out.println(id);
+					int id = ((Integer) gameTable.getModel().getValueAt(selectedRow, 0)).intValue();		
 					info.removeAll();
 					info.add(getGameInfoPanel(id, (String) gameTable.getModel().getValueAt(selectedRow, 1)));
 					info.revalidate();
@@ -235,14 +246,18 @@ public class LobbyPanel extends JPanel {
 	
 	//Game info panel
 	private JPanel getGameInfoPanel(int id, String name) {
+		connection.requestScoreBoard(myID, id);
 		JPanel temp = new JPanel();
+		gameScoreboard = new JPanel();
 		visibleGame = id;
 		temp.setLayout(new BoxLayout(temp, BoxLayout.Y_AXIS));
+		gameScoreboard.setLayout(new BoxLayout(gameScoreboard, BoxLayout.Y_AXIS));
 		temp.add(Box.createRigidArea(new Dimension(20,20)));
 		//temp.add(Box.createRigidArea(new Dimension(20,0)));
 		temp.add(new JLabel("<html><h1>"+name+"</h1></html>"));
 		//add(Box.createRigidArea(new Dimension(0,20)));
 		temp.add(new JLabel("<html><p>Players:</p></html>"));
+		temp.add(gameScoreboard);
 		temp.add(Box.createVerticalGlue());
 		temp.add(joinButton);
 		return temp;

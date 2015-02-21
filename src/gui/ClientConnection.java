@@ -2,7 +2,12 @@ package gui;
 
 import communication.SetClient;
 
-//Implements client to server protocol
+/**
+ * Implements client to server protocol as defined in Protocol.txt
+ * todo: make everything static
+ * 
+ * @author dolenle
+ */
 public class ClientConnection {
 
 	public void userLogin(String username, String password) {
@@ -55,6 +60,11 @@ public class ClientConnection {
 	
 	public void setFail(int uid, int gid) {
 		SetClient.sendMessage("F"+gid+"`"+uid);
+	}
+	
+	public void requestScoreBoard(int uid, int gid) {
+		System.out.println("A"+gid+"`"+uid);
+		SetClient.sendMessage("A"+gid+"`"+uid);
 	}
 
 }

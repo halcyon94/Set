@@ -153,16 +153,20 @@ class ClientSideThread implements Runnable {
                 final String[] data = message.substring(1,message.length()).split("`");
                 final int gid = Integer.parseInt(data[0]); //make sure the game youre currently in corresponds
                 SwingUtilities.invokeLater(new Runnable() {
-                	public void run() { //reload the PlayerPanel
-                		GamePanel p = c.getGamePanel();
-                		p.getPlayers().clearAll();
-                		p.buildColorList();
-                		for(int i=2; i<data.length; i+=4) {
-                			c.getGamePanel().addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]), false);
+                	public void run() {
+                		if(c.isGameActive()) { //reload playerPanel
+                			GamePanel g = c.getGamePanel();
+                			g.getPlayers().clearAll();
+                			g.buildColorList();
+                			for(int i=2; i<data.length; i+=4) {
+                				g.addPlayer(Integer.parseInt(data[i]), data[i+1], Integer.parseInt(data[i+2]), Integer.parseInt(data[i+3]), false);
+                			}
+                			c.setGameID(gid);
+                			g.setGameID(gid);
+                			g.setPlayerColor();
+                		} else { //add scoreboard to info panel
+                			c.getLobbyPanel().updateScoreboard(gid, data);
                 		}
-                		c.setGameID(gid);
-                		p.setGameID(gid);
-                		p.setPlayerColor();
                 	}
                 });
                 break;
@@ -194,7 +198,7 @@ class ClientSideThread implements Runnable {
                 String[] data = message.substring(1,message.length()).split("`");
                 final Object[][] userData = new Object[data.length/3][3];
                 for(int i=0;i<data.length;i+=3){
-	                userData[i/2] = new Object[] {new Integer(data[i]), data[i+1], Integer.parseInt(data[i+2])};
+	                userData[i/3] = new Object[] {new Integer(data[i]), data[i+1], Integer.parseInt(data[i+2])};
                 }
                 SwingUtilities.invokeLater(new Runnable() {
         			public void run() {
@@ -235,10 +239,9 @@ class ClientSideThread implements Runnable {
             case "R":
             {   //
                 int uid,score;
-                String username;
                 String[] data = message.substring(1,message.length()).split("`");
                 uid = Integer.parseInt(data[0]);
-                username = data[1];
+                String username = data[1];
                 score = Integer.parseInt(data[2]);
                 
                 break;

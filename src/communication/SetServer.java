@@ -34,7 +34,7 @@ public class SetServer{
             try{
                     final int port=8080;
                     ServerSocket SERVER=new ServerSocket(port);
-                    System.out.println("Waiting for clients...");
+                    System.out.println("Waiting for clients on IP "+InetAddress.getLocalHost().getHostAddress());
                     MessageProcessor pm = new MessageProcessor();
                     Thread processM = new Thread(pm);
                     processM.start();
