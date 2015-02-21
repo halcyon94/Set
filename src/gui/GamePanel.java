@@ -268,6 +268,7 @@ public class GamePanel extends JPanel {
 					System.out.println("[Nelod] a set was found");
 					temp.add(x);
 					submitSet(temp);
+					grid.toggleSelection();
 					break outer;
 				} else {
 					temp.remove(temp.size()-1);
