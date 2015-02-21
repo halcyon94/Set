@@ -30,7 +30,7 @@ public class GameBoard {
             if(!isBoardPlayable()){    //game cant continue
                 return 2;
             }
-            else if (cardsOnBoard.size()<12){
+            else if (cardsOnBoard.size()<12 && (deck.size()>0)){
                 addCards(3);
                 return 0;
             }
@@ -81,7 +81,11 @@ public class GameBoard {
                     }
                 }
             }
-            addCards(3);
+            if(deck.size()>0)
+                addCards(3);
+            else{
+                return false;
+            }
         }
         return false;  
     }
