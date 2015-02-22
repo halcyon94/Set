@@ -106,6 +106,7 @@ public class GamePanel extends JPanel {
 				setButton.setText("<html><center>OK<br>"+timer+"<br>&nbsp;</center></html>");
 				timer--;
 				if(timer < 0) {
+					t.stop();
 					submitSet(grid.getSelected());
 				}
 			}

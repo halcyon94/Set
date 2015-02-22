@@ -9,8 +9,8 @@ import javax.swing.text.html.*;
 import java.awt.*;
 import java.io.IOException;
 
-import com.alee.extended.panel.WebButtonGroup;
-import com.alee.laf.button.*;
+//import com.alee.extended.panel.WebButtonGroup;
+//import com.alee.laf.button.*;
 
 /**
  *	Set GUI in-game chat panel
@@ -27,9 +27,9 @@ public class ChatPanel extends JPanel {
 	private int myID;
 	private int gameID = 0;
 
-	WebToggleButton lobbyToggle = new WebToggleButton("Lobby");
-	WebToggleButton gameToggle = new WebToggleButton("Game");
-	WebButtonGroup toggleGroup = new WebButtonGroup(true, lobbyToggle, gameToggle);
+//	WebToggleButton lobbyToggle = new WebToggleButton("Lobby");
+//	WebToggleButton gameToggle = new WebToggleButton("Game");
+//	WebButtonGroup toggleGroup = new WebButtonGroup(true, lobbyToggle, gameToggle);
 
 	/**
 	 *	Chat panel constructor
@@ -94,11 +94,11 @@ public class ChatPanel extends JPanel {
 	 */
 	public ChatPanel(int height, ClientConnection connect, int uid, int gid) {
 		this(height, connect, uid);
-		toggleGroup.setButtonsDrawFocus(false);
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
-		buttonPanel.add(toggleGroup);
-        buttonPanel.add(sendButton);
-        add(buttonPanel, BorderLayout.EAST);
+//		toggleGroup.setButtonsDrawFocus(false);
+//		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
+//		buttonPanel.add(toggleGroup);
+//		buttonPanel.add(sendButton);
+//		add(buttonPanel, BorderLayout.EAST);
 		this.gameID = gid;
 	}
 	

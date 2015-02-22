@@ -33,7 +33,6 @@ public class SetClient {
                    OUT=new PrintWriter(SOCK.getOutputStream());
                    Thread X=new Thread(cst);
                    X.start();
-
             } catch (java.net.ConnectException e) {
             	javax.swing.JOptionPane.showMessageDialog(c,"Could not connect to server.","Error",javax.swing.JOptionPane.ERROR_MESSAGE);
             }
