@@ -23,7 +23,7 @@ Messages to be sent to Client
     "U"
         -unblock user
     
-    "A"
+    "A" +gid + "`" + uid "`" + time
         -allow this player to start the set countdown
         
     "O"
