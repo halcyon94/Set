@@ -189,12 +189,18 @@ public class MessageProcessor implements Runnable {
                     int gid = Integer.parseInt(data[0]);
                     int uid = Integer.parseInt(data[1]);
                     Game game = GameLobby.findGame(gid);
+                    if(game.lockOwner()==0)
+                        game.setLock(uid);
+                    else
+                        break;
                     for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                         if(entry.getKey()!=uid){
                             sendMessage(entry.getKey(),game.block(5));
                         }
+                        else{
+                         //   sendMessage(allow to set);
+                        }
                     }
-                    game.setLock(uid);  
                     break;
                 }
 
@@ -248,7 +254,6 @@ public class MessageProcessor implements Runnable {
             case 'M': 
                 {   int uid,gid;
                     String actual_msg;
-                    System.out.println(message.substring(1,2));
                     if(message.substring(1,2).equals("`")){
                         String[] data = message.substring(2,message.length()).split("`");
                         gid = Integer.parseInt(data[0]);
