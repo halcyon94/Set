@@ -66,7 +66,7 @@ public class GamePanel extends JPanel {
 		});
 		add(chat, BorderLayout.SOUTH); //add chat panel to gui
 
-		grid = new CardGrid(setSize, 3, setSize, Color.BLACK);
+		grid = new CardGrid(setSize, 3, setSize, Color.BLACK, myID);
 		add(grid, BorderLayout.CENTER); //add card grid to gui
 	}
 
@@ -175,6 +175,7 @@ public class GamePanel extends JPanel {
 	public void setGameID(int gid) {
 		gameID = gid;
 		chat.setGameID(gid);
+		grid.setGameID(gid);
 	}
 	
 	public void setSelectionColor(Color c) {

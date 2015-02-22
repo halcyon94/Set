@@ -27,6 +27,8 @@ public class CardGrid extends JPanel {
 	private int cards = 0;
 	private int rows;
 	private int setSize;
+	private int myID;
+	private int gameID;
 	private Color playerColor;
 	private boolean selectEnabled = false;
 		
@@ -40,11 +42,12 @@ public class CardGrid extends JPanel {
 	 *	@param margin Pixel spacing between cards
 	 *	@param playerColor Player highlight color
 	 */
-	public CardGrid(int rows, int margin, int setSize, Color playerColor) {
+	public CardGrid(int rows, int margin, int setSize, Color playerColor, int uid) {
 		super(new GridLayout(1, 0, margin, margin));
 		this.rows = rows;
 		this.setSize = setSize;
 		this.playerColor = playerColor;
+		this.myID = uid;
 		add(new JPanel(new GridLayout(rows, 1, margin, margin))); //initial column
 	}
 	
@@ -76,6 +79,10 @@ public class CardGrid extends JPanel {
 						cx.toggleSelection(playerColor);
 						selList.add(cx);
 					}
+					String ids = "";
+					for(Card i : selList)
+						ids+=i.getID(setSize)+"`";
+					ClientConnection.updateSelection(myID, gameID, ids);
 				}
 			}
 		});
@@ -252,6 +259,23 @@ public class CardGrid extends JPanel {
 		col%=setSize;
 		sym%=setSize;
 		return new Card(num == 0 ? num+1 : num+setSize+1, pat == 0 ? pat : pat+setSize, col == 0 ? col : col+setSize, sym == 0 ? sym : sym+setSize);
+	}
+	
+	public void setGameID(int id) {
+		this.gameID = id;
+	}
+	
+	public Card getCard(Location l) {
+		return (Card) ((ComponentTransition) ((JPanel) getComponent(l.col)).getComponent(l.row)).getContent();
+	}
+	
+	public void markSelected(Color selColor, int[] ids) {
+		clearSelected();
+		for(int i : ids) {
+			Card c = getCard(cardMap.get(i));
+			c.select(selColor);
+			selList.add(c);
+		}
 	}
 	
 	private class Location {

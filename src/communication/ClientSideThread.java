@@ -251,10 +251,6 @@ class ClientSideThread implements Runnable {
                 
                 break;
             }
-            case "T":{
-                //selected cards for game gid from player uid
-                break;
-            }
             case "X":
             {
             	String[] data = message.substring(1,message.length()).split("`");
@@ -262,11 +258,14 @@ class ClientSideThread implements Runnable {
             	final int newScore = Integer.parseInt(data[2]);
             	SwingUtilities.invokeLater(new Runnable() {
         			public void run() {
-        				PlayerPanel p = c.getGamePanel().getPlayers();
+        				GamePanel g = c.getGamePanel();
+        				PlayerPanel p = g.getPlayers();
         				if(newScore > p.getScore(uid))
-        					c.getGamePanel().showNotification(p.getName(uid)+" scored a SET!", p.getIcon(uid), true);
+        					g.showNotification(p.getName(uid)+" scored a SET!", p.getIcon(uid), true);
         				else
-        					c.getGamePanel().showNotification(p.getName(uid)+" didn't find SET!", p.getIcon(uid), true);
+        					g.showNotification(p.getName(uid)+" didn't find SET!", p.getIcon(uid), true);
+        				g.getCards().clearSelected();
+        				g.getCards().setPlayerColor(p.getColor(c.getPlayerID()));
         				p.setScore(uid, newScore);
         			}
         		});
@@ -288,6 +287,19 @@ class ClientSideThread implements Runnable {
             	SwingUtilities.invokeLater(new Runnable() {
         			public void run() {
         				c.getGamePanel().addPlayer(Integer.parseInt(data[1]), data[2], Integer.parseInt(data[3]), Integer.parseInt(data[4]), true);
+        			}
+        		});
+                break;
+            }
+            case "T":
+            {
+            	final String[] data = message.substring(1,message.length()).split("`");
+            	final int[] cards = new int[data.length-2];
+            	for(int i = 2; i < data.length; i++)
+            		cards[i-2] = Integer.parseInt(data[i]);
+            	SwingUtilities.invokeLater(new Runnable() {
+        			public void run() {
+        				c.getGamePanel().getCards().markSelected(c.getGamePanel().getPlayers().getColor(Integer.parseInt(data[1])), cards);
         			}
         		});
                 break;

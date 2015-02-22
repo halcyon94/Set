@@ -81,7 +81,7 @@ public class Gooey extends JFrame {
 		chat = new ChatPanel(80, 1);
 		gameCard.add(chat, BorderLayout.SOUTH);
 
-		grid = new CardGrid(ROWS, 3, setSize, players.getColor(1));
+		grid = new CardGrid(ROWS, 3, setSize, players.getColor(1), 1);
 
 		//Start with 21 cards
 		for(int i=0; i<setSize*setSize*setSize*setSize; i++) {

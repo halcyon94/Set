@@ -224,4 +224,8 @@ public class Client extends JFrame {
 	public void setGameID(int gid) {
 		gameID = gid;
 	}
+	
+	public int getPlayerID() {
+		return myID;
+	}
 }

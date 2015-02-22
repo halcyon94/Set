@@ -69,12 +69,9 @@ public class ClientConnection {
 		SetClient.sendMessage("A"+gid+"`"+uid);
 	}
 	
-	public static void updateSelection(int uid, int gid, int[] cards) {
-		String ids = "";
-		for(int i : cards)
-			ids+=i+"`";
-		System.out.println("T"+gid+"`"+uid+"`"+ids);
-		SetClient.sendMessage("T"+gid+"`"+uid+"`"+ids);
+	public static void updateSelection(int uid, int gid, String cards) {
+		System.out.println("T"+gid+"`"+uid+"`"+cards);
+		SetClient.sendMessage("T"+gid+"`"+uid+"`"+cards);
 	}
 
 }

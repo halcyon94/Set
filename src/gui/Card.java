@@ -237,8 +237,19 @@ public class Card extends JPanel implements MouseListener {
 		repaint();
 	}
 	
+	
 	/**
-	 *	Marks or unmarks the Card as selected.
+	 *	Marks the Card as selected.
+	 */
+	public void select(Color highlight) {
+		cardBorder = new BasicStroke(5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		borderColor = highlight;
+		selected = true;
+		repaint();
+	}
+	
+	/**
+	 *	Unmarks the Card as selected.
 	 */
 	public void deselect() {
 		cardBorder = new BasicStroke();
