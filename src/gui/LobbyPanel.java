@@ -157,7 +157,7 @@ public class LobbyPanel extends JPanel {
 	}
 	
 	public void refreshGamesList(Object[][] gameData, boolean isEmpty) {
-		System.out.println("[LobbyPanel] GameList refreshed");
+		//System.out.println("[LobbyPanel] GameList refreshed");
 		if(!isEmpty) {
 			gameModel = new DefaultTableModel(gameData, gameColumns);
 			gameTable.setModel(gameModel);
@@ -168,7 +168,7 @@ public class LobbyPanel extends JPanel {
 	}
 	
 	public void refreshUserList(Object[][] userData) {
-		System.out.println("[LobbyPanel] UserList refreshed");
+		//System.out.println("[LobbyPanel] UserList refreshed");
 		userModel = new DefaultTableModel(userData, userColumns);
 		userTable.setModel(userModel);
 		formatTable(userTable);

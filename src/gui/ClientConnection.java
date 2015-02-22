@@ -70,7 +70,7 @@ public class ClientConnection {
 	}
 	
 	public static void updateSelection(int uid, int gid, String cards) {
-		System.out.println("T"+gid+"`"+uid+"`"+cards);
+		//System.out.println("T"+gid+"`"+uid+"`"+cards);
 		SetClient.sendMessage("T"+gid+"`"+uid+"`"+cards);
 	}
 

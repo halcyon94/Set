@@ -143,7 +143,7 @@ public class GamePanel extends JPanel {
 			String ids = "";
 			for(Card c : selList)
 				ids+=(c.getID(setSize)+"`");
-			System.out.println("[GamePanel] Submitting cards "+ids);
+			//System.out.println("[GamePanel] Submitting cards "+ids);
 			ClientConnection.submitSet(myID, gameID, ids);
 		} else {
 			ClientConnection.setFail(myID, gameID);
@@ -274,6 +274,5 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
-		System.out.println("[GamePanel] No set was found.");
 	}
 }
