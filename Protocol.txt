@@ -52,7 +52,9 @@ Messages to be sent to Client
         
     "R"+uid+"`"+username+"`"+score+"`"+uid+...
         -returns the rankings from the database
-
+        
+    "T"+uid+"`"+gid+"`"+card1(+"`"+card2+"`"+card3)    
+        -returns the selected cards by uid in game gid
 Messages to be set to the Server
 
     "S" + username + "`" + password
@@ -96,6 +98,9 @@ Messages to be set to the Server
         
     "G" + uid
         -sends back the list of games in the gamelobby
+        
+    "T"+uid+"`"+gid+"`"+card1(+"`"+card2+"`"+card3)    
+        -sends the selected cards by uid in game gid to be broadcast
     
     
 
