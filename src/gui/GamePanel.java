@@ -30,8 +30,6 @@ public class GamePanel extends JPanel {
 	public JButton setButton = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 	public JButton quitButton = new JButton("Quit");
 	
-	private ClientConnection connection;
-
 	private Timer t = new Timer(1, null);
 	private int timer;
 	private Stack<Color> colorList = new Stack<Color>();
@@ -42,11 +40,10 @@ public class GamePanel extends JPanel {
 	/**
 	 *	Client GUI frame constructor - Initializes the various frames
 	 */
-	public GamePanel(int playerID, int setSize, ClientConnection connection) {
+	public GamePanel(int playerID, int setSize) {
 		super(new BorderLayout(3,3));
 		this.setSize = 3;
 		myID = playerID;
-		this.connection = connection;
 		setButton.setHorizontalAlignment(SwingConstants.CENTER);
 		buildColorList();
 		buildGameGUI();
@@ -54,7 +51,7 @@ public class GamePanel extends JPanel {
 
 	//Assembles components of Set game GUI
 	private void buildGameGUI() {
-		chat = new ChatPanel(80, connection, myID, 0);
+		chat = new ChatPanel(80, myID, 0);
 		add(players, BorderLayout.NORTH); //add player panel to gui
 
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -121,7 +118,7 @@ public class GamePanel extends JPanel {
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if(!t.isRunning()) {
-					connection.beginSet(myID, gameID);
+					ClientConnection.beginSet(myID, gameID);
 					setTimer(5);
 				} else {
 					submitSet(grid.getSelected());
@@ -132,8 +129,8 @@ public class GamePanel extends JPanel {
 
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.leaveGame(gameID, myID);
-				connection.logout(myID);
+				ClientConnection.leaveGame(gameID, myID);
+				ClientConnection.logout(myID);
 			}
 		});
 		buttons.add(logoutButton); //logout button
@@ -147,9 +144,9 @@ public class GamePanel extends JPanel {
 			for(Card c : selList)
 				ids+=(c.getID(setSize)+"`");
 			System.out.println("[GamePanel] Submitting cards "+ids);
-			connection.submitSet(myID, gameID, ids);
+			ClientConnection.submitSet(myID, gameID, ids);
 		} else {
-			connection.setFail(myID, gameID);
+			ClientConnection.setFail(myID, gameID);
 		}
 		t.stop();
 		grid.toggleSelection();
@@ -256,7 +253,7 @@ public class GamePanel extends JPanel {
 		System.out.println("[GamePanel] Nelod function activated!");
 		ArrayList<Card> temp = new ArrayList<Card>();
 		if(block)
-			connection.beginSet(myID, gameID);
+			ClientConnection.beginSet(myID, gameID);
 		outer:
 		for(int i=0; i<cardList.size(); i++) {
 			temp.clear();

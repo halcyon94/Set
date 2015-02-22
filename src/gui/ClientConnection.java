@@ -9,62 +9,72 @@ import communication.SetClient;
  * @author dolenle
  */
 public class ClientConnection {
+	
+	private ClientConnection() {} //prevent instantiation
 
-	public void userLogin(String username, String password) {
+	public static void userLogin(String username, String password) {
 		SetClient.sendMessage("S"+username+"`"+password);
 	}
 	
-	public void userRegister(String username, String password) {
+	public static void userRegister(String username, String password) {
 		SetClient.sendMessage("R"+username+"`"+password);
 	}
 
-	public void refreshUsers(int uid) {
+	public static void refreshUsers(int uid) {
 		SetClient.sendMessage("E"+uid);
 	}
 
-	public void refreshGames(int uid) {
+	public static void refreshGames(int uid) {
 		SetClient.sendMessage("G"+uid);
 	}
 	
-	public void logout(int uid) {
+	public static void logout(int uid) {
 		SetClient.sendMessage("K"+uid);
 	}
 	
-	public void createGame(int uid, String name) {
+	public static void createGame(int uid, String name) {
 		SetClient.sendMessage("C"+uid+"`"+name);
 	}
 	
-	public void leaveGame(int gid, int uid) {
+	public static void leaveGame(int gid, int uid) {
 		SetClient.sendMessage("D"+gid+"`"+uid);
 	}
 	
-	public void joinGame(int gid, int uid) {
+	public static void joinGame(int gid, int uid) {
 		SetClient.sendMessage("J"+gid+"`"+uid);
 	}
 	
-	public void sendChat(int uid, String msg) {
+	public static void sendChat(int uid, String msg) {
 		SetClient.sendMessage("M"+uid+"`"+msg);
 	}
 	
-	public void sendChat(int uid, String msg, int gid) {		
+	public static void sendChat(int uid, String msg, int gid) {		
 		SetClient.sendMessage("M`"+gid+"`"+uid+"`"+msg);
 	}
 	
-	public void beginSet(int uid, int gid) {
+	public static void beginSet(int uid, int gid) {
 		SetClient.sendMessage("B"+gid+"`"+uid);
 	}
 	
-	public void submitSet(int uid, int gid, String cards) {
+	public static void submitSet(int uid, int gid, String cards) {
 		SetClient.sendMessage("P"+gid+"`"+uid+"`"+cards);
 	}
 	
-	public void setFail(int uid, int gid) {
+	public static void setFail(int uid, int gid) {
 		SetClient.sendMessage("F"+gid+"`"+uid);
 	}
 	
-	public void requestScoreBoard(int uid, int gid) {
-		System.out.println("A"+gid+"`"+uid);
+	public static void requestScoreBoard(int uid, int gid) {
+		//System.out.println("A"+gid+"`"+uid);
 		SetClient.sendMessage("A"+gid+"`"+uid);
+	}
+	
+	public static void updateSelection(int uid, int gid, int[] cards) {
+		String ids = "";
+		for(int i : cards)
+			ids+=i+"`";
+		System.out.println("T"+gid+"`"+uid+"`"+ids);
+		SetClient.sendMessage("T"+gid+"`"+uid+"`"+ids);
 	}
 
 }

@@ -24,7 +24,6 @@ public class LobbyPanel extends JPanel {
 	private JPanel info;
 	private JPanel gameScoreboard;
 	private ChatPanel chat;
-	private ClientConnection connection;
 	private int myID;
 	public int visibleGame;
 	
@@ -62,7 +61,7 @@ public class LobbyPanel extends JPanel {
 	/**
 	 *	Lobby screen constructor
 	 */
-	public LobbyPanel(ClientConnection conn, final int uid) {
+	public LobbyPanel(final int uid) {
 		//intialize
 		super(new BorderLayout(5,5));
 		setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
@@ -71,7 +70,6 @@ public class LobbyPanel extends JPanel {
 		users = new JPanel();
 		users.setLayout(new BoxLayout(users, BoxLayout.Y_AXIS));
 		info = new JPanel(new GridLayout(1,1,0,0));
-		this.connection = conn;
 		this.myID = uid;
 				
 		//build games panel
@@ -124,7 +122,7 @@ public class LobbyPanel extends JPanel {
 		add(info, BorderLayout.CENTER);
 		
 		//add chat
-		chat = new ChatPanel(150, connection, myID);
+		chat = new ChatPanel(150, myID);
 		add(chat, BorderLayout.SOUTH);
 		
 		addListeners();
@@ -138,22 +136,22 @@ public class LobbyPanel extends JPanel {
 		
 		refreshGames.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.refreshGames(myID);
+				ClientConnection.refreshGames(myID);
 			}
 		});
 		refreshUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.refreshUsers(myID);
+				ClientConnection.refreshUsers(myID);
 			}
 		});
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.logout(myID);
+				ClientConnection.logout(myID);
 			}
 		});
 		createGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.createGame(myID, nameField.getText());
+				ClientConnection.createGame(myID, nameField.getText());
 			}
 		});
 	}
@@ -246,7 +244,7 @@ public class LobbyPanel extends JPanel {
 	
 	//Game info panel
 	private JPanel getGameInfoPanel(int id, String name) {
-		connection.requestScoreBoard(myID, id);
+		ClientConnection.requestScoreBoard(myID, id);
 		JPanel temp = new JPanel();
 		gameScoreboard = new JPanel();
 		visibleGame = id;

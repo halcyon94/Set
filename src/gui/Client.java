@@ -33,9 +33,7 @@ public class Client extends JFrame {
 	private LobbyPanel lobby;
 	private GamePanel game;
 	private Clip wongsound;
-	
-	private ClientConnection connection = new ClientConnection();
-	
+		
 	public Client() {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		getContentPane().setLayout(new CardLayout());
@@ -46,8 +44,8 @@ public class Client extends JFrame {
             public void windowClosing(WindowEvent e) {
             	if(myID != 0) {
             		if(gameActive)
-            			connection.leaveGame(gameID, myID);
-            		connection.logout(myID);
+            			ClientConnection.leaveGame(gameID, myID);
+            		ClientConnection.logout(myID);
             	}
             	System.exit(NORMAL);
             }
@@ -114,12 +112,12 @@ public class Client extends JFrame {
 		setLocationRelativeTo(null);
 		ActionListener joinListener = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				connection.joinGame(lobby.visibleGame, myID);
+				ClientConnection.joinGame(lobby.visibleGame, myID);
 			}
 		};
 		getRootPane().setDefaultButton(null);
 		gameActive = false;
-		lobby = new LobbyPanel(connection, myID);
+		lobby = new LobbyPanel(myID);
 		lobby.joinButton.addActionListener(joinListener);
 		JPanel c = (JPanel) getContentPane();
 		c.add(lobby, "LOBBY");
@@ -129,12 +127,12 @@ public class Client extends JFrame {
 	//Load and display the game
 	private void createGameFrame() {
 		if(myID != 0) {
-			game = new GamePanel(myID, 3, connection);
+			game = new GamePanel(myID, 3);
 			gameActive = true;
 			game.quitButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
-					connection.leaveGame(gameID, myID);
+					ClientConnection.leaveGame(gameID, myID);
 					gameActive = false;
 					lobby.resetInfoPanel();
 					JPanel c = (JPanel) getContentPane();
@@ -165,7 +163,7 @@ public class Client extends JFrame {
 				} else if(pass.isEmpty()) {
 					login.showPassPopup("geez, you cant leave this empty");
 				} else {
-					connection.userLogin(user, pass);
+					ClientConnection.userLogin(user, pass);
 				}
 			}
 		};
@@ -174,7 +172,7 @@ public class Client extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				String user = login.getUser();
 				String pass = login.getPassword();
-				connection.userRegister(user, pass);
+				ClientConnection.userRegister(user, pass);
 			}
 		};
 		p.addListeners(a1, a2);

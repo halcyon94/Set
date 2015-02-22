@@ -23,7 +23,6 @@ public class ChatPanel extends JPanel {
 	private JEditorPane msgArea = new JEditorPane("text/html", null);
 	private JButton sendButton = new JButton("SEND");
 	private JFormattedTextField msgField = new JFormattedTextField(defaultString);
-	private ClientConnection connection;
 	private int myID;
 	private int gameID = 0;
 
@@ -34,13 +33,11 @@ public class ChatPanel extends JPanel {
 	/**
 	 *	Chat panel constructor
 	 *	@param height Preferred height of the message field
-	 *	@param connect	ClientConnection object
 	 *	@param uid	ID of currently logged in user
 	 */
-	public ChatPanel(int height, ClientConnection connect, int uid) {
+	public ChatPanel(int height, int uid) {
 		super(new BorderLayout(3,3));
 		myID = uid;
-		connection = connect;
 		setBorder(BorderFactory.createTitledBorder("Chat"));
 		
 		msgField.setForeground(Color.LIGHT_GRAY);
@@ -65,9 +62,9 @@ public class ChatPanel extends JPanel {
 				String text = msgField.getText().replace('`', ' ');
 				if(!text.isEmpty() && !text.equals(defaultString)) {
 					if(gameID != 0)
-						connection.sendChat(myID, text, gameID);
+						ClientConnection.sendChat(myID, text, gameID);
 					else
-						connection.sendChat(myID, text);
+						ClientConnection.sendChat(myID, text);
 					msgField.setText("");	
 				}
 			}
@@ -88,12 +85,11 @@ public class ChatPanel extends JPanel {
 	/**
 	 * ChatPanel constructor with gameID
 	 * @param height Preferred height of the message field
-	 * @param connect ClientConnection object
 	 * @param uid user ID
 	 * @param gid game ID
 	 */
-	public ChatPanel(int height, ClientConnection connect, int uid, int gid) {
-		this(height, connect, uid);
+	public ChatPanel(int height, int uid, int gid) {
+		this(height, uid);
 //		toggleGroup.setButtonsDrawFocus(false);
 //		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 0));
 //		buttonPanel.add(toggleGroup);

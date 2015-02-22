@@ -23,7 +23,7 @@ public class Gooey extends JFrame {
 
 	JPanel gameCard; //5px spacing
 	private LoginPanel login = new LoginPanel();
-	private LobbyPanel lobby = new LobbyPanel(null, 0);
+	private LobbyPanel lobby = new LobbyPanel(0);
 	private CardGrid grid;
 	private PlayerPanel players;
 	private ChatPanel chat;
@@ -78,7 +78,7 @@ public class Gooey extends JFrame {
 		addTestButtons(buttons);
 		gameCard.add(buttons, BorderLayout.EAST);
 
-		chat = new ChatPanel(80, null, 1);
+		chat = new ChatPanel(80, 1);
 		gameCard.add(chat, BorderLayout.SOUTH);
 
 		grid = new CardGrid(ROWS, 3, setSize, players.getColor(1));
