@@ -22,6 +22,9 @@ Messages to be sent to Client
         
     "U"
         -unblock user
+    
+    "A"
+        -allow this player to start the set countdown
         
     "O"
         -game is over, just displays a message
