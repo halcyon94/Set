@@ -168,6 +168,23 @@ public class CardGrid extends JPanel {
 	}
 	
 	/**
+	 *	Animated removal animation for Card with the given ID from the grid. Card is not replaced.
+	 *	@param id Unique card identifier
+	 */
+	public void animateRemoveCard(int id) {
+		if(cardMap.containsKey(id)) {
+			Location l = cardMap.get(id);
+			ComponentTransition ct = ((ComponentTransition) ((JPanel) getComponent(l.col)).getComponent(l.row));
+			ZoomTransitionEffect effect = new ZoomTransitionEffect ();
+	        effect.setMinimumSpeed ( 0.03f );
+	        effect.setSpeed ( 0.15f );
+	        effect.setType(ZoomType.zoomOut);
+			ct.setTransitionEffect(effect);
+			ct.performTransition(new JPanel());
+		}
+	}
+	
+	/**
 	 *	Remove the Card with the given ID from the grid.
 	 *	@param id Unique card identifier
 	 */
