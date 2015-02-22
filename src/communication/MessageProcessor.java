@@ -306,6 +306,21 @@ public class MessageProcessor implements Runnable {
                 sendMessage(uid,GameLobby.returnGames());
                 break;
             }
+            case 'T':{
+                String[] data = message.substring(1,message.length()).split("`");
+                int gid = Integer.parseInt(data[0]);
+                int uid = Integer.parseInt(data[1]);
+                String cards="";
+                for(int i=2;i<data.length;i++){
+                    cards = cards +data[i]+"`";
+                }
+                Game game = GameLobby.findGame(gid);
+                for(Map.Entry<Integer,Player> entry: game.playerCollection.entrySet()){
+                    if(uid != entry.getKey())
+                        sendMessage(entry.getKey(),"T"+gid+"`"+uid+"`"+cards);
+                }
+                break;
+            }
             default:{
                 System.err.println("Error: Received message is not in protocol: " + message);                
             }

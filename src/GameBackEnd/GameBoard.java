@@ -110,7 +110,6 @@ public class GameBoard {
     
     private void removeSet(int c1, int c2, int c3){
         //loop through cardsOnBoard and remove the 3 cards
-        System.out.println("removing cards "+c1+" "+" "+c2+ " "+c3);
         for(int i=0;i<cardsOnBoard.size();i++){
             if(cardsOnBoard.get(i).equals(c1) || cardsOnBoard.get(i).equals(c2) || cardsOnBoard.get(i).equals(c3)){
                 cardsOnBoard.remove(i);

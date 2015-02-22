@@ -251,6 +251,10 @@ class ClientSideThread implements Runnable {
                 
                 break;
             }
+            case "T":{
+                //selected cards for game gid from player uid
+                break;
+            }
             case "X":
             {
             	String[] data = message.substring(1,message.length()).split("`");
