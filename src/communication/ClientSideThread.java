@@ -131,6 +131,15 @@ class ClientSideThread implements Runnable {
                 c.getGamePanel().blockTimer(blockTime);
                 break;
             }
+            
+            case "A":
+            {
+                String[] data = message.substring(1,message.length()).split("`");
+                int gid = Integer.parseInt(data[0]);
+                int uid = Integer.parseInt(data[1]);
+                int time = Integer.parseInt(data[2]);
+                //start the cd here
+            }
             case "U":
             {
                 //unblock the buttons

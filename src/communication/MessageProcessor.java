@@ -30,6 +30,7 @@ public class MessageProcessor implements Runnable {
         while(true){
             try {
                 message = SetServer.bqueue.take();
+                System.out.println("RECEIVED FROM CLIENT "+message);
                 try {
                     processMessage(message);
                 } catch (Exception ex) {
@@ -184,10 +185,11 @@ public class MessageProcessor implements Runnable {
                 }
 
             case 'B':
-                {   
+                {      
                     String[] data = message.substring(1,message.length()).split("`");
                     int gid = Integer.parseInt(data[0]);
                     int uid = Integer.parseInt(data[1]);
+                    int time = 5;
                     Game game = GameLobby.findGame(gid);
                     if(game.lockOwner()==0)
                         game.setLock(uid);
@@ -195,10 +197,10 @@ public class MessageProcessor implements Runnable {
                         break;
                     for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                         if(entry.getKey()!=uid){
-                            sendMessage(entry.getKey(),game.block(5));
+                            sendMessage(entry.getKey(),game.block(time));
                         }
                         else{
-                         //   sendMessage(allow to set);
+                            sendMessage(uid,"A"+gid+"`"+uid+"`"+time);
                         }
                     }
                     break;
