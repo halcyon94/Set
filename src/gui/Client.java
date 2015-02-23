@@ -172,7 +172,13 @@ public class Client extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				String user = login.getUser();
 				String pass = login.getPassword();
-				ClientConnection.userRegister(user, pass);
+				if(user.isEmpty()) {
+					login.showUserPopup("Please enter username.");
+				} else if(pass.isEmpty()) {
+					login.showPassPopup("Enter a password, you lazy basstord");
+				} else {
+					ClientConnection.userRegister(user, pass);
+				}
 			}
 		};
 		p.addListeners(a1, a2);
@@ -227,5 +233,13 @@ public class Client extends JFrame {
 	
 	public int getPlayerID() {
 		return myID;
+	}
+	
+	public boolean isPlayerValid(int id) {
+		return myID == id;
+	}
+	
+	public boolean isGameValid(int id) {
+		return gameActive && gameID == id;
 	}
 }

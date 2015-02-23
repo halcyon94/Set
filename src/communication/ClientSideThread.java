@@ -135,10 +135,13 @@ class ClientSideThread implements Runnable {
             case "A":
             {
                 String[] data = message.substring(1,message.length()).split("`");
-                int gid = Integer.parseInt(data[0]);
-                int uid = Integer.parseInt(data[1]);
-                int time = Integer.parseInt(data[2]);
+                if(c.isPlayerValid(Integer.parseInt(data[1])) && c.isGameValid(Integer.parseInt(data[0]))) {
+                	c.getGamePanel().setTimer(Integer.parseInt(data[2]));
+                } else {
+                	System.out.println("[CST] player or game invalid!");
+                }
                 //start the cd here
+                break;
             }
             case "U":
             {

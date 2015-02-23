@@ -87,14 +87,15 @@ public class GamePanel extends JPanel {
 					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 					setButton.setEnabled(true);
 				}
-			}};
-			t = new Timer(1000, counter);
-			t.setInitialDelay(0);
-			t.start();
+			}
+		};
+		t = new Timer(1000, counter);
+		t.setInitialDelay(0);
+		t.start();
 	}
 
 	//timer countdown for SET
-	private void setTimer(final int time) {
+	public void setTimer(final int time) {
 		timer = time;
 		grid.toggleSelection();
 		ActionListener counter = new ActionListener() {
@@ -119,7 +120,6 @@ public class GamePanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				if(!t.isRunning()) {
 					ClientConnection.beginSet(myID, gameID);
-					setTimer(5);
 				} else {
 					submitSet(grid.getSelected());
 				}
