@@ -4,7 +4,6 @@ import communication.SetClient;
 
 /**
  * Implements client to server protocol as defined in Protocol.txt
- * todo: make everything static
  * 
  * @author dolenle
  */

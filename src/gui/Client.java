@@ -17,7 +17,7 @@ import communication.SetClient;
 
 
 /**
- *	Set GUI tester
+ *	Set Client main class
  *	@author Dolen Le
  *	@version 1.0
  */
@@ -33,7 +33,10 @@ public class Client extends JFrame {
 	private LobbyPanel lobby;
 	private GamePanel game;
 	private Clip wongsound;
-		
+	
+	/**
+	 * Constructor for Client
+	 */
 	public Client() {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		getContentPane().setLayout(new CardLayout());
@@ -61,7 +64,10 @@ public class Client extends JFrame {
         }
 	}
 
-	//Main Method
+	/**
+	 * Main method for clientside Set program
+	 * @param args Command line arguments
+	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -83,7 +89,9 @@ public class Client extends JFrame {
 		});
 	}
 
-	//Load and display the login dialog, also called upon logout
+	/**
+	 * Initializes and displays the login screen. Call this upon logout.
+	 */
 	public void createLoginFrame() {
 		myID = 0;
 		gameID = 0;
@@ -104,7 +112,9 @@ public class Client extends JFrame {
 		((CardLayout) c.getLayout()).show(c, "LOGIN");
 	}
 
-	//Load and display the game lobby
+	/**
+	 * Initializes and displays the game lobby.
+	 */
 	public void createLobbyFrame() {
 		setTitle("Set Lobby");
 		setSize(800, 600);
@@ -184,10 +194,17 @@ public class Client extends JFrame {
 		p.addListeners(a1, a2);
 	}
 	
+	/**
+	 * Set the current player ID
+	 * @param id User id
+	 */
 	public void setUser(int id) {
 		myID = id;
 	}
 	
+	/**
+	 * Displays incorrect credentials warning.
+	 */
 	public void badLogin() {
 		SetClient.Connect(this); //reset connection
 		login.showPassPopup("NO! WRONG!");
@@ -195,15 +212,26 @@ public class Client extends JFrame {
 		wongsound.start();
 	}
 	
+	/**
+	 * Displays existing user warning.
+	 */
 	public void userExists() {
 		SetClient.Connect(this); //reset connection
 		login.showPassPopup("User is already logged in!");
 	}
 	
+	/**
+	 * Checks if the user is currently in-game.
+	 * @return if the game is running.
+	 */
 	public boolean isGameActive() { 
 		return gameActive;
 	}
-
+	
+	/**
+	 * Creates and loads a game, or reloads the cards from the given array
+	 * @param cardIDs array containing card IDs
+	 */
 	public void enterGame(int[] cardIDs) {
 		if(!gameActive) {
 			createGameFrame();

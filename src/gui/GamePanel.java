@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 /**
- *	Set GUI tester
+ *	Set Game Panel
  *	@author Dolen Le
  *	@version 1.0
  */
