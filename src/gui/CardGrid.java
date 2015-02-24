@@ -221,10 +221,17 @@ public class CardGrid extends JPanel {
 	}
 	
 	/**
-	 *	Toggles the selection mode for the cards.
+	 *	Enables card selection.
 	 */
-	public void toggleSelection() {
-		selectEnabled = !selectEnabled;
+	public void enableSelection() {
+		selectEnabled = true;
+	}
+	
+	/**
+	 *	Disables card selection.
+	 */
+	public void disableSelection() {
+		selectEnabled = false;
 	}
 	
 	/**

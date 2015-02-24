@@ -164,7 +164,7 @@ public class Gooey extends JFrame {
 
 	private void setTimer(final JButton b) {
 		timer = 10;
-		grid.toggleSelection();
+		grid.enableSelection();
 		b.setEnabled(false);
 		ActionListener counter = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) 
@@ -173,7 +173,7 @@ public class Gooey extends JFrame {
 				timer--;
 				if(timer < 0) {
 					t.stop();
-					grid.toggleSelection();
+					grid.disableSelection();
 					b.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 					b.setEnabled(true);
 					grid.clearSelected();

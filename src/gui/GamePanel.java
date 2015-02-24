@@ -75,8 +75,8 @@ public class GamePanel extends JPanel {
 	 * @param time Time (in seconds) to disable the button
 	 */
 	public void blockTimer(final int time) {
-		timer = time;
 		setButton.setEnabled(false);
+		timer = time;
 		ActionListener counter = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) 
 			{ 
@@ -97,7 +97,7 @@ public class GamePanel extends JPanel {
 	//timer countdown for SET
 	public void setTimer(final int time) {
 		timer = time;
-		grid.toggleSelection();
+		grid.enableSelection();
 		ActionListener counter = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) 
 			{
@@ -149,7 +149,7 @@ public class GamePanel extends JPanel {
 			ClientConnection.setFail(myID, gameID);
 		}
 		t.stop();
-		grid.toggleSelection();
+		grid.disableSelection();
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		grid.clearSelected();
 	}
@@ -267,7 +267,7 @@ public class GamePanel extends JPanel {
 					System.out.println("[GamePanel] a set was found");
 					temp.add(x);
 					submitSet(temp);
-					grid.toggleSelection();
+					grid.disableSelection();
 					break outer;
 				} else {
 					temp.remove(temp.size()-1);
