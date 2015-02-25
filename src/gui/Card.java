@@ -98,7 +98,7 @@ public class Card extends JPanel implements MouseListener {
 	
 	private static final int MIN_MARGIN = 6;
 	private static final float BORDER_WEIGHT = 5;
-	private static final int STRIPE_WEIGHT = 4;
+	private static final int STRIPE_WEIGHT = 5;
 	
 	/**
 	 *	Creates a new Card with custom defined color
@@ -363,6 +363,7 @@ public class Card extends JPanel implements MouseListener {
 		temp.setColor(Color.WHITE);
 		temp.fillRect(0, 0, STRIPE_WEIGHT, STRIPE_WEIGHT); //white bg
 		temp.setColor(col);
+		temp.setStroke(new BasicStroke(3.0f));
 		temp.drawLine(0, 0, 0, STRIPE_WEIGHT); //vertical lines
 		return new TexturePaint(bufferedImage, new Rectangle2D.Double(0, 0, STRIPE_WEIGHT, STRIPE_WEIGHT));
 	}

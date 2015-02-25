@@ -32,7 +32,7 @@ public class SetServer{
     public static void main(String[] args)throws IOException
     {
             try{
-                    final int port=5909;
+                    final int port=8052;
                     ServerSocket SERVER=new ServerSocket(port);
                     System.out.println("Waiting for clients on IP "+InetAddress.getLocalHost().getHostAddress());
                     MessageProcessor pm = new MessageProcessor();
