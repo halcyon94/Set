@@ -20,6 +20,28 @@ public class LoginPanel extends JPanel {
 	private JPasswordField passwordText = new JPasswordField(20);
 	private WebPopOver popupMsg = new WebPopOver();
 	private JLabel popupLabel = new JLabel();
+	
+	private FocusListener userFocus = new FocusAdapter() {
+		public void focusGained(java.awt.event.FocusEvent evt) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					userText.selectAll();
+				}
+			});
+		}
+	};
+	
+	private FocusListener passFocus = new FocusAdapter() {
+		public void focusGained(java.awt.event.FocusEvent evt) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					passwordText.selectAll();
+				}
+			});
+		}
+	};
 
 	
 	public LoginPanel() {
@@ -54,16 +76,24 @@ public class LoginPanel extends JPanel {
 		popupMsg.setMovable(false);
 		popupMsg.setMargin(5);
 		popupMsg.add(popupLabel);
+		
+		userText.addFocusListener(userFocus);
+		
+		passwordText.addFocusListener(passFocus);
 	}
 
 	public JButton getButt() {
 		return loginButton;
 	}
-
+	
 	public String getUser() {
 		return userText.getText();
 	}
 	
+	/**
+	 * Get the entered password
+	 * @return password text
+	 */
 	public String getPassword() {
 //		try {
 //			MessageDigest m = MessageDigest.getInstance("SHA1");
@@ -81,26 +111,43 @@ public class LoginPanel extends JPanel {
 		return new String(passwordText.getPassword()); //BAD! NOT SECURE!!! NO NO NO NO
 	}
 
+	/**
+	 * Show a popup notification on the username field
+	 * @param text notification text
+	 */
 	public void showUserPopup(String text) {
 		popupLabel.setText(text);
 		popupMsg.show(userText);
 	}
-
+	
+	/**
+	 * Show a popup notification on the password field
+	 * @param text notification text
+	 */
 	public void showPassPopup(String text) {
 		popupLabel.setText(text);
 		popupMsg.show(passwordText);
 	}
-
+	
+	/**
+	 * Adds the provided action listeners to the login and register buttons.
+	 * @param login login button listener
+	 * @param reg register button listener
+	 */
 	public void addListeners(ActionListener login, ActionListener reg) {
 		loginButton.addActionListener(login);
 		registerButton.addActionListener(reg);
 	}
 
-	//remove all action listeners
+	/**
+	 * Removes all access listeners from the LoginPanel elements, allowing garbage collection to clear them.
+	 */
 	public void detachListeners() {
 		for(ActionListener l : loginButton.getActionListeners())
 			loginButton.removeActionListener(l);
 		for(ActionListener l : registerButton.getActionListeners())
 			registerButton.removeActionListener(l);
+		userText.removeFocusListener(userFocus);
+		passwordText.removeFocusListener(passFocus);
 	}
 }
