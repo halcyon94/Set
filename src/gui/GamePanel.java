@@ -30,12 +30,39 @@ public class GamePanel extends JPanel {
 	public JButton setButton = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 	public JButton quitButton = new JButton("Quit");
 	
-	private Timer t = new Timer(1, null);
-	private int timer;
+	
 	private Stack<Color> colorList = new Stack<Color>();
 	
 	private ArrayList<Card> cardList = new ArrayList<Card>(); //FOR TESTING ONLY, I SWEAR!!!
 	private ArrayList<Integer> cardIDs = new ArrayList<Integer>();
+	
+	private Timer t = new Timer(1000, null);
+	private int timer;
+	private ActionListener blockCounter = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) 
+		{ 
+			setButton.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
+			timer--;
+			if(timer < 0) {
+				t.stop();
+				setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+				setButton.setEnabled(true);
+				t.removeActionListener(this);
+			}
+		}
+	};
+	private ActionListener setCounter = new ActionListener() {
+		public void actionPerformed(ActionEvent evt) 
+		{
+			setButton.setText("<html><center>OK<br>"+timer+"<br>&nbsp;</center></html>");
+			timer--;
+			if(timer < 0) {
+				t.stop();
+				submitSet(grid.getSelected());
+				t.removeActionListener(this);
+			}
+		}
+	};
 
 	/**
 	 *	Client GUI frame constructor - Initializes the various frames
@@ -77,19 +104,7 @@ public class GamePanel extends JPanel {
 	public void blockTimer(final int time) {
 		setButton.setEnabled(false);
 		timer = time;
-		ActionListener counter = new ActionListener() {
-			public void actionPerformed(ActionEvent evt) 
-			{ 
-				setButton.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
-				timer--;
-				if(timer < 0) {
-					t.stop();
-					setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
-					setButton.setEnabled(true);
-				}
-			}
-		};
-		t = new Timer(1000, counter);
+		t.addActionListener(blockCounter);
 		t.setInitialDelay(0);
 		t.start();
 	}
@@ -98,18 +113,7 @@ public class GamePanel extends JPanel {
 	public void setTimer(final int time) {
 		timer = time;
 		grid.enableSelection();
-		ActionListener counter = new ActionListener() {
-			public void actionPerformed(ActionEvent evt) 
-			{
-				setButton.setText("<html><center>OK<br>"+timer+"<br>&nbsp;</center></html>");
-				timer--;
-				if(timer < 0) {
-					t.stop();
-					submitSet(grid.getSelected());
-				}
-			}
-		};
-		t = new Timer(1000, counter);
+		t.addActionListener(setCounter);
 		t.setInitialDelay(0);
 		t.start();
 	}
@@ -140,6 +144,7 @@ public class GamePanel extends JPanel {
 	private void submitSet(ArrayList<Card> selList) {
 		grid.disableSelection();
 		t.stop();
+		t.removeActionListener(t.getActionListeners()[0]);
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		if(selList.size() == setSize) {
 			setButton.setEnabled(false);
@@ -190,6 +195,7 @@ public class GamePanel extends JPanel {
 		t.stop();
 		setButton.setEnabled(true);
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
+		t.removeActionListener(blockCounter);
 	}
 	
 	public void showNotification(String message, Icon icon, boolean hasIcon) {
