@@ -8,6 +8,7 @@ import com.alee.managers.notification.WebNotificationPopup;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 /**
@@ -33,7 +34,7 @@ public class GamePanel extends JPanel {
 	
 	private Stack<Color> colorList = new Stack<Color>();
 	
-	private ArrayList<Card> cardList = new ArrayList<Card>(); //FOR TESTING ONLY, I SWEAR!!!
+	private ArrayList<Card> cardList = new ArrayList<Card>();
 	private ArrayList<Integer> cardIDs = new ArrayList<Integer>();
 	
 	private Timer t = new Timer(1000, null);
@@ -137,14 +138,23 @@ public class GamePanel extends JPanel {
 				ClientConnection.logout(myID);
 			}
 		});
+		
+		JButton shuffleButton = new JButton("Shuffle");
+		shuffleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				shuffleGrid();
+			}
+		});
 		buttons.add(logoutButton); //logout button
 		buttons.add(quitButton); //quit button
+		buttons.add(shuffleButton); //quit button
 	}
 	
 	private void submitSet(ArrayList<Card> selList) {
 		grid.disableSelection();
 		t.stop();
-		t.removeActionListener(t.getActionListeners()[0]);
+		for(ActionListener l : t.getActionListeners())
+			t.removeActionListener(l);
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		if(selList.size() == setSize) {
 			setButton.setEnabled(false);
@@ -250,6 +260,14 @@ public class GamePanel extends JPanel {
 		cardList.clear(); //FOR TESTING ONLY, I SWEAR!!!
 		cardIDs.clear();
 		grid.clear();
+	}
+	
+	//rearrange the grid randomly
+	public void shuffleGrid() {
+		grid.clear();
+		Collections.shuffle(cardList);
+		for(Card c: cardList)
+			grid.addCard(c);
 	}
 	
 	/**
