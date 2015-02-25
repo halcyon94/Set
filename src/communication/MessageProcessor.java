@@ -211,13 +211,18 @@ public class MessageProcessor implements Runnable {
                     String[] data = message.substring(1,message.length()).split("`");
                     int gid = Integer.parseInt(data[0]);
                     int uid = Integer.parseInt(data[1]);
-                    Player player = GameLobby.findPlayer(uid);
-                    player.decScore();
                     Game game = GameLobby.findGame(gid);
-                    game.resetLock();
-                    for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                        sendMessage(entry.getKey(),game.returnScore(uid,player.returnScore()));
-                        sendMessage(entry.getKey(),game.unblock());
+                    if(uid==game.lockOwner()){
+                        Player player = GameLobby.findPlayer(uid);
+                        player.decScore();
+                        game.resetLock();
+                        for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
+                            sendMessage(entry.getKey(),game.returnScore(uid,player.returnScore()));
+                            sendMessage(entry.getKey(),game.unblock());
+                        }
+                    }
+                    else{
+                        System.out.println("OH CRAP 1");
                     }
                     break;
                 }
@@ -251,7 +256,7 @@ public class MessageProcessor implements Runnable {
                         }
                     }
                     else{
-                    	System.out.println("OH CRAP");
+                    	System.out.println("OH CRAP 2");
                     }
                     break;
                 }
