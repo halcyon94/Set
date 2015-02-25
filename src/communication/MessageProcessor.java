@@ -250,6 +250,9 @@ public class MessageProcessor implements Runnable {
                             sendMessage(entry.getKey(),game.unblock());
                         }
                     }
+                    else{
+                    	System.out.println("OH CRAP");
+                    }
                     break;
                 }
 

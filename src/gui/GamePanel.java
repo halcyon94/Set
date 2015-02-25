@@ -138,6 +138,9 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void submitSet(ArrayList<Card> selList) {
+		grid.disableSelection();
+		t.stop();
+		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		if(selList.size() == setSize) {
 			setButton.setEnabled(false);
 			String ids = "";
@@ -148,9 +151,6 @@ public class GamePanel extends JPanel {
 		} else {
 			ClientConnection.setFail(myID, gameID);
 		}
-		t.stop();
-		grid.disableSelection();
-		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		grid.clearSelected();
 	}
 	
