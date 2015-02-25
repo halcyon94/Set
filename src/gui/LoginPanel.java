@@ -1,8 +1,10 @@
 package gui;
 
 import javax.swing.*;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 import java.awt.event.*;
+import java.security.MessageDigest;
 
 import com.alee.extended.window.WebPopOver;
 
@@ -91,24 +93,17 @@ public class LoginPanel extends JPanel {
 	}
 	
 	/**
-	 * Get the entered password
-	 * @return password text
+	 * Get the entered password hash
+	 * @return hashed password text
 	 */
 	public String getPassword() {
-//		try {
-//			MessageDigest m = MessageDigest.getInstance("SHA1");
-//			ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-//			OutputStreamWriter out = new OutputStreamWriter(byteOut, "ASCII");
-//			out.write(passwordText.getPassword());
-//			out.flush();
-//		    byte[] bytes = byteOut.toByteArray();
-//			return new String(m.digest(bytes)); //BAD! NOT SECURE!!! NO NO NO NO
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return "Error";
-		return new String(passwordText.getPassword()); //BAD! NOT SECURE!!! NO NO NO NO
+		try{
+			MessageDigest md = MessageDigest.getInstance("SHA");
+			return new String((new HexBinaryAdapter()).marshal(md.digest(new String(passwordText.getPassword()).getBytes())));
+		} catch (Exception e) {
+			showUserPopup("Unhandled exception.");
+			return null;
+		}
 	}
 
 	/**
