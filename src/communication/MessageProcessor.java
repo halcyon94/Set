@@ -345,6 +345,7 @@ public class MessageProcessor implements Runnable {
     private static void sendMessage(int uid, String message) throws IOException{
             Socket sock = SetServer.SocketList.get(uid);
             PrintWriter TEMP_OUT=new PrintWriter(sock.getOutputStream());
+            System.out.println("[MessageProcessor] sending msg "+message+" to uid "+uid);
             TEMP_OUT.println(message);
             TEMP_OUT.flush();
     }    

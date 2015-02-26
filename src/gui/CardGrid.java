@@ -235,6 +235,14 @@ public class CardGrid extends JPanel {
 	}
 	
 	/**
+	 * Checks current selection state
+	 * @return if cards are selectable on the grid
+	 */
+	public boolean getSelectionState() {
+		return selectEnabled;
+	}
+	
+	/**
 	 *	Checks if the currently selected cards form a Set.
 	 */
 	public boolean isSet() {
