@@ -117,11 +117,11 @@ public class GamePanel extends JPanel {
 
 	//timer countdown for SET
 	public void setTimer(final int time) {
+		chat.systemMessage("[CardGrid] setTimer called at "+System.currentTimeMillis());
 		timer = time;
 		if(grid.getSelectionState())
 			chat.systemMessage("[CardGrid] WARNING: grid selection already enabled! "+System.currentTimeMillis());
 		grid.enableSelection();
-		chat.systemMessage("[CardGrid] Selection enabled at "+System.currentTimeMillis());
 		t.addActionListener(setCounter);
 		t.setInitialDelay(0);
 		t.start();
@@ -217,7 +217,7 @@ public class GamePanel extends JPanel {
 	public void unblockButton() {
 		chat.systemMessage("[CardGrid] unblock called at "+System.currentTimeMillis());
 		t.stop();
-		grid.disableSelection();
+		//grid.disableSelection();
 		setButton.setEnabled(true);
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 		t.removeActionListener(blockCounter);
