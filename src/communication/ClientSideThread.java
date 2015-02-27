@@ -137,9 +137,13 @@ class ClientSideThread implements Runnable {
             
             case "A":
             {
-                String[] data = message.substring(1,message.length()).split("`");
+                final String[] data = message.substring(1,message.length()).split("`");
                 if(c.isPlayerValid(Integer.parseInt(data[1])) && c.isGameValid(Integer.parseInt(data[0]))) {
-                	c.getGamePanel().setTimer(Integer.parseInt(data[2]));
+                	SwingUtilities.invokeLater(new Runnable() {
+             			public void run() {
+             				c.getGamePanel().setTimer(Integer.parseInt(data[2]));
+             			}
+             		});
                 } else {
                 	System.out.println("[CST] player or game invalid!");
                 }
