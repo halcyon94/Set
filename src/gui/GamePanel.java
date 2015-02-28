@@ -108,11 +108,15 @@ public class GamePanel extends JPanel {
 	 */
 	public void blockTimer(final int time) {
 		//chat.systemMessage("[CardGrid] blockTimer called at "+System.currentTimeMillis());
-		timer = time;
-		setButton.setEnabled(false);
-		t.addActionListener(blockCounter);
-		t.setInitialDelay(0);
-		t.start();
+		if(time != 0) {
+			timer = time;
+			setButton.setEnabled(false);
+			t.addActionListener(blockCounter);
+			t.setInitialDelay(0);
+			t.start();
+		} else {
+			setButton.setEnabled(false);
+		}
 	}
 
 	//timer countdown for SET
