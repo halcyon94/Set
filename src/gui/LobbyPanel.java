@@ -198,13 +198,11 @@ public class LobbyPanel extends JPanel {
 		//add selection listeners for the JTables
 		userTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				if (e.getValueIsAdjusting()) return;
-
-				ListSelectionModel lsm =
-					(ListSelectionModel)e.getSource();
-				if (!lsm.isSelectionEmpty()) {
+				if(e.getValueIsAdjusting()) return;
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if(!lsm.isSelectionEmpty()) {
 					gameTable.clearSelection();
-					int selectedRow = lsm.getMinSelectionIndex();
+					int selectedRow = userTable.convertRowIndexToModel(lsm.getMinSelectionIndex());
 					int id = ((Integer) userTable.getModel().getValueAt(selectedRow, 0)).intValue();
 					info.removeAll();
 					info.add(getPlayerInfoPanel(id, (String) userTable.getModel().getValueAt(selectedRow, 1)));
@@ -215,12 +213,11 @@ public class LobbyPanel extends JPanel {
 		
 		gameTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				if (e.getValueIsAdjusting()) return;
-
-				ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-				if (!lsm.isSelectionEmpty()) {
+				if(e.getValueIsAdjusting()) return;
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if(!lsm.isSelectionEmpty()) {
 					userTable.clearSelection();
-					int selectedRow = lsm.getMinSelectionIndex();
+					int selectedRow = gameTable.convertRowIndexToModel(lsm.getMinSelectionIndex());
 					int id = ((Integer) gameTable.getModel().getValueAt(selectedRow, 0)).intValue();		
 					info.removeAll();
 					info.add(getGameInfoPanel(id, (String) gameTable.getModel().getValueAt(selectedRow, 1)));
