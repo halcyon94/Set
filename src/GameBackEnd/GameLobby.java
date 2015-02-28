@@ -95,7 +95,6 @@ public class GameLobby {
             return playerCollection.get(uid);
         else{
             System.err.println("error in gameLobby.findPlayer with uid: "+uid);
-            System.exit(-1);
             return null;
         }
     }
@@ -112,7 +111,7 @@ public class GameLobby {
         if(newUser){
 
             uid = db.insertUser(Username,Password);
-            if(playerCollection.containsKey(uid)){
+            if(playerCollection.containsKey(uid) || (uid == 0)){
                 return -1;
             }
             Player player = new Player();

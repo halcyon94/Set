@@ -55,20 +55,20 @@ public class Game {
     }
     public String onSubmit(int uid, int c1, int c2, int c3) throws Exception{
         String message;
-        Player player;
+        Player player = findPlayer(uid);
+        if(player == null){
+            return "";
+        }
         switch (board.processSubmit(c1,c2,c3)){
             case 0: //send message to uid saying its a valid set, increase score by 1, and send new scoreboard and new board to all
-                    player = findPlayer(uid);
                     player.incScore();
                     message = board.returnCardsOnBoard() + "~" + returnScore(uid,player.returnScore());
                     break;
             case 1: //send message to uid saying that its an invalid set, decrease score by 1, send new scoreboard to all
-                    player = findPlayer(uid);
                     player.decScore();
                     message = returnScore(uid,player.returnScore());
                     break;
             case 2: //send message saying its a valid set, increase score by 1, update the scoreboard, and send message thats its Game Over, blocking their buttons
-                    player = findPlayer(uid);
                     player.incScore();
                     message = returnScore(uid,player.returnScore()) + "~" + board.returnCardsOnBoard() + "~" + "O";
                     break;
@@ -129,7 +129,6 @@ public class Game {
         }
         else{
             System.err.println("error in game.findPlayer with uid: "+uid);
-            System.exit(-1);
             return null; //is this ok to do?
         }
     }

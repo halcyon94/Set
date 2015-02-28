@@ -35,7 +35,7 @@ class ServSideThread implements Runnable {
         try {
             input=new Scanner(sock.getInputStream());
         } catch (IOException ex) {
-            System.out.println("ERROR:"+ex+" in ServSideThread.run() (1)");
+            ex.printStackTrace();
         }
         while(true)
         {
@@ -49,8 +49,8 @@ class ServSideThread implements Runnable {
                         if(message.substring(0,1).equals("S")|| message.substring(0,1).equals("R"))
                             message = message + "`"+Integer.toString(sid);
                         SetServer.bqueue.put(message);
-                    } catch (InterruptedException except) {
-                        System.out.println("ERROR:"+except+" in ServSideThread.run() (2)");
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
                     }
                 }
         }        

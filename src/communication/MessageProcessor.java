@@ -30,14 +30,13 @@ public class MessageProcessor implements Runnable {
         while(true){
             try {
                 message = SetServer.bqueue.take();
-                System.out.println("RECEIVED FROM CLIENT "+message);
                 try {
                     processMessage(message);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             } catch (InterruptedException ex) {
-                    System.out.println("ERROR: "+ex+" in MessageProcessor.run() (2) ");
+                    ex.printStackTrace();
             }
         }
     }
@@ -77,7 +76,7 @@ public class MessageProcessor implements Runnable {
                     else{
                         PrintWriter OUT=new PrintWriter(X.getOutputStream());
                         if(result == -1){
-                            OUT.println("E");
+                            OUT.println("E2");
                         }
                         else{
                             OUT.println("I");
@@ -101,8 +100,13 @@ public class MessageProcessor implements Runnable {
                     X =  SetServer.waitingSockets.get(addr);
                     SetServer.waitingSockets.remove(addr);
                     result = GameLobby.enterLobby(username,password,true);
-                    SocketList.put(result, X);
                     PrintWriter OUT=new PrintWriter(X.getOutputStream());
+                    if(result == -1){
+                        OUT.println("E1");
+                        OUT.flush();
+                        break;
+                    }
+                    SocketList.put(result, X);
                     OUT.println("V"+result);
                     OUT.flush();
                     OUT.println(GameLobby.returnGames()); 
@@ -142,6 +146,8 @@ public class MessageProcessor implements Runnable {
                     GameLobby.joinGame(uid, gid);
                     Game game = GameLobby.findGame(gid);
                     if(game!=null){
+                        if(game.lockOwner()!=0)
+                           sendMessage(uid,game.block(0)); 
                         sendMessage(uid,game.board.returnCardsOnBoard());
                         for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                             if(entry.getKey() == uid)
@@ -214,15 +220,18 @@ public class MessageProcessor implements Runnable {
                     Game game = GameLobby.findGame(gid);
                     if(uid==game.lockOwner()){
                         Player player = GameLobby.findPlayer(uid);
-                        player.decScore();
-                        game.resetLock();
-                        for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                            sendMessage(entry.getKey(),game.returnScore(uid,player.returnScore()));
-                            sendMessage(entry.getKey(),game.unblock());
+                        if(player!=null){
+                            player.decScore();
+                            game.resetLock();
+                            for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
+                                sendMessage(entry.getKey(),game.returnScore(uid,player.returnScore()));
+                                sendMessage(entry.getKey(),game.unblock());
+                            }
                         }
-                    }
-                    else{
-                        System.out.println("OH CRAP 1");
+                        else{
+                            GameLobby.db.updateUserScore(uid, -1);
+                            game.resetLock();
+                        }
                     }
                     break;
                 }
@@ -245,18 +254,18 @@ public class MessageProcessor implements Runnable {
                         else{
                             cmds[0] = new_message;
                         }
-                        for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                            for (String cmd : cmds) {
-                                sendMessage(entry.getKey(),cmd);
+                        if(!cmds[0].equals(""))
+                        {
+                            for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
+                                for (String cmd : cmds) {
+                                    sendMessage(entry.getKey(),cmd);
+                                }
                             }
                         } 
                         game.resetLock();
                         for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                             sendMessage(entry.getKey(),game.unblock());
                         }
-                    }
-                    else{
-                    	System.out.println("OH CRAP 2");
                     }
                     break;
                 }
@@ -345,7 +354,6 @@ public class MessageProcessor implements Runnable {
     private static void sendMessage(int uid, String message) throws IOException{
             Socket sock = SetServer.SocketList.get(uid);
             PrintWriter TEMP_OUT=new PrintWriter(sock.getOutputStream());
-            System.out.println("[MessageProcessor] sending msg "+message+" to uid "+uid);
             TEMP_OUT.println(message);
             TEMP_OUT.flush();
     }    

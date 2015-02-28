@@ -49,7 +49,8 @@ public class SetServer{
                         X.start();
                 }
             }
-            catch(Exception X){System.out.println("ERROR:"+X+" in SetServer.main() ");}
+            catch(Exception ex){
+                ex.printStackTrace();}
     }
 
 }

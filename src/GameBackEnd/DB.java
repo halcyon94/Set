@@ -44,19 +44,16 @@ public class DB{
           int out=0;
           if(rs.next())
              out = rs.getInt(1);
-    //writeResultSet(resultSet);
 
-    //    String id = resultSet.getString("id");
-//        System.out.println("ID: " + id);
     return out;
 
       } catch (ClassNotFoundException | SQLException e) {
-          System.out.println("ERROR: "+e+" in DB.insertUser()");
-        throw e;
+          e.printStackTrace();
     }
         finally {
         close();
     }
+       return 0;
    }
 
    //Confirm user credentials: performed at "Sign In"
@@ -81,12 +78,12 @@ public class DB{
     return uid;
 
    } catch (ClassNotFoundException | SQLException e) {
-       System.out.println("ERROR: "+e+" in DB.finduser() "); 
-	   throw e;
+       e.printStackTrace();
     }
         finally {
         close();
     }
+       return 0;
    }
    
    public int returnRating(int uid) throws Exception{
@@ -107,12 +104,12 @@ public class DB{
     return rating;
 
    } catch (ClassNotFoundException | SQLException e) {
-       System.out.println("ERROR: "+e+" in DB.returnRating() "); 
-	   throw e;
+       e.printStackTrace();
     }
         finally {
         close();
     }
+       return 0;
    }
   
    //Performed at end of Game or at disconnect, whenever a player leaves a game
@@ -131,8 +128,7 @@ public class DB{
     preparedStatement.executeUpdate();
       
             } catch (ClassNotFoundException | SQLException e) {
-                System.out.println("ERROR: "+e+" in DB.updateUserScore() "); 
-                throw e;
+                e.printStackTrace();
             }
             finally {
                 close();
@@ -162,12 +158,12 @@ public class DB{
     return message;
 
     }catch (ClassNotFoundException | SQLException e) {
-        System.out.println("ERROR: "+e+" in DB.returnRankings() "); 
-        throw e;
+        e.printStackTrace();
     }
         finally {
         close();
     }
+       return null;
    }
   // You need to close the resultSet
   private void close() {
