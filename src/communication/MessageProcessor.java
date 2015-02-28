@@ -146,8 +146,7 @@ public class MessageProcessor implements Runnable {
                     GameLobby.joinGame(uid, gid);
                     Game game = GameLobby.findGame(gid);
                     if(game!=null){
-                        if(game.lockOwner()!=0)
-                           sendMessage(uid,game.block(0)); 
+                        
                         sendMessage(uid,game.board.returnCardsOnBoard());
                         for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                             if(entry.getKey() == uid)
@@ -159,6 +158,8 @@ public class MessageProcessor implements Runnable {
                         for(Map.Entry<Integer,Player> entry : GameLobby.playerCollection.entrySet()){
                             sendMessage(entry.getKey(),GameLobby.returnGames());
                         }
+                        if(game.lockOwner()!=0)
+                           sendMessage(uid,game.block(0)); 
                     }
                     break;
                 }
@@ -231,6 +232,9 @@ public class MessageProcessor implements Runnable {
                         else{
                             GameLobby.db.updateUserScore(uid, -1);
                             game.resetLock();
+                            for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
+                                sendMessage(entry.getKey(),game.unblock());
+                            }
                         }
                     }
                     break;
