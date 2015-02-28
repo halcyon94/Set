@@ -254,14 +254,11 @@ public class MessageProcessor implements Runnable {
                         else{
                             cmds[0] = new_message;
                         }
-                        if(!cmds[0].equals(""))
-                        {
-                            for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
-                                for (String cmd : cmds) {
-                                    sendMessage(entry.getKey(),cmd);
-                                }
+                        for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
+                            for (String cmd : cmds) {
+                                sendMessage(entry.getKey(),cmd);
                             }
-                        } 
+                        }
                         game.resetLock();
                         for(Map.Entry<Integer,Player> entry : game.playerCollection.entrySet()){
                             sendMessage(entry.getKey(),game.unblock());

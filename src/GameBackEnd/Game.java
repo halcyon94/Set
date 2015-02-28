@@ -56,9 +56,6 @@ public class Game {
     public String onSubmit(int uid, int c1, int c2, int c3) throws Exception{
         String message;
         Player player = findPlayer(uid);
-        if(player == null){
-            return "";
-        }
         switch (board.processSubmit(c1,c2,c3)){
             case 0: //send message to uid saying its a valid set, increase score by 1, and send new scoreboard and new board to all
                     player.incScore();
