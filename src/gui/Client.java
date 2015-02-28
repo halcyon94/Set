@@ -46,8 +46,11 @@ public class Client extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
             	if(myID != 0) {
-            		if(gameActive)
+            		if(gameActive) {
+            			if(game.isSetRunning())
+            				ClientConnection.setFail(myID, gameID);
             			ClientConnection.leaveGame(gameID, myID);
+            		}
             		ClientConnection.logout(myID);
             	}
             	System.exit(NORMAL);
@@ -142,6 +145,9 @@ public class Client extends JFrame {
 			game.quitButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
+					game.clearGrid();
+					if(game.isSetRunning())
+        				ClientConnection.setFail(myID, gameID);
 					ClientConnection.leaveGame(gameID, myID);
 					gameActive = false;
 					lobby.resetInfoPanel();
@@ -217,7 +223,15 @@ public class Client extends JFrame {
 	 */
 	public void userExists() {
 		SetClient.Connect(this); //reset connection
-		login.showPassPopup("User is already logged in!");
+		login.showUserPopup("This username is taken.");
+	}
+	
+	/**
+	 * Displays already online user warning.
+	 */
+	public void userOnline() {
+		SetClient.Connect(this); //reset connection
+		login.showUserPopup("This user is already online.");
 	}
 	
 	/**
