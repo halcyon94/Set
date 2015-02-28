@@ -50,9 +50,6 @@ class ClientSideThread implements Runnable {
                                 if(input.hasNext())
                                 {
                                     String MESSAGE =input.nextLine();
-                                    try{
-                                    c.getGamePanel().getChat().systemMessage("[CST] Recieved msg "+MESSAGE);
-                                    } catch (Exception e) {}
                                     messageDecypher(MESSAGE);
                                     System.out.println("RECEIVED FROM SERVER: "+MESSAGE);
                                     if(threadDone)

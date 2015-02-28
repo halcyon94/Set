@@ -44,9 +44,9 @@ public class GamePanel extends JPanel {
 		{ 
 			setButton.setText("<html>&nbsp;<br>"+timer+"<br>&nbsp;</html>");
 			timer--;
-			chat.systemMessage("[CardGrid] blockCounter fired at "+System.currentTimeMillis());
+			//chat.systemMessage("[CardGrid] blockCounter fired at "+System.currentTimeMillis());
 			if(timer < 0) {
-				chat.systemMessage("[CardGrid] blockCounter time limit exceeded "+System.currentTimeMillis());
+				//chat.systemMessage("[CardGrid] blockCounter time limit exceeded "+System.currentTimeMillis());
 				t.stop();
 				setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 				setButton.setEnabled(true);
@@ -59,9 +59,9 @@ public class GamePanel extends JPanel {
 		{
 			setButton.setText("<html><center>OK<br>"+timer+"<br>&nbsp;</center></html>");
 			timer--;
-			chat.systemMessage("[CardGrid] setCounter fired at "+System.currentTimeMillis());
+			//chat.systemMessage("[CardGrid] setCounter fired at "+System.currentTimeMillis());
 			if(timer < 0) {
-				chat.systemMessage("[CardGrid] setCounter time limit exceeded "+System.currentTimeMillis());
+				//chat.systemMessage("[CardGrid] setCounter time limit exceeded "+System.currentTimeMillis());
 				t.stop();
 				submitSet(grid.getSelected());
 				t.removeActionListener(this);
@@ -107,7 +107,7 @@ public class GamePanel extends JPanel {
 	 * @param time Time (in seconds) to disable the button
 	 */
 	public void blockTimer(final int time) {
-		chat.systemMessage("[CardGrid] blockTimer called at "+System.currentTimeMillis());
+		//chat.systemMessage("[CardGrid] blockTimer called at "+System.currentTimeMillis());
 		timer = time;
 		setButton.setEnabled(false);
 		t.addActionListener(blockCounter);
@@ -117,7 +117,7 @@ public class GamePanel extends JPanel {
 
 	//timer countdown for SET
 	public void setTimer(final int time) {
-		chat.systemMessage("[CardGrid] setTimer called at "+System.currentTimeMillis());
+		//chat.systemMessage("[CardGrid] setTimer called at "+System.currentTimeMillis());
 		timer = time;
 		grid.enableSelection();
 		t.addActionListener(setCounter);
@@ -131,10 +131,8 @@ public class GamePanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				if(!t.isRunning()) {
 					ClientConnection.beginSet(myID, gameID);
-					chat.systemMessage("[CardGrid] beginSet protocol sent at "+System.currentTimeMillis());
 				} else {
 					submitSet(grid.getSelected());
-					chat.systemMessage("[CardGrid] submitSet called at "+System.currentTimeMillis());
 				}
 			}
 		});
@@ -160,6 +158,7 @@ public class GamePanel extends JPanel {
 	
 	private void submitSet(ArrayList<Card> selList) {
 		grid.disableSelection();
+		setButton.setEnabled(false);
 		t.stop();
 		for(ActionListener l : t.getActionListeners())
 			t.removeActionListener(l);
@@ -209,12 +208,13 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void unblockButton() {
-		chat.systemMessage("[CardGrid] unblock called at "+System.currentTimeMillis());
+		//chat.systemMessage("[CardGrid] unblock called at "+System.currentTimeMillis());
 		t.stop();
-		//grid.disableSelection();
+		for(ActionListener l : t.getActionListeners())
+			t.removeActionListener(l);
+		grid.disableSelection();
 		setButton.setEnabled(true);
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
-		t.removeActionListener(blockCounter);
 	}
 	
 	public void showNotification(String message, Icon icon, boolean hasIcon) {
