@@ -78,7 +78,7 @@ public class GamePanel extends JPanel {
 
 	//Assembles components of Set game GUI
 	private void buildGameGUI() {
-		chat = new ChatPanel(100, myID, 0);
+		chat = new ChatPanel(80, myID, 0);
 		add(players, BorderLayout.NORTH); //add player panel to gui
 
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -272,8 +272,10 @@ public class GamePanel extends JPanel {
 	public void shuffleGrid() {
 		grid.clear();
 		Collections.shuffle(cardList);
-		for(Card c: cardList)
+		for(Card c: cardList) {
+			c.removeMouseListener(grid.cardSelectionListener);
 			grid.addCard(c);
+		}
 	}
 	
 	public boolean isSetRunning() {

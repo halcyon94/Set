@@ -35,6 +35,26 @@ public class CardGrid extends JPanel {
 	private ArrayList<Card> selList = new ArrayList<Card>(); //List of selected cards
 	private HashMap<Integer,Location> cardMap = new HashMap<Integer,Location>();
 	private ExecutorService animationPool = Executors.newSingleThreadScheduledExecutor();
+	
+	public MouseAdapter cardSelectionListener = new MouseAdapter() {
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			Card cx = (Card) e.getSource();
+			if(selectEnabled) {
+				if(selList.contains(cx)) {
+					cx.deselect();
+					selList.remove(cx);
+				} else if(selList.size() < setSize) {
+					cx.toggleSelection(playerColor);
+					selList.add(cx);
+				}
+				String ids = "";
+				for(Card i : selList)
+					ids+=i.getID(setSize)+"`";
+				ClientConnection.updateSelection(myID, gameID, ids);
+			}
+		}
+	};
 		
 	/**
 	 *	Card grid panel constructor
@@ -67,25 +87,7 @@ public class CardGrid extends JPanel {
 //		ct.setTransitionEffect(effect);
 //		ct.setContent(new JPanel());
 		ct.setContent(c);
-		c.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				Card cx = (Card) e.getSource();
-				if(selectEnabled) {
-					if(selList.contains(cx)) {
-						cx.deselect();
-						selList.remove(cx);
-					} else if(selList.size() < setSize) {
-						cx.toggleSelection(playerColor);
-						selList.add(cx);
-					}
-					String ids = "";
-					for(Card i : selList)
-						ids+=i.getID(setSize)+"`";
-					ClientConnection.updateSelection(myID, gameID, ids);
-				}
-			}
-		});
+		c.addMouseListener(cardSelectionListener);
 		cards++;
 		int cardsInCol = lastCol.getComponentCount();
 //		if(cardMap.containsKey(c.getID(setSize)))
