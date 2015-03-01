@@ -2,7 +2,9 @@ package gui;
 
 import javax.swing.*;
 
+import com.alee.managers.notification.NotificationIcon;
 import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.notification.WebNotificationPopup;
 
 import java.awt.*;
@@ -133,14 +135,27 @@ public class GamePanel extends JPanel {
 				}
 			}
 		});
-		buttons.add(setButton); //set button
+		
 
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				if(isSetRunning())
-    				ClientConnection.setFail(myID, gameID);
-				ClientConnection.leaveGame(gameID, myID);
-				ClientConnection.logout(myID);
+				WebNotificationPopup notify = new WebNotificationPopup() {
+					@Override
+					public void fireOptionSelected(NotificationOption opt) {
+						if(opt==NotificationOption.yes) {
+							if(isSetRunning())
+			    				ClientConnection.setFail(myID, gameID);
+							ClientConnection.leaveGame(gameID, myID);
+							ClientConnection.logout(myID);
+						}
+					}
+				};
+				notify.setDisplayTime(3000);
+				notify.setCloseOnOptionSelection(true);
+				notify.setContent("Are you sure you want to log out?");
+				notify.setOptions(NotificationOption.yes, NotificationOption.no);
+				notify.setIcon(NotificationIcon.question);
+				NotificationManager.showNotification(notify);			
 			}
 		});
 		
@@ -150,9 +165,10 @@ public class GamePanel extends JPanel {
 				shuffleGrid();
 			}
 		});
+		buttons.add(setButton); //set button
+		buttons.add(shuffleButton); //quit button
 		buttons.add(logoutButton); //logout button
 		buttons.add(quitButton); //quit button
-		buttons.add(shuffleButton); //quit button
 	}
 	
 	private void submitSet(ArrayList<Card> selList) {
@@ -220,7 +236,7 @@ public class GamePanel extends JPanel {
 		notify.setContent(message);
 		if(hasIcon && icon!=null)
 			notify.setIcon(icon);
-		NotificationManager.showNotification (notify);
+		NotificationManager.showNotification(notify);
 	}
 	
 	public void addCard(int id) {

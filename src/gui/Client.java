@@ -99,6 +99,7 @@ public class Client extends JFrame {
 		myID = 0;
 		gameID = 0;
 		gameActive = false;
+		NotificationManager.hideAllNotifications();
 		if(login!=null)
 			login.detachListeners(); //prevent memory leaks here
 		login = new LoginPanel();
