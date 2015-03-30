@@ -106,7 +106,7 @@ public class Client extends JFrame {
 		SetClient.Connect(this);
 		addLoginListeners(login);
 		setTitle("Login to Set");
-		setSize(280, 150);
+		setSize(new Dimension(280, 150));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		gameActive = false;
@@ -121,7 +121,7 @@ public class Client extends JFrame {
 	 */
 	public void createLobbyFrame() {
 		setTitle("Set Lobby");
-		setSize(800, 600);
+		setSize(new Dimension(800, 600));
 		setResizable(true);
 		setLocationRelativeTo(null);
 		ActionListener joinListener = new ActionListener() {
@@ -157,7 +157,7 @@ public class Client extends JFrame {
 				}
 			});
 			setTitle("Set");
-			setSize(960, 768);
+			setSize(new Dimension(960, 768));
 			setResizable(true);
 			setLocationRelativeTo(null);
 			JPanel c = (JPanel) getContentPane();
