@@ -289,8 +289,8 @@ public class LobbyPanel extends JPanel {
 	private void formatTable(JTable t) {
 		t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		t.removeColumn(t.getColumnModel().getColumn(0)); //hide IDs
-		t.getColumnModel().getColumn(0).setPreferredWidth(150);
-		t.getColumnModel().getColumn(1).setPreferredWidth(50);
+		t.getColumnModel().getColumn(0).setPreferredWidth(140);
+		t.getColumnModel().getColumn(1).setPreferredWidth(60);
 		t.setAutoCreateRowSorter(true);
 	}
 
