@@ -1,10 +1,8 @@
 package gui;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
 import javax.swing.*;
 
 import java.awt.*;
@@ -62,13 +60,8 @@ public class Client extends JFrame {
         //open wrong login sound
         try {
         	AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("wrong.wav"));
-        	//wongsound = AudioSystem.getClip();
-        	//wongsound.open(audioInputStream);
-        	
-            AudioFormat format = audioInputStream.getFormat();
-            DataLine.Info lineInfo = new DataLine.Info(Clip.class, format);
-            wongsound = (Clip) AudioSystem.getLine(lineInfo);
-            wongsound.open(audioInputStream);
+        	wongsound = AudioSystem.getClip();
+        	wongsound.open(audioInputStream);
         } catch (Exception e) {
         	System.err.println("Could not open WONGSOUND");
         }
