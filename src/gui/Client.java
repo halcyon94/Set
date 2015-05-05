@@ -107,10 +107,10 @@ public class Client extends JFrame {
 		addLoginListeners(login);
 		setTitle("Login to Set");
 		setSize(new Dimension(280, 150));
-                setPreferredSize(new Dimension(280, 150));
-                setMinimumSize(new Dimension(280, 150));
-                setMaximumSize(new Dimension(280, 150));
-                pack();
+		setPreferredSize(new Dimension(280, 150));
+//		setMinimumSize(new Dimension(280, 150));
+//		setMaximumSize(new Dimension(280, 150));
+		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);
 		gameActive = false;
@@ -126,10 +126,10 @@ public class Client extends JFrame {
 	public void createLobbyFrame() {
 		setTitle("Set Lobby");
 		setSize(new Dimension(800, 600));
-                setPreferredSize(new Dimension(800, 600));
-                setMinimumSize(new Dimension(800, 600));
-                setMaximumSize(new Dimension(800, 600));
-                pack();
+		setPreferredSize(new Dimension(800, 600));
+//		setMinimumSize(new Dimension(800, 600));
+//		setMaximumSize(new Dimension(800, 600));
+		pack();
 		setResizable(true);
 		setLocationRelativeTo(null);
 		ActionListener joinListener = new ActionListener() {
@@ -166,12 +166,14 @@ public class Client extends JFrame {
 			});
 			setTitle("Set");
 			setSize(new Dimension(960, 768));
+			setPreferredSize(new Dimension(960, 768));
 			setResizable(true);
 			setLocationRelativeTo(null);
 			JPanel c = (JPanel) getContentPane();
 			c.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 			c.add(game, "GAME");
 			((CardLayout) c.getLayout()).show(c, "GAME");
+			getRootPane().setDefaultButton(game.setButton);
 		} else {
 			System.err.println("Error: Attempted to start game without logging in");
 		}

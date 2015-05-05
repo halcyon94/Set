@@ -29,6 +29,7 @@ public class GamePanel extends JPanel {
 	private JPanel buttons = new JPanel(); //button panel
 	private CardGrid grid;
 	
+	private JButton shuffleButton = new JButton("Shuffle");
 	public JButton logoutButton = new JButton("Logout");
 	public JButton setButton = new JButton("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 	public JButton quitButton = new JButton("Quit");
@@ -57,6 +58,7 @@ public class GamePanel extends JPanel {
 		public void actionPerformed(ActionEvent evt) 
 		{
 			setButton.setText("<html><center>OK<br>"+timer+"<br>&nbsp;</center></html>");
+			shuffleButton.setEnabled(false);
 			timer--;
 			if(timer < 0) {
 				t.stop();
@@ -159,7 +161,6 @@ public class GamePanel extends JPanel {
 			}
 		});
 		
-		JButton shuffleButton = new JButton("Shuffle");
 		shuffleButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				shuffleGrid();
@@ -227,6 +228,7 @@ public class GamePanel extends JPanel {
 			t.removeActionListener(l);
 		grid.disableSelection();
 		setButton.setEnabled(true);
+		shuffleButton.setEnabled(true);
 		setButton.setText("<html>&nbsp;<br>SET<br>&nbsp;</html>");
 	}
 	
